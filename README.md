@@ -15,7 +15,8 @@ https://github.com/ablab/spades
 
 
 ## Progress 
-To assemble single strain, type ``spades.py --pe1-1 9_7_9_ACTTGTTATC-TCTAGGCGCG_L002_R1_001.fastq.gz --pe1-2 9_7_9_ACTTGTTATC-TCTAGGCGCG_L002_R2_001.fastq.gz -o 9_7_9-spades`` in ``screen``. 
+**May 12, 2023** <br>
+- strain 9_7_9 was assembled correctly. Type ``cd /home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades`` to see results. 
 
 ### Pathnames
 For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
