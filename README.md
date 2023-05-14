@@ -16,7 +16,7 @@ https://github.com/ablab/spades
 
 ## Progress 
 **May 12, 2023** <br>
-- strain 9_7_9 was assembled correctly. Type ``cd /home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades`` to see results. 
+- strain 9_7_9 was assembled correctly. Type ``cd /home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades`` to see results. Type ``less contigs.fasta``; result is ``>NODE_1_length_728405_cov_41.557482``, meaning 1 contig, 728405 nucleotides sequence length, and 41.557482 k-mer coverage for the last (largest) k value used.  Type ``less scaffolds.fasta``; result is ``NODE_1_length_728405_cov_41.557482``, same result as contig. 
 
 ### Pathnames
 For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
