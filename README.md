@@ -18,7 +18,9 @@ https://github.com/ablab/spades
 ## Before Assembly
 
 ## During Assembly 
-
+#### Background Knowledge
+- De Bruijin graph: beak reads into k-mers, where k denotes the length of these sequences. The graph captures the overlap of length k-1 between these k-mers.  Reference: [De Novo Assembly Using Illumina Reads](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.illumina.com/Documents/products/technotes/technote_denovo_assembly_ecoli.pdf)
+- k-mer coverage: 
 ## After Assembly 
 #### Background Knowledge
 - N50: For an example, an assembly fragmented into contigs with lengths: 5, 4, 2, and 1 kb (total length = 12 kb), half of the genome length is covered by the two largest contigs, including the 4kb contig. N50=4kb is the minimum contig length required to cover 50 percent of the assembled genome sequence. [N50 statistics](https://www.metagenomics.wiki/tools/assembly/n50). <br>
