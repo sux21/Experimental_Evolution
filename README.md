@@ -15,7 +15,11 @@ https://github.com/ablab/spades
    - 767 symbolic links linking to the raw reads in ``/scratch/batstonelab/RltEE2020-PE_reads``(an example of the file format is ``9_7_9_ACTTGTTATC-TCTAGGCGCG_L002_R2_001.fastq.gz@``); 
    - MultiQC report of the raw reads (``Project_Heath_363_gDNA_multiqc_report.html``)
 
-## Assembly Results
+## Before Assembly
+
+## During Assembly 
+
+## After Assembly 
 Metrics used to compare quality of assemblies:
 - N50: For an example, an assembly fragmented into contigs with lengths: 5, 4, 2, and 1 kb (total length = 12 kb), half of the genome length is covered by the two largest contigs, including the 4kb contig. N50=4kb is the minimum contig length required to cover 50 percent of the assembled genome sequence.
 
