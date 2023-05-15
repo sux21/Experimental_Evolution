@@ -18,14 +18,8 @@ https://github.com/ablab/spades
 ## Before Assembly
 
 ## During Assembly 
-#### Background Knowledge
-- De Bruijin graph: beak reads into k-mers, where k denotes the length of these sequences. The graph captures the overlap of length k-1 between these k-mers.  Reference: [De Novo Assembly Using Illumina Reads](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.illumina.com/Documents/products/technotes/technote_denovo_assembly_ecoli.pdf)
-- k-mer coverage: 
+
 ## After Assembly 
-#### Background Knowledge
-- N50: For an example, an assembly fragmented into contigs with lengths: 5, 4, 2, and 1 kb (total length = 12 kb), half of the genome length is covered by the two largest contigs, including the 4kb contig. N50=4kb is the minimum contig length required to cover 50 percent of the assembled genome sequence. [N50 statistics](https://www.metagenomics.wiki/tools/assembly/n50). <br>
-[Different Assembly statistics (N50, L50, NG50, LG50, NA50, NGA50 and Misassemblies)](https://www.youtube.com/watch?v=ViXzKrQo25k). <br>
-[Why is N50 used as an assembly metric (and what's the deal with NG50)?](http://www.acgt.me/blog/2013/7/8/why-is-n50-used-as-an-assembly-metric.html). 
 
 **Output** <br>
 ``contigs.fasta``: you can check the number of contigs by counting the ``>`` symbol, length of each contig, k-mer coverage of the largest k-value used (k-mer coverage is always lower than read coverage). See [Contigs and scaffolds format](https://github.com/ablab/spades#contigs-and-scaffolds-format). 
@@ -46,11 +40,5 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 
 ``scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades/assembly_graph.fastg /Users/xingyuansu/Desktop``
 
-``scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades/assembly_graph_after_simplification.gfa /Users/xingyuansu/Desktop``
-
-### PATH
-``.:/home/xingyuan/bin:/usr/lib64/qt-3.3/bin:/usr/lib64/openmpi/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/dell/srvadmin/bin:/usr/local/python3/Python-3.5.1:/2/scratch/batstonelab/bin/SPAdes-3.15.5-Linux/bin:/home/xingyuan/.local/bin:/home/xingyuan/bin``
-
 ## Error codes 
-
 
