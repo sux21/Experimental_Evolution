@@ -1,4 +1,4 @@
-# Su_Xingyuan_Summer__2023_May_to_August
+# Su_Xingyuan_May_to_August_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
 # Problems/Questions 
