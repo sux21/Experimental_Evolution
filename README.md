@@ -23,10 +23,10 @@ https://github.com/ablab/spades
 Metrics used to compare quality of assemblies:
 - N50: For an example, an assembly fragmented into contigs with lengths: 5, 4, 2, and 1 kb (total length = 12 kb), half of the genome length is covered by the two largest contigs, including the 4kb contig. N50=4kb is the minimum contig length required to cover 50 percent of the assembled genome sequence.
 
-References: 
-- [N50 statistics](https://www.metagenomics.wiki/tools/assembly/n50) 
-- [Different Assembly statistics (N50, L50, NG50, LG50, NA50, NGA50 and Misassemblies)](https://www.youtube.com/watch?v=ViXzKrQo25k). 
-
+References: <br>
+[N50 statistics](https://www.metagenomics.wiki/tools/assembly/n50). <br>
+[Different Assembly statistics (N50, L50, NG50, LG50, NA50, NGA50 and Misassemblies)](https://www.youtube.com/watch?v=ViXzKrQo25k). <br>
+[Why is N50 used as an assembly metric (and what's the deal with NG50)?](http://www.acgt.me/blog/2013/7/8/why-is-n50-used-as-an-assembly-metric.html). 
 ## Progress 
 **May 12, 2023** <br>
 - strain 9_7_9 was assembled correctly. Type ``cd /home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades`` to see results. <br>
