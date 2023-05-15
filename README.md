@@ -25,8 +25,8 @@ https://github.com/ablab/spades
 [Different Assembly statistics (N50, L50, NG50, LG50, NA50, NGA50 and Misassemblies)](https://www.youtube.com/watch?v=ViXzKrQo25k). <br>
 [Why is N50 used as an assembly metric (and what's the deal with NG50)?](http://www.acgt.me/blog/2013/7/8/why-is-n50-used-as-an-assembly-metric.html). 
 
-Output:
-- ``contigs.fasta``: you can check the number of contigs by counting the ``>`` symbol, length of each contig, k-mer coverage of the largest k-value used (k-mer coverage is always lower than read coverage). See [Contigs and scaffolds format](https://github.com/ablab/spades#contigs-and-scaffolds-format). 
+**Output** <br>
+``contigs.fasta``: you can check the number of contigs by counting the ``>`` symbol, length of each contig, k-mer coverage of the largest k-value used (k-mer coverage is always lower than read coverage). See [Contigs and scaffolds format](https://github.com/ablab/spades#contigs-and-scaffolds-format). 
 
 ## Progress 
 **May 12, 2023** <br>
