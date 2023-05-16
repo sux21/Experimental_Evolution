@@ -4,8 +4,6 @@ Bioinformatics project on Rhizobium leguminosarum
 # Step 1 - Genome Assembly using SPAdes <br>
 version: SPAdes genome assembler v3.15.2
 
-https://github.com/ablab/spades
-
 ## Information about Files (All files on Info server)
 - **rhizo_ee**, directory, pathname ``/home/xingyuan/rhizo_ee``: 
    - directory for this project, rhizobium experimental evolution; environmental variable ``$RHIZO`` <br>
@@ -31,10 +29,17 @@ multiqc, version 1.9
 Running MultiQC: ``multiqc .`` in the directory with the FastQC reports 
 
 ### 3. Running Trimmomatic (Practice on 2018 strains)
+version: trimmomatic-0.39.jar
 
 Modify this command: ``java -jar /path/to/trimmomatic.jar PE R1_001.fastq \ R2_001.fastq R1_P.fq.gz R1_UP.fq.gz R2_P.fq.gz R2_UP.fq.gz \ ILLUMINACLIP:/path/to/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
 
-http://www.usadellab.org/cms/?page=trimmomatic
+``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R1_001.fastq /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R2_001.fastq /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_UP_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_UP_001.fq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
+
+/home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_P_001.fq.gz 
+/home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_UP_001.fq.gz
+/home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_P_001.fq.gz
+/home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_UP_001.fq.gz
+
 
 ### 4. Repeat 1 and 2 (Practice on 2018 strains)
 
@@ -48,10 +53,6 @@ https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
 **Output** <br>
 ``contigs.fasta``: you can check the number of contigs by counting the ``>`` symbol, length of each contig, k-mer coverage of the largest k-value used (k-mer coverage is always lower than read coverage). See [Contigs and scaffolds format](https://github.com/ablab/spades#contigs-and-scaffolds-format). 
-
-### Bandage
-
-### Quast
 
 ## Progress 
 **May 12, 2023** <br>
@@ -73,4 +74,12 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 
 
 ## Error codes 
+
+# References
+
+## Manuals of Programs used
+
+SPAdes: https://github.com/ablab/spades.
+
+Trimmomatic: http://www.usadellab.org/cms/?page=trimmomatic. 
 
