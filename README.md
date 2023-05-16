@@ -1,8 +1,6 @@
 # Su_Xingyuan_May_to_August_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
-# Problems/Questions 
-
 # Step 1 - Genome Assembly using SPAdes <br>
 version: SPAdes genome assembler v3.15.2
 
