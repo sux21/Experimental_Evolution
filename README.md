@@ -19,18 +19,39 @@ FastQC v0.11.5
 
 Input file format is ``.fastq``. An example is ``GSF2234-101A_S1_R1_001.fastq``.
 
-Running FastQC command: ``fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads *fastq`` 
+Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
 
 Output files are ``fastqc.html`` and ``fastqc.zip``. An example is ``GSF2234-101A_S1_R1_001_fastqc.html`` and ``GSF2234-101A_S1_R1_001_fastqc.zip``.
 
 Commands are from https://home.cc.umanitoba.ca/~psgendb/doc/fastqc.help. 
 
+### 2. Running MultiQC (Practice on 2018 strains) 
+multiqc, version 1.9
+
+Running MultiQC: ``multiqc .`` in the directory with the FastQC reports 
+
+### 3. Running Trimmomatic (Practice on 2018 strains)
+
+Modify this command: ``java -jar /path/to/trimmomatic.jar PE R1_001.fastq \ R2_001.fastq R1_P.fq.gz R1_UP.fq.gz R2_P.fq.gz R2_UP.fq.gz \ ILLUMINACLIP:/path/to/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
+
+http://www.usadellab.org/cms/?page=trimmomatic
+
+### 4. Repeat 1 and 2 (Practice on 2018 strains)
+
+
+
+
 ## During Assembly 
+https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
 ## After Assembly 
 
 **Output** <br>
 ``contigs.fasta``: you can check the number of contigs by counting the ``>`` symbol, length of each contig, k-mer coverage of the largest k-value used (k-mer coverage is always lower than read coverage). See [Contigs and scaffolds format](https://github.com/ablab/spades#contigs-and-scaffolds-format). 
+
+### Bandage
+
+### Quast
 
 ## Progress 
 **May 12, 2023** <br>
@@ -48,7 +69,7 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 
 ``quast.py contigs.fasta``
 
-``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_raw_reads/GSF2234-101A_S1_R2_001_fastqc.html /Users/xingyuansu/Desktop``
+``scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades/quast_results/results_2023_05_16_10_24_26/ transposed_report.tsv /Users/xingyuansu/Desktop``
 
 
 ## Error codes 
