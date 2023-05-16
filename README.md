@@ -38,7 +38,10 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
 
-``scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades/assembly_graph.fastg /Users/xingyuansu/Desktop``
+``quast.py contigs.fasta``
+
+``scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades/quast_results/results_2023_05_16_10_24_26/report.html /Users/xingyuansu/Desktop``
+
 
 ## Error codes 
 
