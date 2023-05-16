@@ -19,7 +19,11 @@ https://github.com/ablab/spades
 ### 1. Running FastQC (Practice on 2018 strains)
 FastQC v0.11.5
 
+Input file format is ``.fastq``. An example is ``GSF2234-101A_S1_R1_001.fastq``.
+
 Running FastQC command: ``fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads *fastq`` 
+
+Output files are ``fastqc.html`` and ``fastqc.zip``. An example is ``GSF2234-101A_S1_R1_001_fastqc.html`` and ``GSF2234-101A_S1_R1_001_fastqc.zip``.
 
 Commands are from https://home.cc.umanitoba.ca/~psgendb/doc/fastqc.help. 
 
