@@ -16,6 +16,7 @@ https://github.com/ablab/spades
    - MultiQC report of the raw reads (``Project_Heath_363_gDNA_multiqc_report.html``)
 
 ## Before Assembly
+### 1. Running MultiQC
 
 ## During Assembly 
 
