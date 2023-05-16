@@ -16,7 +16,12 @@ https://github.com/ablab/spades
    - MultiQC report of the raw reads (``Project_Heath_363_gDNA_multiqc_report.html``)
 
 ## Before Assembly
-### 1. Running MultiQC
+### 1. Running FastQC (Practice on 2018 strains)
+FastQC v0.11.5
+
+Running FastQC command: ``fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads *fastq`` 
+
+Commands are from https://home.cc.umanitoba.ca/~psgendb/doc/fastqc.help. 
 
 ## During Assembly 
 
@@ -41,7 +46,7 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 
 ``quast.py contigs.fasta``
 
-``scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/raw_reads/9_7_9-spades/quast_results/results_2023_05_16_10_24_26/report.html /Users/xingyuansu/Desktop``
+``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_raw_reads/GSF2234-101A_S1_R2_001_fastqc.html /Users/xingyuansu/Desktop``
 
 
 ## Error codes 
