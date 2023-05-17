@@ -22,8 +22,6 @@ Input file format is ``.fastq``. An example is ``GSF2234-101A_S1_R1_001.fastq``.
 
 Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
 
-``fastqc -o /home/xingyuan/2018_strains/fastQC_trimmed_reads *gz``
-
 Output files are ``fastqc.html`` and ``fastqc.zip``. An example is ``GSF2234-101A_S1_R1_001_fastqc.html`` and ``GSF2234-101A_S1_R1_001_fastqc.zip``.
 
 Commands are from https://home.cc.umanitoba.ca/~psgendb/doc/fastqc.help. 
@@ -57,7 +55,7 @@ Running for all files using for loop in shell script: <br>
 
 ### 4. Repeat 1 and 2 (Practice on 2018 strains)
 
-
+Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trimmed_reads *_P_* &``. 
 
 
 ## During Assembly 
