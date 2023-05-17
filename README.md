@@ -44,9 +44,15 @@ Modify this command: ``java -jar /path/to/trimmomatic.jar PE R1_001.fastq \ R2_
 
 Running for all files using shell script: <br>
 ``#!/bin/bash`` <br>
-``for f in $(ls *.fastq | sed 's/?_001.fastq//' | sort -u)`` <br>
+``for R1 in *R1*`` <br>
 ``do`` <br>
-``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/${f}1_001.fastq /home/xingyuan/2018_strains/raw_reads/${f}2_001.fastq /home/xingyuan/2018_strains/trimmed_reads/${f}1_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/${f}1_UP_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/${f}2_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/${f}2_UP_001.fq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE`` <br>
+``R2=${R1//R1_001.fastq/R2_001.fastq}`` <br>
+``R1_P=${R1//001.fastq/P_001.fq.gz}`` <br>
+``R1_UP=${R1//001.fastq/UP_001.fq.gz}`` <br>
+``R2_P=${R2//001.fastq/P_001.fq.gz}`` <br>
+``R2_UP=${R2//001.fastq/UP_001.fq.gz}`` <br>
+
+``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/R1 /home/xingyuan/2018_strains/raw_reads/R2 /home/xingyuan/2018_strains/trimmed_reads/R1_P /home/xingyuan/2018_strains/trimmed_reads/R1_UP /home/xingyuan/2018_strains/trimmed_reads/R2_P /home/xingyuaingyuan/2018_strains/trimmed_reads/R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE`` <br>
 ``done``
 
 ### 4. Repeat 1 and 2 (Practice on 2018 strains)
