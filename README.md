@@ -1,7 +1,7 @@
 # Su_Xingyuan_May_to_August_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
-# Questions: <code style="color : red">TESTE</code>
+# Questions: <code style="color:red">TESTE</code>
 - For Trimmomatic output files, what does pair and unpair files mean?
 
 # Step 1 - Genome Assembly using SPAdes <br>
