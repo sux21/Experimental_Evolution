@@ -33,9 +33,18 @@ Running MultiQC: ``multiqc .`` in the directory with the FastQC reports
 ### 3. Running Trimmomatic (Practice on 2018 strains)
 version: trimmomatic-0.39.jar
 
+http://www.usadellab.org/cms/?page=trimmomatic
+
 Modify this command: ``java -jar /path/to/trimmomatic.jar PE R1_001.fastq \ R2_001.fastq R1_P.fq.gz R1_UP.fq.gz R2_P.fq.gz R2_UP.fq.gz \ ILLUMINACLIP:/path/to/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
 
 ``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R1_001.fastq /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R2_001.fastq /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_UP_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_UP_001.fq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
+
+Running for all files: <br>
+``#!/bin/bash`` <br>
+``for f in $(ls *.fastq | sed 's/?_001.fastq//' | sort -u)`` <br>
+``do`` <br>
+``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/${f}1_001.fastq /home/xingyuan/2018_strains/raw_reads/${f}2_001.fastq /home/xingyuan/2018_strains/trimmed_reads/${f}1_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/${f}1_UP_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/${f}2_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/${f}2_UP_001.fq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
+``done``
 
 ### 4. Repeat 1 and 2 (Practice on 2018 strains)
 
@@ -69,12 +78,4 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 ``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_raw_reads/GSF2234-101A_S1_R1_001_fastqc.html /Users/xingyuansu/Desktop``
 
 ## Error codes 
-
-# References
-
-## Manuals of Programs used
-
-SPAdes: https://github.com/ablab/spades.
-
-Trimmomatic: http://www.usadellab.org/cms/?page=trimmomatic. 
 
