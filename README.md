@@ -4,6 +4,9 @@ Bioinformatics project on Rhizobium leguminosarum
 # Questions:
 - For Trimmomatic output files, what does pair and unpair files mean?
 
+# Step 0 - Background Information of Illumina Sequencing
+Paired-End Sequencing: https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html.
+
 # Step 1 - Genome Assembly using SPAdes <br>
 version: SPAdes genome assembler v3.15.2
 
