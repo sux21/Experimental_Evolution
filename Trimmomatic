@@ -1,0 +1,7 @@
+# Trimmomatic
+
+## Mechanisms
+### 1. Removing technical sequences
+Technical sequences include adapters, PCR primers, etc. 
+
+**Method 1: Simple Mode**
