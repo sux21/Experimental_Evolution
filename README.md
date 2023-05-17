@@ -42,7 +42,7 @@ Modify this command: ``java -jar /path/to/trimmomatic.jar PE R1_001.fastq \ R2_
 
 ``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R1_001.fastq /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R2_001.fastq /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_UP_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_UP_001.fq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
 
-Running for all files using shell script: <br>
+Running for all files using for loop in shell script: <br>
 ``#!/bin/bash`` <br>
 ``for R1 in *R1*`` <br>
 ``do`` <br>
