@@ -77,7 +77,7 @@ For original raw reads: ``/2/scratch/batstonelab/RltEE2020-PE_reads``
 
 ``quast.py contigs.fasta``
 
-``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_raw_reads/GSF2234-101A_S1_R1_001_fastqc.html /Users/xingyuansu/Desktop``
+``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_trimmed_reads/GSF2234-105A_S2_R2_P_001_fastqc.html /Users/xingyuansu/Desktop``
 
 ## Error codes 
 
