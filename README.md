@@ -11,26 +11,25 @@ version: SPAdes genome assembler v3.15.2
 ### 1. Running FastQC (Practice on 2018 strains)
 FastQC v0.11.5
 
-Input file format is ``*.fastq``. An example is ``GSF2234-101A_S1_R1_001.fastq``. Input files are stored in ``/home/xingyuan/2018_strains/raw_reads``.
+Input file format is ``*.fastq``. An example for one strain is ``GSF2234-101A_S1_R1_001.fastq``. Input files are stored in ``/home/xingyuan/2018_strains/raw_reads``.
 
 Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
 
-Output files are ``fastqc.html`` and ``fastqc.zip``. An example is ``GSF2234-101A_S1_R1_001_fastqc.html`` and ``GSF2234-101A_S1_R1_001_fastqc.zip``. Output files are stored in ``/home/xingyuan/2018_strains/fastQC_raw_reads``.
+Output files formats are ``*fastqc.html`` and ``*fastqc.zip``. An example for one strain is ``GSF2234-101A_S1_R1_001_fastqc.html`` and ``GSF2234-101A_S1_R1_001_fastqc.zip``. Output files are stored in ``/home/xingyuan/2018_strains/fastQC_raw_reads``.
 
 ### 2. Running MultiQC (Practice on 2018 strains) 
 multiqc, version 1.9
 
 Running MultiQC: ``multiqc .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/fastQC_raw_reads``). 
 
-Output file is ``multiqc_data/`` and `` multiqc_report.html``. Output files are stored in ``/home/xingyuan/2018_strains/fastQC_raw_reads``.
+Output files are ``multiqc_data/`` and `` multiqc_report.html``. Output files are stored in ``/home/xingyuan/2018_strains/fastQC_raw_reads``.
 
 ### 3. Running Trimmomatic (Practice on 2018 strains)
 version: trimmomatic-0.39.jar
 
-Input files are ``*R1_001.fastq`` and ``*R1_001.fastq``. An example is ``GSF2234-101A_S1_R1_001.fastq`` and ``GSF2234-101A_S1_R2_001.fastq``. Input files are stored in ``/home/xingyuan/2018_strains/raw_reads``.
+Input files formats are ``*R1_001.fastq`` and ``*R1_001.fastq``. An example for one strain is ``GSF2234-101A_S1_R1_001.fastq`` and ``GSF2234-101A_S1_R2_001.fastq``. Input files are stored in ``/home/xingyuan/2018_strains/raw_reads``.
 
-Modify this command: ``java -jar /path/to/trimmomatic.jar PE R1_001.fastq \ R2_001.fastq R1_P.fq.gz R1_UP.fq.gz R2_P.fq.gz R2_UP.fq.gz \ ILLUMINACLIP:/path/to/trimmomatic/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
-
+Running for one file: <br>
 ``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R1_001.fastq /home/xingyuan/2018_strains/raw_reads/GSF2234-101A_S1_R2_001.fastq /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R1_UP_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_P_001.fq.gz /home/xingyuan/2018_strains/trimmed_reads/GSF2234-101A_S1_R2_UP_001.fq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE``
 
 Running for all files using for loop in shell script: <br>
@@ -46,9 +45,11 @@ Running for all files using for loop in shell script: <br>
 ``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trimmed_reads/$R1_P /home/xingyuan/2018_strains/trimmed_reads/$R1_UP /home/xingyuan/2018_strains/trimmed_reads/$R2_P /home/xingyuan/2018_strains/trimmed_reads/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE`` <br>
 ``done``
 
-Output files are ``*R1_P_001.fq.gz``, ``*R1_UP_001.fq.gz``, ``*R2_P_001.fq.gz``, and ``*R2_UP_001.fq.gz ``. An example is ``GSF2234-101A_S1_R1_P_001.fq.gz``, ``GSF2234-101A_S1_R1_UP_001.fq.gz``, ``GSF2234-101A_S1_R2_P_001.fq.gz``, and ``GSF2234-101A_S1_R2_UP_001.fq.gz``. Output files are stored in ``/home/xingyuan/2018_strains/trimmed_reads``. 
+Output files formats are ``*R1_P_001.fq.gz``, ``*R1_UP_001.fq.gz``, ``*R2_P_001.fq.gz``, and ``*R2_UP_001.fq.gz ``. An example for one strain is ``GSF2234-101A_S1_R1_P_001.fq.gz``, ``GSF2234-101A_S1_R1_UP_001.fq.gz``, ``GSF2234-101A_S1_R2_P_001.fq.gz``, and ``GSF2234-101A_S1_R2_UP_001.fq.gz``. Output files are stored in ``/home/xingyuan/2018_strains/trimmed_reads``. 
 
 ### 4. Repeat 1 and 2 (Practice on 2018 strains)
+
+Input files formats are ``*_P_*``. An example for one strain is ``GSF2234-101A_S1_R1_P_001.fq.gz`` and ``GSF2234-101A_S1_R2_P_001.fq.gz``. 
 
 Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trimmed_reads *_P_* &``. 
 Run MultiQC: ``multiqc .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/trimmed_reads``).
