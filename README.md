@@ -48,7 +48,7 @@ Output files formats are ``*R1_P_001.fq.gz``, ``*R1_UP_001.fq.gz``, ``*R2_P_001.
 
 Input files formats are ``*_P_*``. An example for one strain is ``GSF2234-101A_S1_R1_P_001.fq.gz`` and ``GSF2234-101A_S1_R2_P_001.fq.gz``. 
 
-Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trimmed_reads *_P_* &``. 
+Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &``. 
 
 Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/fastQC_trimmed_reads``).
 
