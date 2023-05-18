@@ -53,7 +53,7 @@ Input files formats are ``*_P_*``. An example for one strain is ``GSF2234-101A_S
 
 Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trimmed_reads *_P_* &``. 
 
-Run MultiQC: ``multiqc .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/trimmed_reads``).
+Run MultiQC: ``multiqc .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/fastQC_trimmed_reads``).
 
 ## During Assembly 
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
