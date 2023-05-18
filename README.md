@@ -27,7 +27,7 @@ Output files are ``multiqc_data/`` and `` multiqc_report.html``. Output files ar
 ### 3. Running Trimmomatic (Practice on 2018 strains)
 version: trimmomatic-0.39.jar
 
-Input files formats are ``*R1_001.fastq`` and ``*R1_001.fastq``. An example for one strain is ``GSF2234-101A_S1_R1_001.fastq`` and ``GSF2234-101A_S1_R2_001.fastq``. Input files are stored in ``/home/xingyuan/2018_strains/raw_reads``.
+Input files formats are ``*R1_001.fastq`` and ``*R2_001.fastq``. An example for one strain is ``GSF2234-101A_S1_R1_001.fastq`` and ``GSF2234-101A_S1_R2_001.fastq``. Input files are stored in ``/home/xingyuan/2018_strains/raw_reads``.
 
 Running for all files using for loop in shell script: <br>
 ``#!/bin/bash`` <br>
