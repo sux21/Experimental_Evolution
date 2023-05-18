@@ -39,7 +39,7 @@ Running for all files using for loop in shell script: <br>
 ``R2_P=${R2//001.fastq/P_001.fq.gz}`` <br>
 ``R2_UP=${R2//001.fastq/UP_001.fq.gz}`` <br>
 
-``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_UP /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:10`` <br>
+``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_UP /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15`` <br>
 ``done``
 
 Output files formats are ``*R1_P_001.fq.gz``, ``*R1_UP_001.fq.gz``, ``*R2_P_001.fq.gz``, and ``*R2_UP_001.fq.gz ``. An example for one strain is ``GSF2234-101A_S1_R1_P_001.fq.gz``, ``GSF2234-101A_S1_R1_UP_001.fq.gz``, ``GSF2234-101A_S1_R2_P_001.fq.gz``, and ``GSF2234-101A_S1_R2_UP_001.fq.gz``. Output files are stored in ``/home/xingyuan/2018_strains/trimmed_reads``. 
