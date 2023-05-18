@@ -1,9 +1,6 @@
 # Su_Xingyuan_May_to_August_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
-# Questions:
-- For Trimmomatic output files, what does pair and unpair files mean?
-
 # Step 0 - Background Information of Illumina Sequencing
 Paired-End Sequencing: https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html.
 
