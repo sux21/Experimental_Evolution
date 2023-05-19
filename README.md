@@ -63,7 +63,7 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 version: SPAdes genome assembler v3.15.2
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
-**For raw data**
+**For raw data** <br>
 Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &``
 
 Input files in /home/xingyuan/2018_strains/raw_reads. <br>
@@ -71,7 +71,7 @@ Output files in
 
 Number of scaffolds = 486 
 
-**For trimmed data**
+**For trimmed data** <br>
 Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_trim &``
 
 Input files in /home/xingyuan/2018_strains/trim_2nd_attempt. <br>
