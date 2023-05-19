@@ -56,7 +56,7 @@ Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports.
 Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 
-## Note: Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
+### 6. Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
 
 ## During Assembly 
 ### 1. Running SPAdes (Practice on 2018 strains)
@@ -67,7 +67,7 @@ https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &``
 
 Input files in /home/xingyuan/2018_strains/raw_reads. <br>
-Output files in 
+Output files in /home/xingyuan/2018_strains/raw_reads/spades-101A. 
 
 Number of scaffolds = 486 
 
