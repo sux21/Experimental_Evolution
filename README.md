@@ -8,12 +8,12 @@ Paired-End Sequencing: https://www.illumina.com/science/technology/next-generati
 version: SPAdes genome assembler v3.15.2
 
 ## Before Assembly
-### 1. Running FastQC (Practice on 2018 strains)
+### 1. Running FastQC for raw data (Practice on 2018 strains)
 FastQC v0.11.5
 
 Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
 
-### 2. Running MultiQC (Practice on 2018 strains) 
+### 2. Running MultiQC for raw data (Practice on 2018 strains) 
 multiqc, version 1.9
 
 Running MultiQC: ``multiqc .`` in the directory with the FastQC reports. 
@@ -36,11 +36,13 @@ java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/
 done
 ```
 
-### 4. Repeat 1 and 2 (Practice on 2018 strains)
+### 4. Run FastQC and MultiQC again for trimmed data (Practice on 2018 strains)
 
 Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &``. 
 
 Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports.
+
+### 5. Repeat 3 and 4 if needed (Practice on 2018 strains)
 
 ## During Assembly 
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
