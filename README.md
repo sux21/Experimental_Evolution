@@ -16,7 +16,7 @@ Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads G
 ### 2. Running MultiQC (Practice on 2018 strains) 
 multiqc, version 1.9
 
-Running MultiQC: ``multiqc .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/fastQC_raw_reads``). 
+Running MultiQC: ``multiqc .`` in the directory with the FastQC reports. 
 
 ### 3. Running Trimmomatic (Practice on 2018 strains)
 version: trimmomatic-0.39.jar
@@ -38,7 +38,7 @@ Running for all files using for loop in shell script: <br>
 
 Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &``. 
 
-Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports (``/home/xingyuan/2018_strains/fastQC_trimmed_reads``).
+Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports.
 
 ## During Assembly 
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
