@@ -1,11 +1,6 @@
 # Su_Xingyuan_May_to_August_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
-``
-
-aaa
-
-``
 # Step 0 - Background Information of Illumina Sequencing
 Paired-End Sequencing: https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html.
 
@@ -27,17 +22,19 @@ Running MultiQC: ``multiqc .`` in the directory with the FastQC reports.
 version: trimmomatic-0.39.jar
 
 Running for all files using for loop in shell script: <br>
-``#!/bin/bash`` <br>
-``for R1 in *R1*`` <br>
-``do`` <br>
-``R2=${R1//R1_001.fastq/R2_001.fastq}`` <br>
-``R1_P=${R1//001.fastq/P_001.fq.gz}`` <br>
-``R1_UP=${R1//001.fastq/UP_001.fq.gz}`` <br>
-``R2_P=${R2//001.fastq/P_001.fq.gz}`` <br>
-``R2_UP=${R2//001.fastq/UP_001.fq.gz}`` <br>
+```
+#!/bin/bash <br>
+for R1 in *R1* <br>
+do <br>
+R2=${R1//R1_001.fastq/R2_001.fastq} <br>
+R1_P=${R1//001.fastq/P_001.fq.gz} <br>
+R1_UP=${R1//001.fastq/UP_001.fq.gz} <br>
+R2_P=${R2//001.fastq/P_001.fq.gz} <br>
+R2_UP=${R2//001.fastq/UP_001.fq.gz} <br>
 
-``java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_UP /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15`` <br>
-``done``
+java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_UP /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 <br>
+done
+```
 
 ### 4. Repeat 1 and 2 (Practice on 2018 strains)
 
