@@ -64,7 +64,7 @@ version: SPAdes genome assembler v3.15.2
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
 **For raw data**
-Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq --isolate -o spades-101A &``
+Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &``
 
 Input files in /home/xingyuan/2018_strains/raw_reads. <br>
 Output files in 
