@@ -5,7 +5,6 @@ Bioinformatics project on Rhizobium leguminosarum
 Paired-End Sequencing: https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html.
 
 # Step 1 - Genome Assembly using SPAdes <br>
-version: SPAdes genome assembler v3.15.2
 
 ## Before Assembly
 ### 1. Running FastQC for raw data (Practice on 2018 strains)
@@ -60,13 +59,17 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 ## Note: Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
 
 ## During Assembly 
+### 1. Running SPAdes
+version: SPAdes genome assembler v3.15.2
+
+Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz --pe1-s1 GSF2234-101A_S1_R1_UP_001.fq.gz --pe1-s2 GSF2234-101A_S1_R2_UP_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_assembled_reads &``
+
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
 ## After Assembly 
 
 
 ### Codes
-``nohup spades.py --pe1-1 9_7_9_ACTTGTTATC-TCTAGGCGCG_L002_R1_001.fastq.gz --pe1-2 9_7_9_ACTTGTTATC-TCTAGGCGCG_L002_R2_001.fastq.gz -o 9_7_9-spades &``
 
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
 
