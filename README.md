@@ -61,13 +61,19 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 ## During Assembly 
 ### 1. Running SPAdes (Practice on 2018 strains)
 version: SPAdes genome assembler v3.15.2
+https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
+**For raw data**
+Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &``
+
+
+**For trimmed data**
 Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_trim &``
 
 Input files in ``/home/xingyuan/2018_strains/trim_2nd_attempt``. 
-Output files in 
+Output files in ``/home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A``. 
 
-https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
+Number of scaffolds = 146
 
 ## After Assembly 
 
