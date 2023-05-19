@@ -13,6 +13,11 @@ FastQC v0.11.5
 
 Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
 
+```
+Input files in /home/xingyuan/2018_strains/raw_reads.
+Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
+```
+
 ### 2. Running MultiQC for raw data (Practice on 2018 strains) 
 multiqc, version 1.9
 
