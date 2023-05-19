@@ -13,15 +13,16 @@ FastQC v0.11.5
 
 Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
 
-```
-Input files in /home/xingyuan/2018_strains/raw_reads.
+Input files in /home/xingyuan/2018_strains/raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
-```
 
 ### 2. Running MultiQC for raw data (Practice on 2018 strains) 
 multiqc, version 1.9
 
 Running MultiQC: ``multiqc .`` in the directory with the FastQC reports. 
+
+Input files in /home/xingyuan/2018_strains/fastQC_raw_reads.
+Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
 
 ### 3. Running Trimmomatic (Practice on 2018 strains)
 version: trimmomatic-0.39.jar
@@ -41,13 +42,22 @@ java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/
 done
 ```
 
-### 4. Run FastQC and MultiQC again for trimmed data (Practice on 2018 strains)
+Input files in /home/xingyuan/2018_strains/fastQC_raw_reads.
+Output files in /home/xingyuan/2018_strains/trimmed_reads.
 
+### 4. Run FastQC again for trimmed data (Practice on 2018 strains)
 Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &``. 
 
+Input files in /home/xingyuan/2018_strains/trimmed_reads.
+Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
+
+### 5. Run MultiQC again for trimmed data (Practice on 2018 strains)
 Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports.
 
-### 5. Repeat 3 and 4 if needed (Practice on 2018 strains)
+Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
+Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
+
+## Note: Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
 
 ## During Assembly 
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
