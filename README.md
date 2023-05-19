@@ -20,7 +20,7 @@ multiqc, version 1.9
 
 Running MultiQC: ``multiqc .`` in the directory with the FastQC reports. 
 
-Input files in /home/xingyuan/2018_strains/fastQC_raw_reads.
+Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
 
 ### 3. Running Trimmomatic (Practice on 2018 strains)
@@ -41,19 +41,19 @@ java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/
 done
 ```
 
-Input files in /home/xingyuan/2018_strains/fastQC_raw_reads.
+Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/trimmed_reads.
 
 ### 4. Run FastQC again for trimmed data (Practice on 2018 strains)
 Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &``. 
 
-Input files in /home/xingyuan/2018_strains/trimmed_reads.
+Input files in /home/xingyuan/2018_strains/trimmed_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 
 ### 5. Run MultiQC again for trimmed data (Practice on 2018 strains)
 Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports.
 
-Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
+Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 
 ## Note: Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
@@ -66,12 +66,16 @@ https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 **For raw data**
 Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &``
 
+Input files in /home/xingyuan/2018_strains/raw_reads. <br>
+Output files in /home/xingyuan/2018_strains/raw_reads/spades-101A.
+
+Number of scaffolds = 486 
 
 **For trimmed data**
 Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_trim &``
 
-Input files in ``/home/xingyuan/2018_strains/trim_2nd_attempt``. 
-Output files in ``/home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A``. 
+Input files in /home/xingyuan/2018_strains/trim_2nd_attempt. <br>
+Output files in /home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A. 
 
 Number of scaffolds = 146
 
