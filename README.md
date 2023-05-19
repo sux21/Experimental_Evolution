@@ -77,10 +77,32 @@ Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF
 Input files in /home/xingyuan/2018_strains/trim_2nd_attempt. <br>
 Output files in /home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A. 
 
-Number of scaffolds = 146
+Number of scaffolds (101A) = 146
+
+Do the same for these strains: 
+051
+125: nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-125A &
+144D: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+153C: nohup spades.py --pe1-1 GSF2234-153C_S7_R1_P_001.fq.gz --pe1-2 GSF2234-153C_S7_R1_UP_001.fq.gz -o spades-153C &
+154B: nohup spades.py --pe1-1 GSF2234-154B_S8_R1_P_001.fq.gz --pe1-2 GSF2234-154B_S8_R2_P_001.fq.gz -o spades-154B &
+164A: nohup spades.py --pe1-1 GSF2234-164A_S9_R1_P_001.fq.gz --pe1-2 GSF2234-164A_S9_R2_P_001.fq.gz -o spades-164A &
+177: nohup spades.py --pe1-1 GSF2234-177C_S11_R1_P_001.fq.gz --pe1-2 GSF2234-177C_S11_R2_P_001.fq.gz -o spades-177C &
+214C: nohup spades.py --pe1-1 GSF2234-214C_S15_R1_P_001.fq.gz --pe1-2 GSF2234-214C_S15_R2_P_001.fq.gz -o spades-214C &
+218A: nohup spades.py --pe1-1 GSF2234-218A_S16_R1_P_001.fq.gz --pe1-2 GSF2234-218A_S16_R2_P_001.fq.gz -o spades-218A &
+225A: nohup spades.py --pe1-1 GSF2234-225A_S17_R1_P_001.fq.gz --pe1-2 GSF2234-225A_S17_R2_P_001.fq.gz -o spades-225A &
+272A: nohup spades.py --pe1-1 GSF2234-272A_S22_R1_P_001.fq.gz --pe1-2 GSF2234-272A_S22_R2_P_001.fq.gz -o spades-272A &
+295A: nohup spades.py --pe1-1 GSF2234-295A_S28_R1_P_001.fq.gz --pe1-2 GSF2234-295A_S28_R2_P_001.fq.gz -o spades-295A &
+298A: nohup spades.py --pe1-1 GSF2234-298A_S30_R1_P_001.fq.gz --pe1-2 GSF2234-298A_S30_R2_P_001.fq.gz -o spades-298A &
+301D: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+336: nohup spades.py --pe1-1 GSF2234-336A_S39_R1_P_001.fq.gz --pe1-2 GSF2234-336A_S39_R2_P_001.fq.gz -o spades-336A &
+338A: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+372: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+377: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+377A: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+391: nohup spades.py --pe1-1  --pe1-2  -o spades- &
+524D: nohup spades.py --pe1-1  --pe1-2  -o spades- &
 
 ## After Assembly 
-
 
 ### Codes
 
