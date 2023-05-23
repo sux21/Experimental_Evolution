@@ -53,4 +53,10 @@ L50                        5
 L75                        11       
 # N's per 100 kbp          8.32  
 ```
+```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly   # contigs (>= 0 bp)  # contigs (>= 1000 bp)  Total length (>= 0 bp)  Total length (>= 1000 bp)  # contigs  Largest contig  Total length  GC (%)  N50     N75     L50  L75  # N's per 100 kbp
+scaffolds  225                  35                      7477155                 7440926                    46         1176701         7448904       60.74   564110  200370  5    11   8.32 
+```
 
