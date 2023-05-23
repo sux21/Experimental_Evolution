@@ -100,7 +100,7 @@ Running Quast:
 ```
 quast.py scaffolds.fasta 
 ```
-
+```
 Quast output:
 Assembly                   scaffolds
 # contigs (>= 0 bp)        146      
@@ -116,6 +116,7 @@ N75                        104963
 L50                        12       
 L75                        25       
 # N's per 100 kbp          8.70 
+```
 
 Repeat with a different command:
 ```
