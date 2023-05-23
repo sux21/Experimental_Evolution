@@ -77,4 +77,8 @@ L50                        6
 L75                        13       
 # N's per 100 kbp          6.76
 ```
-
+### 164A
+commands
+```
+spades.py -1 GSF2234-164A_S9_R1_P_001.fq.gz -2 GSF2234-164A_S9_R2_P_001.fq.gz --isolate -o spades-164A
+```
