@@ -98,7 +98,7 @@ L75                        25
 # N's per 100 kbp          8.70 
 ```
 
-**Run SPAdes on trimmed reads - using --isolate**:
+**Test with option --isolate**:
 ```
 spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
 ```
