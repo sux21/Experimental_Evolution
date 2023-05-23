@@ -10,7 +10,10 @@ Paired-End Sequencing: https://www.illumina.com/science/technology/next-generati
 ### 1. Running FastQC for raw data (Practice on 2018 strains)
 FastQC v0.11.5
 
-Running FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &`` 
+Running FastQC: 
+```
+nohup fastqc -o /home/xingyuan/2018_strains/fastQC_raw_reads GSF2234-295A_S28_R2_001.fastq &
+```
 
 Input files in /home/xingyuan/2018_strains/raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
@@ -18,7 +21,10 @@ Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
 ### 2. Running MultiQC for raw data (Practice on 2018 strains) 
 multiqc, version 1.9
 
-Running MultiQC: ``multiqc .`` in the directory with the FastQC reports. 
+Running MultiQC in the directory with the FastQC reports: 
+```
+multiqc .
+```
 
 Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
@@ -45,14 +51,19 @@ Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/trimmed_reads.
 
 ### 4. Run FastQC again for trimmed data (Practice on 2018 strains)
-Run FastQC: ``nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &``. 
+Run FastQC: 
+```
+nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &
+```
 
 Input files in /home/xingyuan/2018_strains/trimmed_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 
 ### 5. Run MultiQC again for trimmed data (Practice on 2018 strains)
-Run MultiQC: ``multiqc -f .`` in the directory with the FastQC reports.
-
+Run MultiQC in the directory with the FastQC reports: 
+```
+multiqc -f . 
+```
 Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 
@@ -64,7 +75,10 @@ version: SPAdes genome assembler v3.15.2
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
 **For raw data** <br>
-Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &``
+Run SPAdes: 
+```
+nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &
+```
 
 Input files in /home/xingyuan/2018_strains/raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/raw_reads/spades-101A. 
@@ -72,7 +86,10 @@ Output files in /home/xingyuan/2018_strains/raw_reads/spades-101A.
 Number of scaffolds = 486 
 
 **For trimmed data** <br>
-Run SPAdes: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_trim &``
+Run SPAdes: 
+```
+nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_trim &
+```
 
 Input files in /home/xingyuan/2018_strains/trim_2nd_attempt. <br>
 Output files in /home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A. 
