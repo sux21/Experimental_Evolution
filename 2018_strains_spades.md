@@ -34,7 +34,7 @@ commands
 spades.py -1 GSF2234-153C_S7_R1_P_001.fq.gz -2 GSF2234-153C_S7_R2_P_001.fq.gz --isolate -o spades-153C
 ```
 
-results:
+results
 ```
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
@@ -57,5 +57,24 @@ L75                        11
 commands
 ```
 spades.py -1 GSF2234-154B_S8_R1_P_001.fq.gz -2 GSF2234-154B_S8_R2_P_001.fq.gz --isolate -o spades-154B
+```
+results
+```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        300      
+# contigs (>= 1000 bp)     64       
+Total length (>= 0 bp)     7589416  
+Total length (>= 1000 bp)  7540765  
+# contigs                  75       
+Largest contig             879135   
+Total length               7548301  
+GC (%)                     60.60    
+N50                        498124   
+N75                        131695   
+L50                        6        
+L75                        13       
+# N's per 100 kbp          6.76
 ```
 
