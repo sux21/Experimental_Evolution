@@ -74,8 +74,8 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 version: SPAdes genome assembler v3.15.2
 https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
-**For raw data** <br>
-Run SPAdes: 
+**For 101A** <br>
+Run SPAdes on raw reads: 
 ```
 nohup spades.py --pe1-1 GSF2234-101A_S1_R1_001.fastq --pe1-2 GSF2234-101A_S1_R2_001.fastq -o spades-101A &
 ```
@@ -85,8 +85,7 @@ Output files in /home/xingyuan/2018_strains/raw_reads/spades-101A.
 
 Number of scaffolds = 486 
 
-**For trimmed data** <br>
-Run SPAdes - 101A: 
+Run SPAdes on trimmed reads: 
 ```
 nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
 ```
@@ -96,10 +95,6 @@ Output files in /home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A.
 
 Number of scaffolds = 146
 
-Running Quast:
-```
-quast.py scaffolds.fasta 
-```
 ```
 Quast output:
 Assembly                   scaffolds
@@ -122,7 +117,25 @@ Repeat with a different command:
 ```
 spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
 ```
+```
+Quast results:
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
+Assembly                   scaffolds
+# contigs (>= 0 bp)        210      
+# contigs (>= 1000 bp)     49       
+Total length (>= 0 bp)     7155610  
+Total length (>= 1000 bp)  7128413  
+# contigs                  52       
+Largest contig             564345   
+Total length               7130378  
+GC (%)                     60.85    
+N50                        226578   
+N75                        127550   
+L50                        10       
+L75                        20       
+# N's per 100 kbp          8.55  
+```
 Do the same for these strains: <br>
 051: `` `` <br>
 125: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-125A &`` <br>
