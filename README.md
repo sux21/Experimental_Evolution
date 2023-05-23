@@ -31,7 +31,7 @@ Running for all files using for loop in shell script: <br>
 #!/bin/bash <br>
 for R1 in *R1* <br>
 do <br>
-R2=${R1//R1_001.fastq/R2_001.fastq} <br>
+R2=${R1//R1_001.fastq/R2_001.fastq} 
 R1_P=${R1//001.fastq/P_001.fq.gz} <br>
 R1_UP=${R1//001.fastq/UP_001.fq.gz} <br>
 R2_P=${R2//001.fastq/P_001.fq.gz} <br>
