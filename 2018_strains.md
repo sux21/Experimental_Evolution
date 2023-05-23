@@ -1,6 +1,6 @@
 
-## 2018 strains 
-
+# 2018 strains 
+## Run SPAdes for samples with long read data
 ### 125A
 commands:
 ```{125A-commands}
