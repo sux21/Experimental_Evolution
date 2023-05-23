@@ -108,5 +108,20 @@ spades.py -1 GSF2234-177C_S11_R1_P_001.fq.gz -2 GSF2234-177C_S11_R2_P_001.fq.gz 
 ```
 results
 ```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
+Assembly                   scaffolds
+# contigs (>= 0 bp)        276      
+# contigs (>= 1000 bp)     69       
+Total length (>= 0 bp)     7342297  
+Total length (>= 1000 bp)  7302780  
+# contigs                  87       
+Largest contig             965700   
+Total length               7315114  
+GC (%)                     60.65    
+N50                        275845   
+N75                        147112   
+L50                        8        
+L75                        16       
+# N's per 100 kbp          6.01 
 ```
