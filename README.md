@@ -122,12 +122,11 @@ L50                        10
 L75                        20       
 # N's per 100 kbp          8.55  
 ```
-**Test the following command and compare with the above to see if there are differences**
+**Test with unpaired reads**
 ```
-spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test2 
+spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz -s GSF2234-101A_S1_R1_UP_001.fq.gz -s GSF2234-101A_S1_R2_UP_001.fq.gz --isolate -o spades-101A-test2
 ```
 ```
-Quast output:
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
 Assembly                   scaffolds
@@ -143,13 +142,8 @@ N50                        226578
 N75                        127550   
 L50                        10       
 L75                        20       
-# N's per 100 kbp          8.55 
+# N's per 100 kbp          8.55    
 ```
-**Test metaSPAdes**
-```
-spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --meta --isolate -o metaspades-101A-test
-```
-
 ## After Assembly 
 
 ## Other Infomation
