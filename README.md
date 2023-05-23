@@ -86,15 +86,39 @@ Output files in /home/xingyuan/2018_strains/raw_reads/spades-101A.
 Number of scaffolds = 486 
 
 **For trimmed data** <br>
-Run SPAdes: 
+Run SPAdes - 101A: 
 ```
-nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/2018_strains/SPAdes_trim &
+nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
 ```
 
 Input files in /home/xingyuan/2018_strains/trim_2nd_attempt. <br>
 Output files in /home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A. 
 
-Number of scaffolds (101A) = 146
+Running Quast:
+```
+quast.py contigs.fasta
+```
+
+Quast output:
+Assembly                   contigs
+# contigs (>= 0 bp)        154    
+# contigs (>= 1000 bp)     75     
+Total length (>= 0 bp)     7137591
+Total length (>= 1000 bp)  7113608
+# contigs                  88     
+Largest contig             463909 
+Total length               7122566
+GC (%)                     60.85  
+N50                        162952 
+N75                        99267  
+L50                        14     
+L75                        28     
+# N's per 100 kbp          0.00  
+
+Repeat with a different command:
+```
+spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
+```
 
 Do the same for these strains: <br>
 051: `` `` <br>
@@ -123,7 +147,7 @@ Do the same for these strains: <br>
 
 ### Codes
 
-``spades.py --pe1-1 GSF2234-336A_S39_R1_P_001.fq.gz --pe1-2 GSF2234-336A_S39_R2_P_001.fq.gz -o spades-336A``
+``spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --careful -o spades-101A-test``
 
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
 
