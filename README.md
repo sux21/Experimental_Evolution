@@ -144,6 +144,7 @@ L50                        10
 L75                        20       
 # N's per 100 kbp          8.55    
 ```
+### Assemble samples with long read sequence, see [2018 strains spades](2018_strains_spades.md). 
 
 ## After Assembly 
 
