@@ -106,6 +106,8 @@ Do the same for these strains: <br>
 
 ### Codes
 
+``spades.py --pe1-1 GSF2234-336A_S39_R1_P_001.fq.gz --pe1-2 GSF2234-336A_S39_R2_P_001.fq.gz -o spades-336A``
+
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
 
 ``quast.py contigs.fasta``
