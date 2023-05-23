@@ -124,7 +124,7 @@ L75                        20
 ```
 **Test the following command and compare with the above to see if there are differences**
 ```
-spades.py pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test2 
+spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test2 
 ```
 
 Do the same for these strains: <br>
