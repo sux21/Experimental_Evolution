@@ -126,34 +126,15 @@ L75                        20
 ```
 spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test2 
 ```
-
-Do the same for these strains: <br>
-051: `` `` <br>
-125: ``nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-125A &`` <br>
-144D: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &``
-153C: ``nohup spades.py --pe1-1 GSF2234-153C_S7_R1_P_001.fq.gz --pe1-2 GSF2234-153C_S7_R1_UP_001.fq.gz -o spades-153C &`` <br>
-154B: ``nohup spades.py --pe1-1 GSF2234-154B_S8_R1_P_001.fq.gz --pe1-2 GSF2234-154B_S8_R2_P_001.fq.gz -o spades-154B &`` <br>
-164A: ``nohup spades.py --pe1-1 GSF2234-164A_S9_R1_P_001.fq.gz --pe1-2 GSF2234-164A_S9_R2_P_001.fq.gz -o spades-164A &`` <br>
-177: ``nohup spades.py --pe1-1 GSF2234-177C_S11_R1_P_001.fq.gz --pe1-2 GSF2234-177C_S11_R2_P_001.fq.gz -o spades-177C &`` <br>
-214C: ``nohup spades.py --pe1-1 GSF2234-214C_S15_R1_P_001.fq.gz --pe1-2 GSF2234-214C_S15_R2_P_001.fq.gz -o spades-214C &`` <br>
-218A: ``nohup spades.py --pe1-1 GSF2234-218A_S16_R1_P_001.fq.gz --pe1-2 GSF2234-218A_S16_R2_P_001.fq.gz -o spades-218A &`` <br>
-225A: ``nohup spades.py --pe1-1 GSF2234-225A_S17_R1_P_001.fq.gz --pe1-2 GSF2234-225A_S17_R2_P_001.fq.gz -o spades-225A &`` <br>
-272A: ``nohup spades.py --pe1-1 GSF2234-272A_S22_R1_P_001.fq.gz --pe1-2 GSF2234-272A_S22_R2_P_001.fq.gz -o spades-272A &`` <br>
-295A: ``nohup spades.py --pe1-1 GSF2234-295A_S28_R1_P_001.fq.gz --pe1-2 GSF2234-295A_S28_R2_P_001.fq.gz -o spades-295A &`` <br>
-298A: ``nohup spades.py --pe1-1 GSF2234-298A_S30_R1_P_001.fq.gz --pe1-2 GSF2234-298A_S30_R2_P_001.fq.gz -o spades-298A &`` <br>
-301D: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
-336: ``nohup spades.py --pe1-1 GSF2234-336A_S39_R1_P_001.fq.gz --pe1-2 GSF2234-336A_S39_R2_P_001.fq.gz -o spades-336A &`` <br>
-338A: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
-372: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
-377: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
-377A: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
-391: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
-524D: ``nohup spades.py --pe1-1  --pe1-2  -o spades- &`` <br>
+**Test metaSPAdes**
+```
+spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --meta --isolate -o spades-101A-test
+```
 
 ## After Assembly 
 
-### Codes
-
+## Other Infomation
+**Codes**
 ``spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --careful -o spades-101A-test``
 
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
@@ -162,5 +143,4 @@ Do the same for these strains: <br>
 
 ``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_trimmed_reads/GSF2234-105A_S2_R2_P_001_fastqc.html /Users/xingyuansu/Desktop``
 
-## Error codes 
 
