@@ -125,3 +125,8 @@ L50                        8
 L75                        16       
 # N's per 100 kbp          6.01 
 ```
+### 214C
+command
+```
+nohup spades.py -1 GSF2234-214C_S15_R1_P_001.fq.gz -2 GSF2234-214C_S15_R2_P_001.fq.gz --isolate -o spades-214C &
+```
