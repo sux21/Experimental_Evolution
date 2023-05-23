@@ -126,9 +126,28 @@ L75                        20
 ```
 spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test2 
 ```
+```
+Quast output:
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        210      
+# contigs (>= 1000 bp)     49       
+Total length (>= 0 bp)     7155610  
+Total length (>= 1000 bp)  7128413  
+# contigs                  52       
+Largest contig             564345   
+Total length               7130378  
+GC (%)                     60.85    
+N50                        226578   
+N75                        127550   
+L50                        10       
+L75                        20       
+# N's per 100 kbp          8.55 
+```
 **Test metaSPAdes**
 ```
-spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --meta --isolate -o spades-101A-test
+spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --meta --isolate -o metaspades-101A-test
 ```
 
 ## After Assembly 
@@ -139,7 +158,7 @@ spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --
 
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
 
-``quast.py contigs.fasta``
+``quast.py scaffolds.fasta``
 
 ``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_trimmed_reads/GSF2234-105A_S2_R2_P_001_fastqc.html /Users/xingyuansu/Desktop``
 
