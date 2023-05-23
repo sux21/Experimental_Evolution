@@ -94,26 +94,28 @@ nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R
 Input files in /home/xingyuan/2018_strains/trim_2nd_attempt. <br>
 Output files in /home/xingyuan/2018_strains/trim_2nd_attempt/spades-101A. 
 
+Number of scaffolds = 146
+
 Running Quast:
 ```
-quast.py contigs.fasta
+quast.py scaffolds.fasta 
 ```
 
 Quast output:
-Assembly                   contigs
-# contigs (>= 0 bp)        154    
-# contigs (>= 1000 bp)     75     
-Total length (>= 0 bp)     7137591
-Total length (>= 1000 bp)  7113608
-# contigs                  88     
-Largest contig             463909 
-Total length               7122566
-GC (%)                     60.85  
-N50                        162952 
-N75                        99267  
-L50                        14     
-L75                        28     
-# N's per 100 kbp          0.00  
+Assembly                   scaffolds
+# contigs (>= 0 bp)        146      
+# contigs (>= 1000 bp)     68       
+Total length (>= 0 bp)     7138120  
+Total length (>= 1000 bp)  7114449  
+# contigs                  81       
+Largest contig             553567   
+Total length               7123407  
+GC (%)                     60.85    
+N50                        190187   
+N75                        104963   
+L50                        12       
+L75                        25       
+# N's per 100 kbp          8.70 
 
 Repeat with a different command:
 ```
