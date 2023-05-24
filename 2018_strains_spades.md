@@ -151,7 +151,7 @@ L75                        16
 ```
 Alignment to the long-read sequence
 ```
-
+mauveAligner --output=214C.mauve scaffolds.fasta Rht_2018_214C_long_reads.fasta
 ```
 ### 218A
 command
@@ -177,6 +177,8 @@ L50                        5
 L75                        10       
 # N's per 100 kbp          10.20  
 ```
+![Alignment to the long-read sequence]
+
 ### 272A
 command
 ```
