@@ -257,3 +257,6 @@ L50                        8
 L75                        17       
 # N's per 100 kbp          10.06   
 ```
+alignment with Mauve (ProgressiveMauve, default settings)
+<img width="898" alt="Screenshot 2023-05-24 at 5 02 21 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/53237eea-edf5-4561-99f6-fe7879df348a">
+
