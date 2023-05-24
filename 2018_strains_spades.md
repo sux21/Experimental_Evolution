@@ -230,6 +230,9 @@ L50                        5
 L75                        10       
 # N's per 100 kbp          6.05  
 ```
+alignment with Mauve (ProgressiveMauve, default settings)
+<img width="899" alt="Screenshot 2023-05-24 at 4 55 09 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/8959c787-7307-4243-a7f9-1d9aedc3754e">
+
 ### 298A
 command 
 ```
