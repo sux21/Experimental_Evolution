@@ -130,3 +130,58 @@ command
 ```
 nohup spades.py -1 GSF2234-214C_S15_R1_P_001.fq.gz -2 GSF2234-214C_S15_R2_P_001.fq.gz --isolate -o spades-214C &
 ```
+results
+```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        277      
+# contigs (>= 1000 bp)     47       
+Total length (>= 0 bp)     7357250  
+Total length (>= 1000 bp)  7315949  
+# contigs                  53       
+Largest contig             1490525  
+Total length               7320607  
+GC (%)                     60.66    
+N50                        273955   
+N75                        163034   
+L50                        7        
+L75                        16       
+# N's per 100 kbp          5.74 
+```
+### 218A
+command
+```
+nohup spades.py -1 GSF2234-218A_S16_R1_P_001.fq.gz -2 GSF2234-218A_S16_R2_P_001.fq.gz --isolate -o spades-218A &
+```
+results
+```
+
+```
+### 272A
+command
+```
+nohup spades.py -1 GSF2234-272A_S22_R1_P_001.fq.gz -2 GSF2234-272A_S22_R2_P_001.fq.gz --isolate -o spades-272A &
+```
+results
+```
+
+```
+### 295A
+command
+```
+nohup spades.py -1 GSF2234-295A_S28_R1_P_001.fq.gz -2 GSF2234-295A_S28_R2_P_001.fq.gz --isolate -o spades-295A &
+```
+results
+```
+
+```
+### 298A
+command 
+```
+nohup spades.py -1 GSF2234-298A_S30_R1_P_001.fq.gz -2 GSF2234-298A_S30_R2_P_001.fq.gz --isolate -o spades-298A &
+```
+results
+```
+
+```
