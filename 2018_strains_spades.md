@@ -177,7 +177,7 @@ L50                        5
 L75                        10       
 # N's per 100 kbp          10.20  
 ```
-![Alignment to the long-read sequence]
+<img width="934" alt="Screenshot 2023-05-24 at 4 06 50 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/7c1a15ae-ec86-407b-ba5b-4ee6e01a70c7">
 
 ### 272A
 command
