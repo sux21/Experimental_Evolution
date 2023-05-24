@@ -156,7 +156,22 @@ nohup spades.py -1 GSF2234-218A_S16_R1_P_001.fq.gz -2 GSF2234-218A_S16_R2_P_001.
 ```
 results
 ```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
+Assembly                   scaffolds
+# contigs (>= 0 bp)        295      
+# contigs (>= 1000 bp)     35       
+Total length (>= 0 bp)     7203126  
+Total length (>= 1000 bp)  7154097  
+# contigs                  41       
+Largest contig             1032152  
+Total length               7157999  
+GC (%)                     60.80    
+N50                        559785   
+N75                        164838   
+L50                        5        
+L75                        10       
+# N's per 100 kbp          10.20  
 ```
 ### 272A
 command
@@ -165,7 +180,22 @@ nohup spades.py -1 GSF2234-272A_S22_R1_P_001.fq.gz -2 GSF2234-272A_S22_R2_P_001.
 ```
 results
 ```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
+Assembly                   scaffolds
+# contigs (>= 0 bp)        442      
+# contigs (>= 1000 bp)     28       
+Total length (>= 0 bp)     7196338  
+Total length (>= 1000 bp)  7106057  
+# contigs                  33       
+Largest contig             1690701  
+Total length               7109725  
+GC (%)                     60.85    
+N50                        521954   
+N75                        321218   
+L50                        5        
+L75                        9        
+# N's per 100 kbp          4.50  
 ```
 ### 295A
 command
@@ -174,7 +204,22 @@ nohup spades.py -1 GSF2234-295A_S28_R1_P_001.fq.gz -2 GSF2234-295A_S28_R2_P_001.
 ```
 results
 ```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
+Assembly                   scaffolds
+# contigs (>= 0 bp)        608      
+# contigs (>= 1000 bp)     29       
+Total length (>= 0 bp)     7226762  
+Total length (>= 1000 bp)  7102816  
+# contigs                  34       
+Largest contig             1101732  
+Total length               7106221  
+GC (%)                     60.86    
+N50                        521252   
+N75                        243938   
+L50                        5        
+L75                        10       
+# N's per 100 kbp          6.05  
 ```
 ### 298A
 command 
@@ -183,5 +228,20 @@ nohup spades.py -1 GSF2234-298A_S30_R1_P_001.fq.gz -2 GSF2234-298A_S30_R2_P_001.
 ```
 results
 ```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
+Assembly                   scaffolds
+# contigs (>= 0 bp)        237      
+# contigs (>= 1000 bp)     48       
+Total length (>= 0 bp)     7280941  
+Total length (>= 1000 bp)  7249696  
+# contigs                  55       
+Largest contig             1186861  
+Total length               7254498  
+GC (%)                     60.69    
+N50                        273623   
+N75                        175800   
+L50                        8        
+L75                        17       
+# N's per 100 kbp          10.06   
 ```
