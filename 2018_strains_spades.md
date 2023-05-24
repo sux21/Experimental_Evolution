@@ -3,12 +3,12 @@
 ## Samples ID provided by Health lab: 051, 125, 144D, 153C, 154B, 164A, 177, 214C, 218A, 225A, 272A, 295A, 298A, 301D, 336, 338A, 372, 377, 377A, 391, 524D.
 
 ### 125A
-commands:
+commands
 ```
 spades.py -1 GSF2234-125A_S3_R1_P_001.fq.gz -2 GSF2234-125A_S3_R2_P_001.fq.gz --isolate -o spades-125A
 ```
 
-results:
+results
 ```
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
