@@ -80,6 +80,12 @@ https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
 ```
 
+Check genome size with ``grep "genome size" spades.log``:
+```
+0:00:43.624    20M / 5526M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7076168
+0:00:32.719    15M / 8959M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7095857
+0:00:27.363    47M / 7628M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7116423
+```
 ```
 Quast output:
 Assembly                   scaffolds
@@ -97,7 +103,7 @@ L50                        12
 L75                        25       
 # N's per 100 kbp          8.70 
 ```
-
+Check 
 **Test with option --isolate**:
 ```
 spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
