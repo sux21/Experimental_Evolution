@@ -86,8 +86,12 @@ Check genome size with ``grep "genome size" spades.log``:
 0:00:32.719    15M / 8959M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7095857
 0:00:27.363    47M / 7628M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7116423
 ```
+Run ``quast.py scaffolds.fasta``: <br>
+Version 3.1, build 29.08.2015 16:09
+
 ```
-Quast output:
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
 Assembly                   scaffolds
 # contigs (>= 0 bp)        146      
 # contigs (>= 1000 bp)     68       
@@ -101,9 +105,9 @@ N50                        190187
 N75                        104963   
 L50                        12       
 L75                        25       
-# N's per 100 kbp          8.70 
+# N's per 100 kbp          8.70   
 ```
-Check 
+
 **Test with option --isolate**:
 ```
 spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
@@ -150,7 +154,7 @@ L50                        10
 L75                        20       
 # N's per 100 kbp          8.55    
 ```
-Test plasmid SPAdes for extracting only plasmids DNA
+**Test plasmid SPAdes for extracting only plasmids DNA**
 ```
 spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --plasmid -o plasmids_spades-101A
 ```
