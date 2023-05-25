@@ -144,13 +144,36 @@ L50                        10
 L75                        20       
 # N's per 100 kbp          8.55    
 ```
+Test plasmid SPAdes for extracting only plasmids DNA
+```
+spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --plasmid -o plasmids_spades-101A
+```
+```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        8        
+# contigs (>= 1000 bp)     3        
+Total length (>= 0 bp)     295066   
+Total length (>= 1000 bp)  292086   
+# contigs                  7        
+Largest contig             185681   
+Total length               294668   
+GC (%)                     57.93    
+N50                        185681   
+N75                        101649   
+L50                        1        
+L75                        2        
+# N's per 100 kbp          67.87
+```
+
 ### Assemble samples with long read sequence, see [2018 strains spades](2018_strains_spades.md). 
 
 ## After Assembly 
 
 ## Other Infomation
 **Codes**
-``spades.py -1  -2 --isolate -o spades-``
+``spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate --plasmid -o plasmids_spades-101A``
 
 ``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
 
