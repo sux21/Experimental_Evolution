@@ -78,3 +78,8 @@ L50                        1
 L75                        2        
 # N's per 100 kbp          33.40 
 ```
+## 295A
+```
+nohup spades.py -1 GSF2234-295A_S28_R1_P_001.fq.gz -2 GSF2234-295A_S28_R2_P_001.fq.gz --plasmid -o plasmids_spades-295A &
+```
+Quast result:
