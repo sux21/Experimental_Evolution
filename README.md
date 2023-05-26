@@ -32,7 +32,7 @@ Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
 ### 3. Running Trimmomatic (Practice on 2018 strains)
 version: trimmomatic-0.39.jar
 
-Running for all files using for loop in shell script: <br>
+Running for all files using "for loop" in shell script: <br>
 ```
 #!/bin/bash 
 for R1 in *R1* 
