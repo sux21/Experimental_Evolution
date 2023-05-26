@@ -1,5 +1,4 @@
 # 2018 Strains
-For genome infomation, see [Rhizobium leguminosarum bv. trifolii]
 ## 214C
 Plasmids SPAdes command:
 ```
@@ -27,4 +26,9 @@ N75                        281438
 L50                        2        
 L75                        2        
 # N's per 100 kbp          25.57
+```
+## 218A
+Plasmids SPAdes command:
+```
+nohup spades.py -1 GSF2234-218A_S16_R1_P_001.fq.gz -2 GSF2234-218A_S16_R2_P_001.fq.gz --plasmid -o plasmids_spades-218A &
 ```
