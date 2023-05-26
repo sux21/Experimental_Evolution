@@ -4,7 +4,7 @@ Plasmids SPAdes command:
 ```
 nohup spades.py -1 GSF2234-214C_S15_R1_P_001.fq.gz -2 GSF2234-214C_S15_R2_P_001.fq.gz --plasmid -o plasmids_spades-214C &
 ```
-```
+
 Quast result:
 ```
 command: quast.py scaffolds.fasta 
