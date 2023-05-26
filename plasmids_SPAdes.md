@@ -52,5 +52,12 @@ L50                        1
 L75                        1        
 # N's per 100 kbp          68.05
 ```
-
-
+## 272A
+Plasmids SPAdes command:
+```
+nohup spades.py -1 GSF2234-272A_S22_R1_P_001.fq.gz -2 GSF2234-272A_S22_R2_P_001.fq.gz --plasmid -o plasmids_spades-272A &
+```
+Quast result:
+```
+command: quast.py scaffolds.fasta 
+```
