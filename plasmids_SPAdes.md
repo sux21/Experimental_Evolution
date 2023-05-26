@@ -60,4 +60,21 @@ nohup spades.py -1 GSF2234-272A_S22_R1_P_001.fq.gz -2 GSF2234-272A_S22_R2_P_001.
 Quast result:
 ```
 command: quast.py scaffolds.fasta 
+
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        10       
+# contigs (>= 1000 bp)     5        
+Total length (>= 0 bp)     299909   
+Total length (>= 1000 bp)  297458   
+# contigs                  8        
+Largest contig             185165   
+Total length               299366   
+GC (%)                     57.92    
+N50                        185165   
+N75                        103804   
+L50                        1        
+L75                        2        
+# N's per 100 kbp          33.40 
 ```
