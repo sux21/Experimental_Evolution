@@ -4,12 +4,11 @@ Plasmids SPAdes command:
 ```
 nohup spades.py -1 GSF2234-214C_S15_R1_P_001.fq.gz -2 GSF2234-214C_S15_R2_P_001.fq.gz --plasmid -o plasmids_spades-214C &
 ```
-Quast command:
 ```
-quast.py scaffolds.fasta 
+Quast result:
 ```
-result:
-```
+command: quast.py scaffolds.fasta 
+
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
 Assembly                   scaffolds
@@ -32,3 +31,26 @@ Plasmids SPAdes command:
 ```
 nohup spades.py -1 GSF2234-218A_S16_R1_P_001.fq.gz -2 GSF2234-218A_S16_R2_P_001.fq.gz --plasmid -o plasmids_spades-218A &
 ```
+Quast result:
+```
+command: quast.py scaffolds.fasta 
+
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        6        
+# contigs (>= 1000 bp)     2        
+Total length (>= 0 bp)     294702   
+Total length (>= 1000 bp)  292549   
+# contigs                  4        
+Largest contig             287793   
+Total length               293909   
+GC (%)                     57.92    
+N50                        287793   
+N75                        287793   
+L50                        1        
+L75                        1        
+# N's per 100 kbp          68.05
+```
+
+
