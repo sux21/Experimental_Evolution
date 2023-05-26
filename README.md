@@ -72,23 +72,14 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 ## During Assembly 
 ### 1. Running SPAdes (Practice on 2018 strains)
 version: SPAdes genome assembler v3.15.2
-https://www.melbournebioinformatics.org.au/tutorials/tutorials/assembly/spades/
 
 #### For 101A <br>
 **Run SPAdes on trimmed reads**: 
 ```
 nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
 ```
-
-Check genome size with ``grep "genome size" spades.log``:
-```
-0:00:43.624    20M / 5526M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7076168
-0:00:32.719    15M / 8959M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7095857
-0:00:27.363    47M / 7628M INFO    General                 (kmer_coverage_model.cpp   : 375)   Estimated genome size (ignoring repeats): 7116423
-```
 Run ``quast.py scaffolds.fasta``: <br>
 Version 3.1, build 29.08.2015 16:09
-
 ```
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
@@ -107,12 +98,10 @@ L50                        12
 L75                        25       
 # N's per 100 kbp          8.70   
 ```
-
 **Test with option --isolate**:
 ```
 spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
 ```
-
 ```
 Quast results:
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
@@ -176,19 +165,6 @@ L50                        1
 L75                        2        
 # N's per 100 kbp          67.87
 ```
-
-### Assemble samples with long read sequence, see [2018 strains spades](2018_strains_spades.md). 
-
 ## After Assembly 
-
-## Other Infomation
-**Codes**
-``spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate --plasmid -o plasmids_spades-101A``
-
-``Bandage image assembly_graph_with_scaffolds.gfa assembly_graph_with_scaffolds.jpg``
-
-``quast.py scaffolds.fasta``
-
-``scp xingyuan@info.mcmaster.ca:/home/xingyuan/2018_strains/fastQC_trimmed_reads/GSF2234-105A_S2_R2_P_001_fastqc.html /Users/xingyuansu/Desktop``
 
 
