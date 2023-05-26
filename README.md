@@ -1,4 +1,4 @@
-# Su_Xingyuan_May_to_August_2023
+# Su_Xingyuan_Summer_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
 # Step 0 - Background Information of Illumina Sequencing
