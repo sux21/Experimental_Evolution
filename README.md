@@ -171,4 +171,7 @@ L75                        2
 ```
 ## After Assembly 
 ### 1. Run Prokka on assembled genomes
+prokka 1.12-beta
+
+ 
 
