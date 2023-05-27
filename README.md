@@ -2,9 +2,7 @@
 Bioinformatics project on Rhizobium leguminosarum 
 
 # Step 0 - Background Information
-### .
-### .
-### .
+### . . . 
 ### 1. Pick a single colony for each sample 
 ### 2. DNA extraction
 ### 3. Send to sequence 
