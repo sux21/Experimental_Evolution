@@ -1,7 +1,13 @@
 # Su_Xingyuan_Summer_2023
 Bioinformatics project on Rhizobium leguminosarum 
 
-# Step 0 - Background Information of Illumina Sequencing
+# Step 0 - Background Information
+### .
+### .
+### .
+### 1. Pick a single colony for each sample 
+### 2. DNA extraction
+### 3. Send to sequence 
 Paired-End Sequencing: https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html.
 
 # Step 1 - Genome Assembly using SPAdes <br>
@@ -73,7 +79,7 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 ### 1. Running SPAdes (Practice on 2018 strains)
 version: SPAdes genome assembler v3.15.2
 
-#### For 101A <br>
+#### 101A <br>
 **Run SPAdes on trimmed reads**: 
 ```
 nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
@@ -166,5 +172,5 @@ L75                        2
 # N's per 100 kbp          67.87
 ```
 ## After Assembly 
-
+### 1. Run Prokka 
 
