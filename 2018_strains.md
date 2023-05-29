@@ -23,3 +23,33 @@ multiqc .
 Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_raw_reads.
 
+### 3. Run Trimmomatic (Practice on 2018 strains)
+version: trimmomatic-0.39.jar
+
+Running for all files using "for loop" in shell script: <br>
+```
+#!/bin/bash 
+for R1 in *R1* 
+do 
+R2=${R1//R1_001.fastq/R2_001.fastq} 
+R1_P=${R1//001.fastq/P_001.fq.gz} 
+R1_UP=${R1//001.fastq/UP_001.fq.gz} 
+R2_P=${R2//001.fastq/P_001.fq.gz} 
+R2_UP=${R2//001.fastq/UP_001.fq.gz} 
+
+java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_UP /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 
+done
+```
+
+Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
+Output files in /home/xingyuan/2018_strains/trimmed_reads.
+
+### 4. Run FastQC again for trimmed data (Practice on 2018 strains)
+Run FastQC: 
+```
+nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &
+```
+
+Input files in /home/xingyuan/2018_strains/trimmed_reads. <br>
+Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
+
