@@ -77,8 +77,6 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 ### 1. Running SPAdes (Practice on 2018 strains)
 version: SPAdes genome assembler v3.15.2
 
-#### 101A <br>
-**Run SPAdes on trimmed reads**: 
 ```
 nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
 ```
@@ -102,73 +100,7 @@ L50                        12
 L75                        25       
 # N's per 100 kbp          8.70   
 ```
-**Test with option --isolate**:
-```
-spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --isolate -o spades-101A-test
-```
-```
-Quast results:
-All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
-Assembly                   scaffolds
-# contigs (>= 0 bp)        210      
-# contigs (>= 1000 bp)     49       
-Total length (>= 0 bp)     7155610  
-Total length (>= 1000 bp)  7128413  
-# contigs                  52       
-Largest contig             564345   
-Total length               7130378  
-GC (%)                     60.85    
-N50                        226578   
-N75                        127550   
-L50                        10       
-L75                        20       
-# N's per 100 kbp          8.55  
-```
-**Test with unpaired reads**
-```
-spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz -s GSF2234-101A_S1_R1_UP_001.fq.gz -s GSF2234-101A_S1_R2_UP_001.fq.gz --isolate -o spades-101A-test2
-```
-```
-All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
-
-Assembly                   scaffolds
-# contigs (>= 0 bp)        210      
-# contigs (>= 1000 bp)     49       
-Total length (>= 0 bp)     7155610  
-Total length (>= 1000 bp)  7128413  
-# contigs                  52       
-Largest contig             564345   
-Total length               7130378  
-GC (%)                     60.85    
-N50                        226578   
-N75                        127550   
-L50                        10       
-L75                        20       
-# N's per 100 kbp          8.55    
-```
-**Test plasmid SPAdes for extracting only plasmids DNA**
-```
-spades.py -1 GSF2234-101A_S1_R1_P_001.fq.gz -2 GSF2234-101A_S1_R2_P_001.fq.gz --plasmid -o plasmids_spades-101A
-```
-```
-All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
-
-Assembly                   scaffolds
-# contigs (>= 0 bp)        8        
-# contigs (>= 1000 bp)     3        
-Total length (>= 0 bp)     295066   
-Total length (>= 1000 bp)  292086   
-# contigs                  7        
-Largest contig             185681   
-Total length               294668   
-GC (%)                     57.93    
-N50                        185681   
-N75                        101649   
-L50                        1        
-L75                        2        
-# N's per 100 kbp          67.87
-```
 ## After Assembly 
 ### 1. Run Prokka on assembled genomes
 prokka 1.12-beta
