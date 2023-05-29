@@ -53,3 +53,17 @@ nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &
 Input files in /home/xingyuan/2018_strains/trimmed_reads. <br>
 Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 
+### 5. Run MultiQC again for trimmed data (Practice on 2018 strains)
+Run MultiQC in the directory with the FastQC reports: 
+```
+multiqc -f . 
+```
+Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads. <br>
+Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
+
+### 6. Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
+
+## During Assembly 
+### 1. Running SPAdes (Practice on 2018 strains)
+version: SPAdes genome assembler v3.15.2
+
