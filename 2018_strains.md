@@ -67,3 +67,28 @@ Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
 ### 1. Running SPAdes (Practice on 2018 strains)
 version: SPAdes genome assembler v3.15.2
 
+#### 101A <br>
+**Run SPAdes on trimmed reads**: 
+```
+nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
+```
+Run ``quast.py scaffolds.fasta``: <br>
+Version 3.1, build 29.08.2015 16:09
+```
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                   scaffolds
+# contigs (>= 0 bp)        146      
+# contigs (>= 1000 bp)     68       
+Total length (>= 0 bp)     7138120  
+Total length (>= 1000 bp)  7114449  
+# contigs                  81       
+Largest contig             553567   
+Total length               7123407  
+GC (%)                     60.85    
+N50                        190187   
+N75                        104963   
+L50                        12       
+L75                        25       
+# N's per 100 kbp          8.70   
+```
