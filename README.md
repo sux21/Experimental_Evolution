@@ -52,10 +52,14 @@ Version: 3.15.2
 ```
 
 ## After Assembly 
-**Sample: 1_1_2**
 ### 1. Run Quast on scaffolds
-Run ``quast.py scaffolds.fasta``: <br>
 Version 3.1, build 29.08.2015 16:09
+
+**Sample: 1_1_2**
+Run Quast:
+``quast.py scaffolds.fasta
+```<
+
 ```
 All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
 
