@@ -28,10 +28,6 @@ Run FastQC:
 ```
 % nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
 ```
-Download FastQC report to local computer:
-```
-% scp 'xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/fastQC_raw_reads/*.html' /Users/xingyuansu/Desktop/2023\ Summer\ Coop/experimental\ evolution/fastQC_raw_reads/
-```
 
 ### 2. Run Trimmomatic 
 Check version:
@@ -45,50 +41,25 @@ Check version:
 % java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/rhizo_ee/raw_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_001.fastq.gz /home/xingyuan/rhizo_ee/raw_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_UP_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_UP_001.fastq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 LEADING:3 TRAILING:3 MINLEN:36
 ```
 
-Running for all files using "for loop" in shell script: <br>
-```
-#!/bin/bash 
-for R1 in *R1* 
-do 
-R2=${R1//R1_001.fastq/R2_001.fastq} 
-R1_P=${R1//001.fastq/P_001.fq.gz} 
-R1_UP=${R1//001.fastq/UP_001.fq.gz} 
-R2_P=${R2//001.fastq/P_001.fq.gz} 
-R2_UP=${R2//001.fastq/UP_001.fq.gz} 
-
-java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/2018_strains/raw_reads/$R1 /home/xingyuan/2018_strains/raw_reads/$R2 /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R1_UP /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_P /home/xingyuan/2018_strains/trim_2nd_attempt/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 
-done
-```
-
-Input files in /home/xingyuan/2018_strains/fastQC_raw_reads. <br>
-Output files in /home/xingyuan/2018_strains/trimmed_reads.
-
-### 4. Run FastQC again for trimmed data (Practice on 2018 strains)
+### 4. Run FastQC on trimmed reads 
+**Sample: 1_1_2**
 Run FastQC: 
 ```
-nohup fastqc -o /home/xingyuan/2018_strains/fastQC_trim_2nd_attempt *_P_* &
+% fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* 
 ```
-
-Input files in /home/xingyuan/2018_strains/trimmed_reads. <br>
-Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
-
-### 5. Run MultiQC again for trimmed data (Practice on 2018 strains)
-Run MultiQC in the directory with the FastQC reports: 
-```
-multiqc -f . 
-```
-Input files in /home/xingyuan/2018_strains/fastQC_trimmed_reads. <br>
-Output files in /home/xingyuan/2018_strains/fastQC_trimmed_reads.
-
-### 6. Steps 3, 4, 5 were repeated one time to remove the first 15bp of the read.
 
 ## During Assembly 
 ### 1. Running SPAdes (Practice on 2018 strains)
 version: SPAdes genome assembler v3.15.2
 
+**Sample: 1_1_2**
 ```
-nohup spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o spades-101A &
+% spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2
 ```
+
+
+## After Assembly 
+### 1. Run Quast on scaffolds
 Run ``quast.py scaffolds.fasta``: <br>
 Version 3.1, build 29.08.2015 16:09
 ```
@@ -109,9 +80,7 @@ L50                        12
 L75                        25       
 # N's per 100 kbp          8.70   
 ```
-
-## After Assembly 
-### 1. Run Prokka on assembled genomes
+### 2.
 prokka 1.12-beta
 
  
