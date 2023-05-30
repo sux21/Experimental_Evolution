@@ -53,7 +53,7 @@ Version: 3.15.2
 
 ## After Assembly 
 ### 1. Run Quast on scaffolds
-Version 3.1, build 29.08.2015 16:09
+Version: 5.2.0, 3d87c606
 
 **Sample: 1_1_2**
 Run Quast:
