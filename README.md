@@ -50,10 +50,9 @@ Version: 3.15.2
 ```
 % spades.py -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2
 ```
-spades.py -1 GSF2234-125A_S3_R1_P_001.fq.gz -2 GSF2234-125A_S3_R2_P_001.fq.gz --isolate -o spades-125A
-
 
 ## After Assembly 
+**Sample: 1_1_2**
 ### 1. Run Quast on scaffolds
 Run ``quast.py scaffolds.fasta``: <br>
 Version 3.1, build 29.08.2015 16:09
