@@ -13,11 +13,11 @@ Paired-End Sequencing: https://www.illumina.com/science/technology/next-generati
 ## Before Assembly
 Create symbolic link for raw reads:
 ```
-ln -s /2/scratch/batstonelab/RltEE2020-PE_reads/*gz .
+% ln -s /2/scratch/batstonelab/RltEE2020-PE_reads/*gz .
 ```
 Check the number of files:
 ```
-ls *.gz | wc -l
+% ls *.gz | wc -l
 726
 ```
 ### 1. Run FastQC for raw data
@@ -25,7 +25,7 @@ FastQC v0.11.5
 
 **Sample: 1_1_2**
 ```
-nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
+% nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
 ```
 
 ### 2. Run Trimmomatic 
