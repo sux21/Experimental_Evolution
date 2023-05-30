@@ -27,12 +27,18 @@ FastQC v0.11.5
 ```
 % nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
 ```
+Download the FastQC report to local computer:
+```
+scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/fastQC_raw_reads/*.html /Users/xingyuansu/Desktop/2023 Summer Coop/experimental evolution/fastQC_raw_reads
+```
 
 ### 2. Run Trimmomatic 
 version: trimmomatic-0.39.jar
 
 **Sample: 1_1_2**
-
+```
+java -jar trimmomatic-0.39.jar PE input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10:2:True LEADING:3 TRAILING:3 MINLEN:36
+```
 Running for all files using "for loop" in shell script: <br>
 ```
 #!/bin/bash 
