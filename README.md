@@ -57,29 +57,9 @@ Version: 5.2.0, 3d87c606
 
 **Sample: 1_1_2**
 Run Quast:
-``quast.py scaffolds.fasta
-```<
-
 ```
-All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
-
-Assembly                   scaffolds
-# contigs (>= 0 bp)        146      
-# contigs (>= 1000 bp)     68       
-Total length (>= 0 bp)     7138120  
-Total length (>= 1000 bp)  7114449  
-# contigs                  81       
-Largest contig             553567   
-Total length               7123407  
-GC (%)                     60.85    
-N50                        190187   
-N75                        104963   
-L50                        12       
-L75                        25       
-# N's per 100 kbp          8.70   
+% quast.py scaffolds.fasta
 ```
-### 2.
-prokka 1.12-beta
 
  
 
