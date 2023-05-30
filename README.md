@@ -17,11 +17,8 @@ Check the number of files:
 ```
 
 ### 1. Run FastQC for raw data
-Check version:
-```
-% fastqc --version
-FastQC v0.11.5
-```
+Versions: FastQC v0.11.5
+
 **Sample: 1_1_2**
 
 Run FastQC:
@@ -30,11 +27,8 @@ Run FastQC:
 ```
 
 ### 2. Run Trimmomatic 
-Check version:
-```
-% java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar -version
-0.39
-```
+Version: 0.39
+
 
 **Sample: 1_1_2**
 ```
@@ -50,12 +44,13 @@ Run FastQC:
 
 ## During Assembly 
 ### 1. Running SPAdes (Practice on 2018 strains)
-version: SPAdes genome assembler v3.15.2
+Version: 3.15.2
 
 **Sample: 1_1_2**
 ```
-% spades.py --pe1-1 GSF2234-101A_S1_R1_P_001.fq.gz --pe1-2 GSF2234-101A_S1_R2_P_001.fq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2
+% spades.py -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2
 ```
+spades.py -1 GSF2234-125A_S3_R1_P_001.fq.gz -2 GSF2234-125A_S3_R2_P_001.fq.gz --isolate -o spades-125A
 
 
 ## After Assembly 
