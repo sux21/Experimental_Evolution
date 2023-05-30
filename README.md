@@ -3,13 +3,6 @@ Bioinformatics project on Rhizobium leguminosarum
 
 Work done on INFO server, node info114. 
 
-# Step 0 - Background Information
-### . . . 
-### 1. Pick a single colony for each sample 
-### 2. DNA extraction
-### 3. Send to sequence 
-Paired-End Sequencing: https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html.
-
 # Step 1 - Genome Assembly using SPAdes <br>
 
 ## Before Assembly
