@@ -23,6 +23,7 @@ Check version:
 FastQC v0.11.5
 ```
 **Sample: 1_1_2**
+
 Run FastQC:
 ```
 % nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
