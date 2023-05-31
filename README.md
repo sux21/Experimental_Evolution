@@ -40,10 +40,10 @@ nohup java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE 
 for R1 in *R1* 
 do 
 R2=${R1//R1_001.fastq.gz/R2_001.fastq.gz} 
-R1_P=${R1//001.fastq.gz/P_001.fq.gz} 
-R1_UP=${R1//001.fastq.gz/UP_001.fq.gz} 
-R2_P=${R2//001.fastq.gz/P_001.fq.gz} 
-R2_UP=${R2//001.fastq.gz/UP_001.fq.gz} 
+R1_P=${R1//001.fastq.gz/P_001.fastq.gz} 
+R1_UP=${R1//001.fastq.gz/UP_001.fastq.gz} 
+R2_P=${R2//001.fastq.gz/P_001.fastq.gz} 
+R2_UP=${R2//001.fastq.gz/UP_001.fastq.gz} 
 
 echo java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/rhizo_ee/raw_reads/$R1 /home/xingyuan/rhizo_ee/raw_reads/$R2 /home/xingyuan/rhizo_ee/trimmomatic_reads/$R1_P /home/xingyuan/rhizo_ee/trimmomatic_reads/$R1_UP /home/xingyuan/rhizo_ee/trimmomatic_reads/$R2_P /home/xingyuan/rhizo_ee/trimmomatic_reads/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 CROP:130 LEADING:3 TRAILING:3 MINLEN:36
 done
