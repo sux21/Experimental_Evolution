@@ -152,6 +152,14 @@ L75                        16
 alignment with Mauve (ProgressiveMauve, default settings)
 <img width="973" alt="Screenshot 2023-05-24 at 4 36 03 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/f229de54-dd76-495e-9b17-a83f2fedd165">
 
+Run IMAGE gap closer 
+
+Version: 2.4
+```
+image.pl -scaffolds scaffolds.fasta -prefix 76bp -iteration 1 -all_iteration 10 -dir_prefix ite
+
+```
+
 ### 218A
 command
 ```
