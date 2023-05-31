@@ -35,6 +35,9 @@ nohup java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE 
 ```
 **All 363 samples (726 files)**
 ```
+nano run_trimmomatic.sh
+```
+```
 #!/bin/bash 
 for R1 in *R1* 
 do 
