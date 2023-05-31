@@ -159,6 +159,12 @@ L50                        1
 L75                        2        
 # N's per 100 kbp          67.87
 ```
+
 ## After Assembly 
-### 1. Run Prokka on assembled genomes
+### 1. Run Prokka 
 prokka 1.12-beta
+
+**sample 214C**
+```
+/home/sam/miniconda3/envs/pangenome/bin/prokka --force --outdir prokka-214C scaffolds.fasta
+```
