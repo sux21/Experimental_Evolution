@@ -84,10 +84,3 @@ Run Quast:
 quast.py -m 0 scaffolds.fasta
 ```
 
-### 2. Run ALE
-
-**Sample: 1_1_2**
-Run ALE
-```
-ALE [-options] alignments.[s|b]am assembly.fasta[.gz] ALEoutput.txt
-```
