@@ -56,9 +56,15 @@ nohup bash run_trimmomatic.sh &
 
 ### 3. Run FastQC on trimmed reads 
 **Sample: 1_1_2**
+
 Run FastQC: 
 ```
 fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* 
+```
+
+**All 363 samples (726 files)**
+```
+nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* &
 ```
 
 ## During Assembly 
