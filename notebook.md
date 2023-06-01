@@ -1,5 +1,5 @@
 # Quality control by FastQC, MultiQC
-Unusual per base sequence content
+## Unusual per base sequence content
 
 **Most of other samples** <br>
 <img width="600" alt="Screenshot 2023-06-01 at 5 09 12 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/38d36a52-4d2f-4653-928e-825fe4da65bb">
@@ -16,5 +16,15 @@ Unusual per base sequence content
 **as5_2_4 has more similar amount of AT and GC** <br>
 <img width="600" alt="Screenshot 2023-06-01 at 5 07 46 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0e5664b8-994f-4271-bf45-8bacc955abad">
 <img width="600" alt="Screenshot 2023-06-01 at 5 08 07 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/8208affc-2244-4828-a11b-90d556c7e5d5">
+
+## Failed per sequence gc content
+
+**19_1_9** <br>
+<img width="600" alt="Screenshot 2023-06-01 at 5 17 03 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0a9ec26b-5c9a-4df0-8fc9-4397555bd411">
+<img width="600" alt="Screenshot 2023-06-01 at 5 17 37 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/76780695-5ed8-49af-9eae-ca8532374fe2">
+
+**19_4_7** <br>
+<img width="600" alt="Screenshot 2023-06-01 at 5 19 29 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/a6b269db-3c95-40d1-8eeb-57bae70f48a7">
+<img width="600" alt="Screenshot 2023-06-01 at 5 19 48 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/22ae3924-4643-4e6e-9423-3b53eae82262">
 
 # Genome assembly 
