@@ -67,6 +67,13 @@ fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_*
 nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* &
 ```
 
+### 4. Run MultiQC on trimmed reads
+
+**All 363 samples (726 files)**
+```
+multiqc -f . 
+```
+
 ## During Assembly 
 ### 1. Run SPAdes 
 Version: 3.15.2
