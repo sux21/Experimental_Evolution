@@ -1,10 +1,6 @@
 # Quality control by FastQC, MultiQC
 ## Unusual per base sequence content
 
-### Most of other samples
-<img width="600" alt="Screenshot 2023-06-01 at 5 09 12 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/38d36a52-4d2f-4653-928e-825fe4da65bb">
-<img width="600" alt="Screenshot 2023-06-01 at 5 09 26 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/a8f28c24-c289-4099-8347-591d164be246">
-
 ### 19_1_9 has more AT than GC
 <img width="600" alt="Screenshot 2023-06-01 at 4 56 26 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/82c07678-5004-4f19-9d31-d4665e9c2d1a">
 <img width="600" alt="Screenshot 2023-06-01 at 4 56 48 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/31ccd674-0b64-4ec5-ade6-d42d0087a5b8">
