@@ -26,4 +26,18 @@
 <img width="600" alt="Screenshot 2023-06-01 at 5 19 29 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/a6b269db-3c95-40d1-8eeb-57bae70f48a7">
 <img width="600" alt="Screenshot 2023-06-01 at 5 19 48 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/22ae3924-4643-4e6e-9423-3b53eae82262">
 
+## Failed Kmer content
+
+### 7_1_5
+<img width="600" alt="Screenshot 2023-06-01 at 5 25 15 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0a15678c-8fc8-49d7-bc2d-b9112a52ef17">
+<img width="600" alt="Screenshot 2023-06-01 at 5 26 00 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/c5a2ef12-b53d-4381-ba60-8d4f054717b4">
+
+### 20_6_1
+<img width="600" alt="Screenshot 2023-06-01 at 5 27 39 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/be9a43de-0704-41f5-bf86-aa5e16dcf751">
+<img width="600" alt="Screenshot 2023-06-01 at 5 28 05 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/c8296a73-5156-4657-a1e8-3c8c04f6a1fc">
+
+### 15_2_2
+<img width="600" alt="Screenshot 2023-06-01 at 5 28 50 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/2bb7eb05-5ee2-4f80-8fe2-33820f010768">
+<img width="600" alt="Screenshot 2023-06-01 at 5 29 10 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/e3c03b40-b403-4df6-a119-499ca7055b38">
+
 # Genome assembly 
