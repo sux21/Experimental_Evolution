@@ -14,6 +14,8 @@
 <img width="600" alt="Screenshot 2023-06-01 at 5 08 07 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/8208affc-2244-4828-a11b-90d556c7e5d5">
 
 ## Failed per sequence gc content
+See this website for explanation of per base gc content: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html. 
+
 ### 19_1_9
 <img width="600" alt="Screenshot 2023-06-01 at 5 17 03 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0a9ec26b-5c9a-4df0-8fc9-4397555bd411">
 <img width="600" alt="Screenshot 2023-06-01 at 5 17 37 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/76780695-5ed8-49af-9eae-ca8532374fe2">
@@ -23,7 +25,7 @@
 <img width="600" alt="Screenshot 2023-06-01 at 5 19 48 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/22ae3924-4643-4e6e-9423-3b53eae82262">
 
 ## Failed Kmer content
-See this website for explanation on Kmer Content: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html. 
+See this website for explanation of Kmer content: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html. 
 
 ### 7_1_5
 <img width="600" alt="Screenshot 2023-06-01 at 5 25 15 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0a15678c-8fc8-49d7-bc2d-b9112a52ef17">
