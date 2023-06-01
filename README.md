@@ -68,10 +68,11 @@ nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* &
 ```
 
 ### 4. Run MultiQC on trimmed reads
+Version: MultiQC v1.9
 
 **All 363 samples (726 files)**
 ```
-multiqc -f . 
+multiqc . 
 ```
 
 ## During Assembly 
@@ -80,7 +81,7 @@ Version: 3.15.2
 
 **Sample: 1_1_2**
 ```
-nohup spades.py --careful -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2 &
+nohup spades.py -k 21,33,55,77 --careful  -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2 &
 ```
 
 ### 2. Run plasmidSPAdes
