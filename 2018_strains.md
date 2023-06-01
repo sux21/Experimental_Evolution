@@ -159,7 +159,12 @@ L50                        1
 L75                        2        
 # N's per 100 kbp          67.87
 ```
-
+| sample | N50   | largest contig | largest scaffold | total size |
+|--------|-------|----------------|------------------|------------|
+| 214C   |       |     
+| 215A   |
+| 272A   |
+| 295A   |
 ## After Assembly 
 ### 1. Run Prokka 
 prokka 1.12-beta
