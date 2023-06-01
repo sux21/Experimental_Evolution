@@ -24,8 +24,16 @@ Run FastQC:
 ```
 nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
 ```
+**All 363 samples (726 files)**
+```
+nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads *gz &
+```
 
-### 2. Run Trimmomatic 
+### 2. Run MultiQC for raw data
+```
+multiqc . 
+```
+### 3. Run Trimmomatic 
 Version: 0.39
 
 
@@ -54,7 +62,7 @@ done
 nohup bash run_trimmomatic.sh &
 ```
 
-### 3. Run FastQC on trimmed reads 
+### 4. Run FastQC for trimmed reads 
 **Sample: 1_1_2**
 
 Run FastQC: 
@@ -67,7 +75,7 @@ fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_*
 nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* &
 ```
 
-### 4. Run MultiQC on trimmed reads
+### 5. Run MultiQC for trimmed reads
 Version: MultiQC v1.9
 
 **All 363 samples (726 files)**
