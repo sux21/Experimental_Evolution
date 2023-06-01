@@ -23,6 +23,7 @@
 <img width="600" alt="Screenshot 2023-06-01 at 5 19 48 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/22ae3924-4643-4e6e-9423-3b53eae82262">
 
 ## Failed Kmer content
+See this website for explanation on Kmer Content: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html. 
 
 ### 7_1_5
 <img width="600" alt="Screenshot 2023-06-01 at 5 25 15 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0a15678c-8fc8-49d7-bc2d-b9112a52ef17">
