@@ -18,7 +18,7 @@
 <img width="600" alt="Screenshot 2023-06-01 at 5 08 07 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/8208affc-2244-4828-a11b-90d556c7e5d5">
 
 ## Failed per sequence gc content
-### 19_1_9** 
+### 19_1_9
 <img width="600" alt="Screenshot 2023-06-01 at 5 17 03 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/0a9ec26b-5c9a-4df0-8fc9-4397555bd411">
 <img width="600" alt="Screenshot 2023-06-01 at 5 17 37 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/76780695-5ed8-49af-9eae-ca8532374fe2">
 
