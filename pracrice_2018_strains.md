@@ -71,9 +71,10 @@ version: SPAdes genome assembler v3.15.2
 command: ``spades -1 R1.fq.gz -2 R2.fq.gz --isolate -o spades-sample#`` <br>
 command: ``quast -m 0 -o directory file``
 
-contigs                                                                                                     
+contigs  
+| Not filtered |           |                   |                 |              |
+|:--------------:|:-----------:|:------:| :---:|:------:|
 | sample | N50       | number of contigs |  largest contig | total length |
-|--------|-----------|-------------------|-----------------|--------------|
 | 214C   |  225893   |    283            | 913776          |  7356909     |
 | 218A   |  315517   |    306            | 739666          |  7202393     |
 | 272A   |  435813   |    447            | 883349          |  7196064     |
@@ -89,17 +90,37 @@ scaffolds
 
 
 ## After Assembly 
-### Run BWA
+### 1. Run BWA
 Version: 0.7.17-r1188 
 
 #### 214C, 218A, 272A, 295A
-Index the contigs
+1. Index the contigs
 ```
-bwa index contigs.fasta
+bwa index /home/xingyuan/2018_strains/trim_2nd_attempt/spades-sample#/contigs.fasta        
 ```
-align reads back to contigs
+2. align reads back to contigs
 ```
-
+bwa mem -t 2 /home/xingyuan/2018_strains/trim_2nd_attempt/spades-214C/contigs.fasta /home/xingyuan/2018_strains/trim_2nd_attempt/GSF2234-214C_S15_R1_P_001.fq.gz /home/xingyuan/2018_strains/trim_2nd_attempt/GSF2234-214C_S15_R2_P_001.fq.gz > 214C_contigs.sam
+```
+3. convert SAM file to BAM file (see commands [here](http://www.htslib.org/doc/samtools-view.html))
+```
+samtools view -bS 214C_contigs.sam > 214C_contigs.bam
+```
+4. sort the BAM file (see commands [here](http://www.htslib.org/doc/samtools-sort.html))
+```
+samtools sort -o 214C_contigs.sorted.bam 214C_contigs.bam 
+```
+5. index the BAM file (see commands [here](http://www.htslib.org/doc/samtools-index.html))
+```
+samtools index 214C_contigs.sorted.bam
+```
+6. obtain summary statistics (see commands [here](http://www.htslib.org/doc/samtools-flagstat.html))
+```
+samtools flagstat 214C_contigs.sorted.bam
+```
+7. Run qualimap for more information (http://qualimap.conesalab.org/doc_html/analysis.html)
+```
+qualimap bamqc -outdir bamqc -bam 214C_contigs.sorted.bam
 ```
 
 
