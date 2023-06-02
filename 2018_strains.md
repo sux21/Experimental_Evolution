@@ -167,7 +167,16 @@ L75                        2
 | 295A   |
 
 ## After Assembly 
-### 1. Run Prokka 
+### Run BWA
+Version: 0.7.17-r1188 
+
+Run BWA-MEM
+```
+
+```
+
+
+### Run Prokka 
 prokka 1.12-beta
 
 **sample 214C**
