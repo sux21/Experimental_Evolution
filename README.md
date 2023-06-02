@@ -1,4 +1,4 @@
-# Su_Xingyuan_Summer_2023
+# Experimental Evoluntion Strains
 Bioinformatics project on Rhizobium leguminosarum 
 
 Work done on INFO server, node info114. 
