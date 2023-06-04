@@ -3,6 +3,9 @@ Bioinformatics project on Rhizobium leguminosarum
 
 Work done on INFO server, node info114. 
 
+# Questions to ask during the Monday meeting
+1. About Average Nucleotide Identity (ANI): how many samples? When the results are needed? softwares?
+
 # Step 1 - Genome Assembly using SPAdes <br>
 
 ## Before Assembly
