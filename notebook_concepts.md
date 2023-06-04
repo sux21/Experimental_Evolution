@@ -56,6 +56,7 @@ This chart is not shown if the sample doesn’t contain any indels. <br>
 - Insert Size Across Reference: This plot provides the insert size distribution across the reference. Insert size is collected from the SAM alignment field TLEN. Only positive values are taken into account. To construct the plot mean insert size is computed for each window. <br>
 <img width="400" alt="Screenshot 2023-06-04 at 12 06 10 AM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/ccf58f76-a31e-4b4d-be35-60f06721e03d"> <br>
 - Insert Size Histogram: Histogram of insert size distribution. To construct the histogram all collected insert size values (number of read alignments of a certain insert size) are seprated in bins. The default number of bins is 50. The number of reads in the bin will be the sum from insert size of the bins. The detailed values for insert are reported in raw data report. <br>
-<img width="400" alt="Screenshot 2023-06-04 at 12 09 59 AM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/6c5a5faa-220f-4120-abc1-08b2322ebec2"> <br>
+<img width="400" alt="Screenshot 2023-06-04 at 12 09 59 AM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/6c5a5faa-220f-4120-abc1-08b2322ebec2"> 
+<img width="400" alt="Screenshot 2023-06-04 at 12 32 31 AM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/04846ff3-ac33-4b6b-b988-fea232d61b60">
 
 
