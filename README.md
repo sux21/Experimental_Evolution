@@ -94,8 +94,24 @@ Version: 3.15.2
 
 **Sample: 1_1_2**
 ```
-nohup spades.py -k 21,33,55,77 --careful  -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2 &
+nohup spades.py --careful -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2 &
 ```
+
+**Samples: 184 samples (368 files)**
+``Samples: [1-9]_*_P_* 10_*_P_*``
+```
+vi running-spades.sh
+```
+```
+#!/bin/bash 
+for R1 in [1-9]_*R1_P_* 10_*R1_P_*
+do
+R2=${R1//R1_P_001.fastq.gz/R2_P_001.fastq.gz}
+
+echo spades.py --careful  -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}
+done
+```
+manipulating string (useful for writing loop): https://mywiki.wooledge.org/BashFAQ/100, https://tldp.org/LDP/abs/html/string-manipulation.html
 
 ### 2. Run plasmidSPAdes
 **Sample: 1_1_2**
