@@ -94,35 +94,34 @@ scaffolds
 Version: 0.7.17-r1188 
 
 #### 214C, 218A, 272A, 295A
-1. Index the contigs
+1. Index the contigs/scaffolds
 ```
-bwa index /home/xingyuan/2018_strains/trim_2nd_attempt/spades-sample#/contigs.fasta        
+bwa index /home/xingyuan/2018_strains/trim_2nd_attempt/spades-295A/scaffolds.fasta     
 ```
-2. align reads back to contigs
+2. align reads back to contigs/scaffolds
 ```
-bwa mem -t 2 /home/xingyuan/2018_strains/trim_2nd_attempt/spades-214C/contigs.fasta /home/xingyuan/2018_strains/trim_2nd_attempt/GSF2234-214C_S15_R1_P_001.fq.gz /home/xingyuan/2018_strains/trim_2nd_attempt/GSF2234-214C_S15_R2_P_001.fq.gz > 214C_contigs.sam
+bwa mem -t 2 /home/xingyuan/2018_strains/trim_2nd_attempt/spades-295A/scaffolds.fasta /home/xingyuan/2018_strains/trim_2nd_attempt/GSF2234-295A_S28_R1_P_001.fq.gz /home/xingyuan/2018_strains/trim_2nd_attempt/GSF2234-295A_S28_R2_P_001.fq.gz > 295A_scaffolds.sam 
 ```
 3. convert SAM file to BAM file (see commands [here](http://www.htslib.org/doc/samtools-view.html))
 ```
-samtools view -bS 214C_contigs.sam > 214C_contigs.bam
+samtools view -bS 295A_scaffolds.sam > 295A_scaffolds.bam 
 ```
 4. sort the BAM file (see commands [here](http://www.htslib.org/doc/samtools-sort.html))
 ```
-samtools sort -o 214C_contigs.sorted.bam 214C_contigs.bam 
+samtools sort -o 295A_scaffolds.sorted.bam 295A_scaffolds.bam 
 ```
 5. index the BAM file (see commands [here](http://www.htslib.org/doc/samtools-index.html))
 ```
-samtools index 214C_contigs.sorted.bam
+samtools index 295A_scaffolds.sorted.bam 
 ```
 6. obtain summary statistics (see commands [here](http://www.htslib.org/doc/samtools-flagstat.html))
 ```
-samtools flagstat 214C_contigs.sorted.bam
+samtools flagstat 295A_scaffolds.sorted.bam > mapping_summary 
 ```
-7. Run qualimap for more information (http://qualimap.conesalab.org/doc_html/analysis.html)
+7. Run qualimap for more information (see commands [here](http://qualimap.conesalab.org/doc_html/analysis.html))
 ```
-qualimap bamqc -outdir bamqc -bam 214C_contigs.sorted.bam
+qualimap bamqc -outdir bamqc -bam 295A_scaffolds.sorted.bam 
 ```
-
 
 ### Run Prokka 
 prokka 1.12-beta
