@@ -94,7 +94,7 @@ Version: 3.15.2
 nohup spades.py --careful -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2 &
 ```
 
-**Samples: 52 samples**
+**Samples: 52 samples (202 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets)**
 ```
 vi running-spades.sh
 ```
