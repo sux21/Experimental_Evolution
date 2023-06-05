@@ -109,7 +109,7 @@ for R1 in [1-9]_*R1_P_* 10_*R1_P_*
 do
 R2=${R1//R1_P_001.fastq.gz/R2_P_001.fastq.gz}
 
-echo spades.py -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}
+echo spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}
 done
 ```
 manipulating string (useful for writing loop): https://mywiki.wooledge.org/BashFAQ/100, https://tldp.org/LDP/abs/html/string-manipulation.html
