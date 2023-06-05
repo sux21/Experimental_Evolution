@@ -7,7 +7,7 @@ Work done on INFO server, node info114.
 1. About Average Nucleotide Identity (ANI): how many samples? when the results are needed? softwares?
 2. experimental evolution: why my multiQC results have more read duplicates? 
 3. show results of mapping reads to contigs scaffolds.
-4. how to check 2018 results?
+4. how to check 2018 results? I think about producing some data people did before and compare. 
 
 # Step 1 - Genome Assembly using SPAdes <br>
 
