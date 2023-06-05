@@ -72,20 +72,21 @@ command: ``spades -1 R1.fq.gz -2 R2.fq.gz --isolate -o spades-sample#`` <br>
 command: ``quast -m 0 -o directory file``
 
 contigs  
-| sample | N50       | number of contigs |  largest contig | total length |
-|:--------------:|:-----------:|:------:| :---:|:------:|
-| 214C   |  225893   |    283            | 913776          |  7356909     |
-| 218A   |  315517   |    306            | 739666          |  7202393     |
-| 272A   |  435813   |    447            | 883349          |  7196064     |
-| 295A   |  435863   |    615            | 652001          |  7226378     |
+| sample | N50       | number of contigs |  largest contig | total length | number of mapped reads to contigs (BWA, Qualimap) |
+|:--------------:|:-----------:|:------:| :---:|:------:| :---: | 
+| 214C   |  225893   |    283            | 913776          |  7356909     | 99.72% |
+| 218A   |  315517   |    306            | 739666          |  7202393     | 99.78% |
+| 272A   |  435813   |    447            | 883349          |  7196064     | 99.62% |
+| 295A   |  435863   |    615            | 652001          |  7226378     | 99.6% |
+
 
 scaffolds     
-| sample | N50       | number of scaffolds |  largest scaffold | total length |
+| sample | N50       | number of scaffolds |  largest scaffold | total length | number of mapped reads to scaffolds (BWA, Qualimap) |
 |:--------------:|:-----------:|:------:| :---:|:------:|
-| 214C   | 273955    |         277         |      1490525      |    7357250   |
-| 218A   | 559785    |         295         |      1032152      |    7203126   |
-| 272A   | 521954    |         442         |      1690701      |    7196338   |
-| 295A   | 521252    |         608         |      1101732      |    7226762   |
+| 214C   | 273955    |         277         |      1490525      |    7357250   | 99.72% |
+| 218A   | 559785    |         295         |      1032152      |    7203126   | 99.78% |
+| 272A   | 521954    |         442         |      1690701      |    7196338   | 99.62% |
+| 295A   | 521252    |         608         |      1101732      |    7226762   | 99.6% |
 
 
 ## After Assembly 
