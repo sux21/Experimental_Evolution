@@ -128,17 +128,16 @@ quast.py -m 0 scaffolds.fasta
 ```
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
 ```
-vi running_quast.sh
+quast -m 0 scaffolds.fasta 
 ```
-```
-#!/bin/bash 
-for sample in *?_?_?
-do
 
-echo quast -m 0 -o /home/xingyuan/rhizo_ee/spades_assembly/$sample
-/home/xingyuan/rhizo_ee/spades_assembly/$sample/scaffolds.fasta
-done
-```
 | sample | # contigs | total length | largest contig | GC (%) | N50 | N90 | auN | L50 | L90 | # N's per 100 kbp  |
 | :----: | :----:    | :----:       | :---:          | :--:   | :--:|:---:|:--: |:--: |:--: | :--:               |
 | 10_1_8 | 269 |  7698930 | 928458 | 60.61 | 400806 | 116845 | 436794.2 | 7 | 21 | 5.03 |
+| 10_1_9 | 119 | 7377880  | 1009279 | 60.75 | 430333 | 173037 | 461108.1 | 6 | 18 |  7.94  |
+| 10_7_6 | 229 | 7561496 | 966116 | 60.71 | 447903 |  86934 | 445840.7 | 7 | 19 |  5.20 | 
+| 11_4_2 | 227 | 7490241 | 856458 | 60.69 | 334660 | 65380 |  364679.9 | 8 | 24 | 5.19 |
+| 11_4_4 | 113 | 7526111 | 1446462 | 60.60 | 654969 | 159952 | 678186.6 | 4 | 14 |  6.52  |
+| 11_5_6 | 136 | 7531401 | 1117631 | 60.60 | 590789 | 205988 | 654709.3  |  5  | 12 | 7.81 | 
+| 13_4_1 | 216 | 7296160 | 1167888 | 60.75 | 500937 | 120765 | 535202.8 | 5 | 17 |  9.42 |
+| 14_4_6 (has warning)| 150 | 7534545 | 1101709 | 60.60 | 654969 | 228788 | 677489.1 | 5 | 11 |  7.78 |
