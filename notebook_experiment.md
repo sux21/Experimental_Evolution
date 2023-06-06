@@ -44,7 +44,7 @@ See this website for explanation of Kmer content: https://www.bioinformatics.bab
 <img width="600" alt="Screenshot 2023-06-01 at 5 28 50 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/2bb7eb05-5ee2-4f80-8fe2-33820f010768">
 <img width="600" alt="Screenshot 2023-06-01 at 5 29 10 PM" src="https://github.com/sux21/Su_Xingyuan_Summer_2023/assets/132287930/e3c03b40-b403-4df6-a119-499ca7055b38">
 
-# 19Genome assembly 
+# Genome assembly 
 ## Quast
 ### 52 samples from from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets
 |#| sample | # scaffolds | total length | largest scaffold | GC (%) | N50 | N90 | auN | L50 | L90 | # N's per 100 kbp  |
