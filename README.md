@@ -132,7 +132,13 @@ vi running_quast.sh
 ```
 ```
 #!/bin/bash 
-for R1 in 10_1_8_*R1_P_* 10_1_9_*R1_P_* 10_7_6_*R1_P_* 11_4_2_*R1_P_* 11_4_4_*R1_P_* 11_5_6_*R1_P_* 13_4_1_*R1_P_* 14_4_6_*R1_P_* 14_5_3_*R1_P_* 15_4_4_*R1_P_* 15_4_6_*R1_P_* 16_1_6_*R1_P_* 16_1_7_*R1_P_* 16_1_8_*R1_P_* 16_4_2_*R1_P_* 16_4_3_*R1_P_* 16_6_6_*R1_P_* 17_2_1_*R1_P_* 17_2_8_*R1_P_* 17_2_9_*R1_P_* 18_1_4_*R1_P_* 18_1_5_*R1_P_* 19_1_1_*R1_P_* 19_5_8_*R1_P_* 2_2_5_*R1_P_* 2_5_2_*R1_P_* 2_6_4_*R1_P_* 3_1_5_*R1_P_* 3_2_1_*R1_P_* 3_2_3_*R1_P_* 3_2_6_*R1_P_* 3_2_7_*R1_P_* 3_3_5_*R1_P_* 3_3_7_*R1_P_* 3_3_9_*R1_P_* 4_1_2_*R1_P_* 4_1_4_*R1_P_* 4_2_1_*R1_P_* 6_4_5_*R1_P_* 6_4_7_*R1_P_* 6_7_5_*R1_P_* 7_1_2_*R1_P_* 7_1_5_*R1_P_* 7_6_3_*R1_P_* 7_6_9_*R1_P_* 7_7_2_*R1_P_* 7_7_3_*R1_P_* 8_4_10_*R1_P_* 8_4_4_*R1_P_* 9_3_7_*R1_P_* 9_7_6_*R1_P_* 9_7_9_*R1_P_* 
+for sample in *?_?_?
 do
-quast -m 0 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}/quast_results /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}/scaffolds
+
+echo quast -m 0 -o /home/xingyuan/rhizo_ee/spades_assembly/$sample
+/home/xingyuan/rhizo_ee/spades_assembly/$sample/scaffolds.fasta
+done
 ```
+| sample | # contigs | total length | largest contig | GC (%) | N50 | N90 | auN | L50 | L90 | # N's per 100 kbp  |
+| :----: | :----:    | :----:       | :---:          | :--:   | :--:|:---:|:--: |:--: |:--: | :--:               |
+| 10_1_8 | 269 |  7698930 | 928458 | 60.61 | 400806 | 116845 | 436794.2 | 7 | 21 | 5.03 |
