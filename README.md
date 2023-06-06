@@ -1,5 +1,5 @@
 # Experimental Evoluntion Strains
-Bioinformatics project on Rhizobium leguminosarum 
+Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on INFO server, node info114. 
 
