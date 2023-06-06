@@ -131,9 +131,11 @@ quast.py -m 0 scaffolds.fasta
 quast -m 0 scaffolds.fasta 
 ```
 ### 2. Run Spine on scaffolds
+Version: 0.3.2
+
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
 ``` 
-spine.pl -f /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta 10_1_8_2020 -o /home/xingyuan/rhizo_ee/core_genome
+spine.pl -f /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta 2020-10_1_8 -o /home/xingyuan/rhizo_ee/core_genome
 ```
 
 
