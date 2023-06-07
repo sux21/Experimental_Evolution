@@ -3,7 +3,10 @@ Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on INFO server, node info114. 
 
-# Questions to ask during the Monday meeting
+# Key questions in this project
+1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
+2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
+3. Can we detect HGT by examining presence/absence variation? 
 
 # Step 1 - Genome Assembly using SPAdes <br>
 
