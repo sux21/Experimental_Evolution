@@ -138,7 +138,7 @@ Version: 0.3.2
 
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
 ``` 
-perl spine.pl -f /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta 2020-10_1_8 -o /home/xingyuan/rhizo_ee/spine_core_genome
+spine.pl -f /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta 2020-10_1_8 
 ```
 
 
