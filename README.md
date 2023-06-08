@@ -161,7 +161,7 @@ source activate sns
 
 Run Spine:
 ```
-ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' 
+ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
 
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/config.txt 
 ```
