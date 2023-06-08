@@ -167,7 +167,8 @@ source activate sns
 Run Spine:
 ```
 vi running-spine.sh
-``` 
+```
+```
 #!/bin/bash 
 for i in *.fasta
 do
