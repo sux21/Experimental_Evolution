@@ -145,7 +145,7 @@ vi copy.sh
 for i in 10_1_8 13_4_1 15_4_6 16_4_2 17_2_8 19_1_1 2_6_4 3_2_6 3_3_9 6_4_5 7_1_5 7_7_3 9_7_6 10_1_9 11_4_2 14_4_6 16_1_6 16_4_3 17_2_9 19_5_8 3_1_5 3_2_7 4_1_2 6_4_7 7_6_3 8_4_10 9_7_9 10_7_6 11_4_4 14_5_3 16_1_7 16_6_6 18_1_4 2_2_5 3_2_1 3_3_5 4_1_4 6_7_5 7_6_9 8_4_4 11_5_6 15_4_4 16_1_8 17_2_1 18_1_5 2_5_2 3_2_3 3_3_7 4_2_1 7_1_2 7_7_2 9_3_7
 do
 
-cp /home/xingyuan/rhizo_ee/spades_assembly/$i/scaffolds.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$i-scaffolds.fasta"
+ln -s /home/xingyuan/rhizo_ee/spades_assembly/$i/scaffolds.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$i-scaffolds.fasta"
 done
 ```
 ```
@@ -166,20 +166,10 @@ source activate sns
 
 Run Spine:
 ```
-vi running-spine.sh
+ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' 
+
+spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/config.txt 
 ```
-```
-#!/bin/bash 
-for i in *.fasta
-do
-
-echo spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/$i     $i      fasta -o /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/${i%.fasta}
-done 
-
-spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/10_1_8-scaffolds.fasta 10_1_8-scaffolds.fasta  fasta -o /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/10_1_8-scaffolds
-```
-
-
 
 
 
