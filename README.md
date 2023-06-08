@@ -147,24 +147,15 @@ cp /home/xingyuan/rhizo_ee/spades_assembly/$i/scaffolds.fasta /home/xingyuan/rhi
 done
 ```
 
-Install Spine following instructions on https://github.com/Alan-Collins/Spine-Nucmer-SNPs:
-```
-conda config --append channels conda-forge
-conda config --append channels bioconda
-
-# Create conda environment called "sns" for installation and install conda package
-conda create -n sns -c alan-collins spine-nucmer-snps
-
-# activate sns
-source activate sns
-```
+Install Spine following instructions on https://github.com/Alan-Collins/Spine-Nucmer-SNPs.
 
 Run Spine:
 ```
 ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
 
-spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/config.txt 
+spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
+
 
 
 
