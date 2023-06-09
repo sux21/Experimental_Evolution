@@ -4,6 +4,7 @@
 **Command:**
 ```
 #!/bin/bash
+for i in 
 read firstline; echo $firstline
 while read line;
 do
