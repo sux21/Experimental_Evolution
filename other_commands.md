@@ -1,18 +1,16 @@
 # Lists of other commands 
-**Task: for 52 scaffolds.fasta files, copy the largest scaffolds, rename it with its sample id, and store all of them in a single fasta file**
 
-**Command:**
+**use a script (filename.sh) to extract the first entry and rename the first line with sample ID**
 ```
 #!/bin/bash
-for i in 
-read firstline; echo $firstline
+read firstline;
+sampleid=${firstline//>/> 10_1_8-}
+echo $sampleid 
 while read line;
 do
   if [[ $line =~ ">" ]]; then
-  sampleid=${line//>/> 10_1_8}
   exit;
   fi
-echo $sampleid 
-echo $line
-done
+echo $line      
+done 
 ```
