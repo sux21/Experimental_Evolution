@@ -139,7 +139,7 @@ quast -m 0 scaffolds.fasta
 for i in Rht*
 do
 
-quast $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
+/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
 done
 ```
 
