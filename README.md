@@ -133,6 +133,16 @@ quast.py -m 0 scaffolds.fasta
 ```
 quast -m 0 scaffolds.fasta 
 ```
+**Samples: 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
+```
+#!/bin/bash 
+for i in Rht*
+do
+
+quast $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
+done
+```
+
 ### 2. Run Spine on scaffolds
 Version: 0.3.2
 
