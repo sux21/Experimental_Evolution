@@ -16,19 +16,14 @@ while read line; do
   fi
   if [ $i -eq 1 ]; then
     sampleid=${line//>/> $x-}
-    echo $sampleid
-#    sampleid=${line}
-#    echo $line      
+    echo $sampleid  
   fi
 
 done < /home/xingyuan/rhizo_ee/spades_assembly/$x/scaffolds.fasta > $x-largest_scaffold.fasta
-# done < /home/xingyuan/rhizo_ee/spades_assembly/$x/scaffolds.fasta 
 
 done 
 
 
 ### put into order
 cat `ls -1S *largest_scaffold.fasta` > ordered_largest_scaffolds.fasta
-
-
 ```
