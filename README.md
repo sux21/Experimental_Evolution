@@ -153,8 +153,11 @@ do
 done
 ```
 
-### 2. Run Spine on scaffolds
+# Step 2 - Average Nucleotide Identity analysis 
+### 1. Run Spine to find core genome 
 Version: 0.3.2
+
+Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
 Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
@@ -176,32 +179,7 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-# Step 2 - Average Nucleotide Identity analysis
-
-### 1. Annoate contigs by Prokka 
-Version: 1.14.6 <br>
-Work done on MacBook-Pro
-
-**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
-
-```
-prokka 
-```
-
-### 2. Find pan genome by Roary 
-
-**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
-
-```
-roary -f ./demo -e -n -v ./gff/*.gff 
-
--f output dir
--e create a multiFASTA alignment of core genes using PRANK
--n fast core gene alignment with MAFFT, use with -e, 
--v verbose output to STDOUT, 
-*.gff. input files
-```
-
+### 2. Run Nucmer 
 # Step 3 - Presence-Absence Variation analysis
 1. Gene prediction by Glimmer 
 https://academic.oup.com/bioinformatics/article/23/6/673/419055
