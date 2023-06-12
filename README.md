@@ -1,7 +1,7 @@
 # Experimental Evoluntion Strains
 Bioinformatics project on *Rhizobium leguminosarum*
 
-Work done on INFO server, node info114 and my local computer, MacBook-Pro. 
+Work done on INFO server, node info114 and my local computer, MacBook-Pro. Both use bash shell. 
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
@@ -21,7 +21,8 @@ ls *.gz | wc -l
 ```
 
 ### 1. Run FastQC for raw data
-Versions: FastQC v0.11.5
+Versions: FastQC v0.11.5 <br>
+Work done on info114
 
 **Sample: 1_1_2**
 
@@ -35,12 +36,15 @@ nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads *gz &
 ```
 
 ### 2. Run MultiQC for raw data
+Version: MultiQC v1.9 <br>
+Work done on info114
+
 ```
 multiqc . 
 ```
 ### 3. Run Trimmomatic 
-Version: 0.39
-
+Version: 0.39 <br>
+Work done on info114
 
 **Sample: 1_1_2**
 ```
@@ -68,6 +72,9 @@ nohup bash run_trimmomatic.sh &
 ```
 
 ### 4. Run FastQC for trimmed reads 
+Versions: FastQC v0.11.5 <br>
+Work done on info114
+
 **Sample: 1_1_2**
 
 Run FastQC: 
@@ -81,7 +88,8 @@ nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* &
 ```
 
 ### 5. Run MultiQC for trimmed reads
-Version: MultiQC v1.9
+Version: MultiQC v1.9 <br>
+Work done on info114
 
 **All 363 samples (726 files)**
 ```
@@ -90,7 +98,8 @@ multiqc .
 
 ## During Assembly 
 ### 1. Run SPAdes 
-Version: 3.15.2
+Version: 3.15.2 <br>
+Work done on info114
 
 **Sample: 1_1_2**
 ```
@@ -123,7 +132,8 @@ nohup spades.py --plasmid -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz 
 
 ## After Assembly 
 ### 1. Run Quast on scaffolds
-Version: 5.2.0, 3d87c606
+Version: 5.2.0, 3d87c606 <br>
+Work done on info114 
 
 **Sample: 1_1_2** <br>
 ```
@@ -147,13 +157,13 @@ done
 Version: 0.3.2
 
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
-Copy scaffolds.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
+Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
 ```
 #!/bin/bash 
 for i in 10_1_8 13_4_1 15_4_6 16_4_2 17_2_8 19_1_1 2_6_4 3_2_6 3_3_9 6_4_5 7_1_5 7_7_3 9_7_6 10_1_9 11_4_2 14_4_6 16_1_6 16_4_3 17_2_9 19_5_8 3_1_5 3_2_7 4_1_2 6_4_7 7_6_3 8_4_10 9_7_9 10_7_6 11_4_4 14_5_3 16_1_7 16_6_6 18_1_4 2_2_5 3_2_1 3_3_5 4_1_4 6_7_5 7_6_9 8_4_4 11_5_6 15_4_4 16_1_8 17_2_1 18_1_5 2_5_2 3_2_3 3_3_7 4_2_1 7_1_2 7_7_2 9_3_7
 do
 
-cp /home/xingyuan/rhizo_ee/spades_assembly/$i/scaffolds.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$i-scaffolds.fasta"
+cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$i-contigs.fasta"
 done
 ```
 
@@ -165,6 +175,44 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
+
+# Step 2 - Average Nucleotide Identity analysis
+
+### 1. Annoate contigs by Prokka 
+Version: 1.14.6 <br>
+Work done on MacBook-Pro
+
+**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
+
+```
+prokka 
+```
+
+### 2. Find pan genome by Roary 
+
+**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
+
+```
+roary -f ./demo -e -n -v ./gff/*.gff 
+
+-f output dir
+-e create a multiFASTA alignment of core genes using PRANK
+-n fast core gene alignment with MAFFT, use with -e, 
+-v verbose output to STDOUT, 
+*.gff. input files
+```
+
+# Step 3 - Presence-Absence Variation analysis
+1. Gene prediction by Glimmer 
+https://academic.oup.com/bioinformatics/article/23/6/673/419055
+
+2. Protein function prediction by InterProScan (omit genes greater than or equal to 5000bp)
+https://academic.oup.com/bioinformatics/article/30/9/1236/237988
+
+3. Cluster genes by CD-HIT (minimum identity set to 90%, -aL and -AL set to 70%
+https://academic.oup.com/bioinformatics/article/17/3/282/189639?login=false 
+
+
 
 
 
