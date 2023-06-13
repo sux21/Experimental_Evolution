@@ -11,15 +11,6 @@ Work done on INFO server, node info114 and my local computer, MacBook-Pro. Both 
 # Step 1 - Genome Assembly using SPAdes <br>
 
 ## Before Assembly
-Create symbolic link for raw reads:
-```
-ln -s /2/scratch/batstonelab/RltEE2020-PE_reads/*gz .
-```
-Check the number of files:
-```
-ls *.gz | wc -l
-```
-
 ### 1. Run FastQC for raw data
 Versions: FastQC v0.11.5 <br>
 Work done on info114
