@@ -169,10 +169,16 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-### 2. Run ??? to align core genomes (Need a program to accept fasta file with multiple entries)
-Version: build date Feb 13 2015 at 05:57:13
+### 2. Run Clustal Omega to align core genomes 
+Version: 
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
+```
+cat *core.fasta > tmp_core.fasta
+```
+```
+clustalo -i tmp_core.fasta -o clustalo.aln -v --threads=5
+```
 
 
 ### 3. Run IQ-TREE to 
