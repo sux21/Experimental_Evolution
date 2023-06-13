@@ -144,7 +144,8 @@ do
 done
 ```
 
-# Step 2 - Average Nucleotide Identity analysis 
+# Step 2 - Data Analysis
+## Average Nucleotide Identity analysis 
 ### 1. Run Spine to find core genome 
 Version: 0.3.2
 
@@ -176,14 +177,14 @@ Version: build date Feb 13 2015 at 05:57:13
 
 ### 3. Run IQ-TREE to 
 
-# Step 3 - Presence-Absence Variation analysis
-1. Gene prediction by Glimmer 
+## Presence-Absence Variation analysis
+### 1. Gene prediction by Glimmer 
 https://academic.oup.com/bioinformatics/article/23/6/673/419055
 
-2. Protein function prediction by InterProScan (omit genes greater than or equal to 5000bp)
+### 2. Protein function prediction by InterProScan (omit genes greater than or equal to 5000bp)
 https://academic.oup.com/bioinformatics/article/30/9/1236/237988
 
-3. Cluster genes by CD-HIT (minimum identity set to 90%, -aL and -AL set to 70%
+### 3. Cluster genes by CD-HIT (minimum identity set to 90%, -aL and -AL set to 70%
 https://academic.oup.com/bioinformatics/article/17/3/282/189639?login=false 
 
 
