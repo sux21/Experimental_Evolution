@@ -145,7 +145,7 @@ done
 ```
 
 # Step 2 - Data Analysis
-## Average Nucleotide Identity analysis 
+## Most Probable Ancestors
 ### 1. Run Spine to find core genome 
 Version: 0.3.2
 
