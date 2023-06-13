@@ -1,4 +1,4 @@
-# Experimental Evoluntion Strains
+# 2020 Experimental Evoluntion Strains
 Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on INFO server, node info114 and my local computer, MacBook-Pro. Both are bash shell. 
