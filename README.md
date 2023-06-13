@@ -183,10 +183,13 @@ clustalo -i tmp_core.fasta -o clustalo.aln -v --threads=5
 
 
 ### 3. Run IQ-TREE to build phylogenetic tree
-Version:
+Version: 2.2.0
 
 ```
-iqtree -s example.phy -m MFP -B 1000 (-m  perform ModelFinder to find best-fit model)  (-B number of bootstrap replicates, recommend 1000)
+iqtree2 -s example.phy --alrt 1000 -B 1000 -T 4 
+
+-B      number of bootstrap replicates, recommend 1000
+-T      number of CPU cores to use
 ```
 
 ## Presence-Absence Variation analysis
