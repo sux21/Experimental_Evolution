@@ -186,9 +186,11 @@ clustalo -i tmp_core.fasta -o clustalo.aln -v --threads=5
 Version: 2.2.0
 
 ```
-iqtree2 -s example.phy --alrt 1000 -B 1000 -T 4 
+iqtree2 -s example.phy -alrt 1000 -B 1000 -T 4 
 
--B      number of bootstrap replicates, recommend 1000
+-s      alignmenet file required for input
+-alrt   number of bootstrap replicates for SH-like approximate likelihood ratio test
+-B      number of bootstrap replicates
 -T      number of CPU cores to use
 ```
 
