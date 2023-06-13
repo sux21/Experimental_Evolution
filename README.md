@@ -181,7 +181,10 @@ clustalo -i tmp_core.fasta -o clustalo.aln -v --threads=5
 ```
 
 
-### 3. Run IQ-TREE to 
+### 3. Run IQ-TREE to build phylogenetic tree
+```
+iqtree -s example.phy -m MFP -B 1000 (-m  perform ModelFinder to find best-fit model)  (-B number of bootstrap replicates, recommend 1000)
+```
 
 ## Presence-Absence Variation analysis
 ### 1. Gene prediction by Glimmer 
