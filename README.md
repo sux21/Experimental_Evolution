@@ -147,7 +147,8 @@ done
 # Step 2 - Data Analysis
 ## Most Probable Ancestors
 ### 1. Run Spine to find core genome 
-Version: 0.3.2
+Version: 0.3.2 <br>
+Work done on info114. 
 
 Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
@@ -170,7 +171,7 @@ spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.tx
 ```
 
 ### 2. Run Clustal Omega to align core genomes 
-Version: 
+Version: 1.2.1
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
 ```
@@ -182,6 +183,8 @@ clustalo -i tmp_core.fasta -o clustalo.aln -v --threads=5
 
 
 ### 3. Run IQ-TREE to build phylogenetic tree
+Version:
+
 ```
 iqtree -s example.phy -m MFP -B 1000 (-m  perform ModelFinder to find best-fit model)  (-B number of bootstrap replicates, recommend 1000)
 ```
