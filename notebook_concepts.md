@@ -37,5 +37,9 @@ This chart is not shown if the sample doesn’t contain any indels. <br>
 - **Insert Size Across Reference:** This plot provides the insert size distribution across the reference. Insert size is collected from the SAM alignment field TLEN. Only positive values are taken into account. To construct the plot mean insert size is computed for each window. <br>
 - **Insert Size Histogram:** Histogram of insert size distribution. To construct the histogram all collected insert size values (number of read alignments of a certain insert size) are seprated in bins. The default number of bins is 50. The number of reads in the bin will be the sum from insert size of the bins. The detailed values for insert are reported in raw data report. <br>
 
+# Phylogenetics
+## Maximum likelihood approach of estimating evolutionary trees
+[Felsenstein, J. (1981). Evolutionary trees from DNA sequences: A maximum likelihood approach. Journal of Molecular Evolution, 17(6), 368–376](https://github.com/sux21/2020_Experimental_Evoluntion/files/11741445/felsenstein1981.pdf).
+
 
 
