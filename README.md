@@ -221,6 +221,10 @@ Traceback (most recent call last):
     "{!r}".format(kwargs))
 ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'} or {'basey', 'subsy', nonposy'}.  You passed {'nonpositive': 'clip'}
 ```
+#### (5) Run get_snps_support_MP.py
+```
+paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
+```
 
 ## Presence-Absence Variation analysis
 ### 1. Gene prediction by Glimmer 
