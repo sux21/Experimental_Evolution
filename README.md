@@ -170,7 +170,7 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-### 2. Run Clustal Omega to align core genomes 
+### 2. Run Clustal Ω to align core genomes 
 Version: 1.2.1
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
