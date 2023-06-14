@@ -146,14 +146,13 @@ done
 
 # Step 2 - Data Analysis
 ## Most Probable Ancestors
-### 1. Run Spine to find core genome 
-Version: 0.3.2 <br>
-Work done on info114. 
-
+### Method 1: Spine-Nucmer-SNPs 
 Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
+
 Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
+
 ```
 #!/bin/bash 
 for i in 10_1_8 13_4_1 15_4_6 16_4_2 17_2_8 19_1_1 2_6_4 3_2_6 3_3_9 6_4_5 7_1_5 7_7_3 9_7_6 10_1_9 11_4_2 14_4_6 16_1_6 16_4_3 17_2_9 19_5_8 3_1_5 3_2_7 4_1_2 6_4_7 7_6_3 8_4_10 9_7_9 10_7_6 11_4_4 14_5_3 16_1_7 16_6_6 18_1_4 2_2_5 3_2_1 3_3_5 4_1_4 6_7_5 7_6_9 8_4_4 11_5_6 15_4_4 16_1_8 17_2_1 18_1_5 2_5_2 3_2_3 3_3_7 4_2_1 7_1_2 7_7_2 9_3_7
@@ -163,35 +162,64 @@ cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo
 done
 ```
 
-Run Spine:
+#### (1) Run Spine
+Version: 0.3.2 <br>
+Work done on info114. 
+
 ```
 ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
 
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-### 2. Run Clustal Ω to align core genomes 
-Version: 1.2.1
-
-**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
-```
-cat *core.fasta > tmp_core.fasta
-```
-```
-clustalo -i tmp_core.fasta -o clustalo.aln -v --threads=5
-```
-
-
-### 3. Run IQ-TREE to build phylogenetic tree
-Version: 2.2.0
+#### (2) Run Nucmer 
+Version: 3.1 <br>
+Work done on info114
 
 ```
-iqtree2 -s example.phy -alrt 1000 -B 1000 -T 4 
+ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
+```
 
--s      alignmenet file required for input
--alrt   number of bootstrap replicates for SH-like approximate likelihood ratio test
--B      number of bootstrap replicates
--T      number of CPU cores to use
+#### (3) Run snps2fasta.py
+Work done on info114
+```
+python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
+
+-r reference backbone fasta file
+-f output fasta file
+-p regex pattern to capture genome ID from filename for use as fasta header and rowname in snp matrix
+```
+
+#### (4) Run fasta2diffmat.py
+Work done on info114
+
+```
+python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -ct 2500
+
+-f input aligned multifasta file produced by snps2fasta.py script
+-d output filename with .pkl extension for pickled distance dict of format {(Genome1, Genome2) : #SNPs_between_them}
+-t number of threads to use. Default: 1
+-g filename for histogram of snp distances
+-c filename for histogram of realtively highly related assemblies snp distances
+-ct threshold for histogram of realtively highly related assemblies snp distances. Plots a histogram of only the SNP distances below this level
+
+ERROR:
+[xingyuan@info114 SNPS]$ python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -ct 2500
+reading in fasta
+Traceback (most recent call last):
+  File "fasta2diffmat.py", line 141, in <module>
+    plt.yscale('log', nonpositive='clip')
+  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/pyplot.py", line 3084, in yscale
+    return gca().set_yscale(value, **kwargs)
+  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/axes/_base.py", line 3704, in set_yscale
+    ax.yaxis._set_scale(value, **kwargs)
+  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/axis.py", line 767, in _set_scale
+    self._scale = mscale.scale_factory(value, self, **kwargs)
+  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/scale.py", line 569, in scale_factory
+    return _scale_mapping[scale](axis, **kwargs)
+  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/scale.py", line 249, in __init__
+    "{!r}".format(kwargs))
+ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'} or {'basey', 'subsy', nonposy'}.  You passed {'nonpositive': 'clip'}
 ```
 
 ## Presence-Absence Variation analysis
