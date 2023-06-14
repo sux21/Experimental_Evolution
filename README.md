@@ -145,7 +145,7 @@ done
 ```
 
 # Step 2 - Data Analysis
-## Most Probable Ancestors
+## How closely related a subset of the experimentally evolved isolates are to the 2008 strain set?
 ### Method 1: Spine-Nucmer-SNPs 
 Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
