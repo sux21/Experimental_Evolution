@@ -238,15 +238,20 @@ ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'}
 paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
 ```
 
-## Presence-Absence Variation analysis
-### 1. Gene prediction by Glimmer 
-https://academic.oup.com/bioinformatics/article/23/6/673/419055
+### Method 2
+#### (1) Run Prokka
+Version: 1.12-beta <br>
+Work on info114
+```
+prokka  --kingdom Bacteria --genus Rhizobium --locustag sampleName --cpus 5 --outdir sampleName --citation contigs.fasta
 
-### 2. Protein function prediction by InterProScan (omit genes greater than or equal to 5000bp)
-https://academic.oup.com/bioinformatics/article/30/9/1236/237988
-
-### 3. Cluster genes by CD-HIT (minimum identity set to 90%, -aL and -AL set to 70%
-https://academic.oup.com/bioinformatics/article/17/3/282/189639?login=false 
+--citation Print citation for referencing Prokka
+--outdir Output folder [auto] (default '')
+--cpus Number of CPUs to use [0=all] (default '8')
+--kingdom Annotation mode: Archaea|Bacteria|Mitochondria|Viruses (default 'Bacteria')
+--genus Genus name (default 'Genus')
+--locustag Locus tag prefix [auto] (default '')
+```
 
 
 
