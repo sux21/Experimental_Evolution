@@ -25,5 +25,38 @@ done
 
 
 ### put into order
-cat `ls -1S *largest_scaffold.fasta` > ordered_largest_scaffolds.fasta
+cat `ls -1S *largest_scaffold.fasta` > ordered_largest_scaffolds.fasta 
 ```
+
+```
+### Find a gene in a genome
+
+### Make the genome the reference 
+#!/bin/bash
+for i in *.fasta; do
+echo "makeblastdb -in $i -title "${i%.fasta}" -dbtype nucl"
+done
+
+### download the gene fasta file from NCBI and use it as a query 
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/*.fasta; do
+x=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
+
+if [[ $x =~ "contigs" ]]; then
+    y=${x%-contigs.fasta}
+fi
+
+if [[ $x =~ "Rht" ]]; then
+    y=${x%.fasta}
+fi
+
+blastn -query NZ_CP050089.1[121783..123303].fa -out $y-nifD.blast -db $i
+
+done
+```
+
+
+
+
+
+
