@@ -39,6 +39,7 @@ This chart is not shown if the sample doesn’t contain any indels. <br>
 
 # Blast
 - [bit score](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/glossary.html#:~:text=The%20bit%20score%20represents%20the,database%20and%20matrix%20scaling%20parameters.): information content in a sequence alignment. It is expressed in base 2 log units. 
+- [E value](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/glossary.html#EXPECT):the number of alignments with a particular score, or a better score, that are expected to occur by chance when comparing two random sequences.
 
 # Phylogenetics
 ## Maximum likelihood approach of estimating evolutionary trees
