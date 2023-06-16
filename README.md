@@ -180,10 +180,9 @@ Work done on info114.
 
 ```
 ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
-
+```
+```
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
-
--f input sequence files
 ```
 
 #### (2) Run Nucmer 
@@ -192,34 +191,13 @@ Work done on info114
 
 ```
 ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
-
-
-nucmer [options] <reference file> <query file>
---prefix            output file prefix
-<reference file>    output.backbone.fasta
-<query file>        *.core.fasta
-
-delta-filter [options] <delta file> > <filtered delta file>
--r                     for each reference, leave only the alignments which form the longest consistent set for the reference 
--q                     for each query, leave only the alignments which form the longest consistent set for the query
-<delta file>           core.delta
-<filtered delta file>  core.filter
-
-show-snps [options] <delta file>
--C           do not report SNPs from alignments with an ambiguous mapping, i.e. only report SNPs where the [R] and [Q] columns equal 0 and              do not output these columns
--l           include sequence length information in the output
--r           sort output lines by reference IDs and SNP positions
-<delta file> core.filter
 ```
 
 #### (3) Run snps2fasta.py
 Work done on info114
+
 ```
 python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
-
--r reference backbone fasta file
--f output fasta file
--p regex pattern to capture genome ID from filename for use as fasta header and rowname in snp matrix
 ```
 
 #### (4) Run fasta2diffmat.py
@@ -227,13 +205,6 @@ Work done on info114
 
 ```
 python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -ct 2500
-
--f input aligned multifasta file produced by snps2fasta.py script
--d output filename with .pkl extension for pickled distance dict of format {(Genome1, Genome2) : #SNPs_between_them}
--t number of threads to use. Default: 1
--g filename for histogram of snp distances
--c filename for histogram of realtively highly related assemblies snp distances
--ct threshold for histogram of realtively highly related assemblies snp distances. Plots a histogram of only the SNP distances below this level
 
 ERROR:
 [xingyuan@info114 SNPS]$ python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -ct 2500
@@ -258,22 +229,19 @@ ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'}
 paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
 ```
 
-### Method 2
-
-    
-
+### Method 2: average nucleotide diversity
 #### (1) Run Prokka
 Version: 1.12-beta <br>
 Work on info114
-```
-prokka  --kingdom Bacteria --genus Rhizobium --locustag sampleName --cpus 5 --outdir sampleName --citation contigs.fasta
 
---citation Print citation for referencing Prokka
---outdir Output folder [auto] (default '')
---cpus Number of CPUs to use [0=all] (default '8')
---kingdom Annotation mode: Archaea|Bacteria|Mitochondria|Viruses (default 'Bacteria')
---genus Genus name (default 'Genus')
---locustag Locus tag prefix [auto] (default '')
+```
+prokka --locustag 10_1_8.scaffolds --cpus 5 --outdir /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/PROKKA/10_1_8-scaffolds --prefix 10_1_8.scaffolds /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta
+```
+
+#### (2) Run Roary 
+
+```
+roary -p 5 *.gff 
 ```
 
 
