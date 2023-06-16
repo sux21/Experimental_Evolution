@@ -182,6 +182,8 @@ Work done on info114.
 ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
 
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
+
+-f input sequence files
 ```
 
 #### (2) Run Nucmer 
@@ -190,6 +192,24 @@ Work done on info114
 
 ```
 ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
+
+
+nucmer [options] <reference file> <query file>
+--prefix            output file prefix
+<reference file>    output.backbone.fasta
+<query file>        *.core.fasta
+
+delta-filter [options] <delta file> > <filtered delta file>
+-r                     for each reference, leave only the alignments which form the longest consistent set for the reference 
+-q                     for each query, leave only the alignments which form the longest consistent set for the query
+<delta file>           core.delta
+<filtered delta file>  core.filter
+
+show-snps [options] <delta file>
+-C           do not report SNPs from alignments with an ambiguous mapping, i.e. only report SNPs where the [R] and [Q] columns equal 0 and              do not output these columns
+-l           include sequence length information in the output
+-r           sort output lines by reference IDs and SNP positions
+<delta file> core.filter
 ```
 
 #### (3) Run snps2fasta.py
