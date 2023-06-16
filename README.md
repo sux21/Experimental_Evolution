@@ -239,6 +239,9 @@ paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES
 ```
 
 ### Method 2
+
+    
+
 #### (1) Run Prokka
 Version: 1.12-beta <br>
 Work on info114
