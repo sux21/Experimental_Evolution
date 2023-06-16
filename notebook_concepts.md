@@ -41,6 +41,9 @@ This chart is not shown if the sample doesn’t contain any indels. <br>
 - [bit score](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/glossary.html#:~:text=The%20bit%20score%20represents%20the,database%20and%20matrix%20scaling%20parameters.): information content in a sequence alignment. It is expressed in base 2 log units. 
 - [E value](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/glossary.html#EXPECT): the number of alignments with a particular score, or a better score, that are expected to occur by chance when comparing two random sequences.
 
+# Average nucleotide identity 
+- it measures genetic relatedness bwteen two strains. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC549018/?tool=pubmed. 
+
 # Phylogenetics
 ## Maximum likelihood approach of estimating evolutionary trees
 [Felsenstein, J. (1981). Evolutionary trees from DNA sequences: A maximum likelihood approach. Journal of Molecular Evolution, 17(6), 368–376](https://github.com/sux21/2020_Experimental_Evoluntion/files/11741445/felsenstein1981.pdf).
