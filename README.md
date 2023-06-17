@@ -1,7 +1,7 @@
 # 2020 Experimental Evoluntion 
 Bioinformatics project on *Rhizobium leguminosarum*
 
-Work done on INFO server, node info114. 
+Work done on INFO cluster. 
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
