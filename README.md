@@ -1,7 +1,7 @@
 # 2020 Experimental Evoluntion 
 Bioinformatics project on *Rhizobium leguminosarum*
 
-Work done on INFO cluster. 
+Work done on INFO server and graham.computecanada.ca server. All files are stored on info server, compute canada server is used only when a program cannot be ru
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
@@ -228,9 +228,21 @@ ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'}
 ```
 paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
 ```
-#### (1) FastANI
+#### (6) FastANI
+Version: 1.32 <br>
+Work done on graham.computecanada.ca
+
 ```
-fastANI --ql [QUERY_LIST] --rl [REFERENCE_LIST] --matrix -o fastani.out
+#!/bin/bash
+#SBATCH --time=00-01:00:00
+#SBATCH --account=def-batstone
+
+module load fastani/1.32
+fastANI --ql query_list --rl reference_list --matrix -o fastani.out # query_list contains contigs from 52 2020 samples, reference_list contains contigs from 28 2018 samples
+```
+```
+sbatch fastani.sh
+Submitted batch job 7238556
 ```
 
 ### Method 2: average nucleotide diversity
