@@ -228,6 +228,10 @@ ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'}
 ```
 paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
 ```
+#### (1) FastANI
+```
+fastANI --ql [QUERY_LIST] --rl [REFERENCE_LIST] --matrix -o fastani.out
+```
 
 ### Method 2: average nucleotide diversity
 #### (1) Run Prokka
