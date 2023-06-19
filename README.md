@@ -204,31 +204,10 @@ python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p
 Work done on info114
 
 ```
-python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -ct 2500
+python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 
+```
 
-ERROR:
-[xingyuan@info114 SNPS]$ python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -ct 2500
-reading in fasta
-Traceback (most recent call last):
-  File "fasta2diffmat.py", line 141, in <module>
-    plt.yscale('log', nonpositive='clip')
-  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/pyplot.py", line 3084, in yscale
-    return gca().set_yscale(value, **kwargs)
-  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/axes/_base.py", line 3704, in set_yscale
-    ax.yaxis._set_scale(value, **kwargs)
-  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/axis.py", line 767, in _set_scale
-    self._scale = mscale.scale_factory(value, self, **kwargs)
-  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/scale.py", line 569, in scale_factory
-    return _scale_mapping[scale](axis, **kwargs)
-  File "/home/xingyuan/.local/lib/python3.5/site-packages/matplotlib/scale.py", line 249, in __init__
-    "{!r}".format(kwargs))
-ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'} or {'basey', 'subsy', nonposy'}.  You passed {'nonpositive': 'clip'}
-```
-#### (5) Run get_snps_support_MP.py
-```
-paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
-```
-#### (6) FastANI on core genomes
+#### (5) FastANI on core genomes
 Version: 1.32 <br>
 Work done on graham.computecanada.ca
 
