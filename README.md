@@ -228,7 +228,7 @@ ValueError: provided too many kwargs, can only pass {'basex', 'subsx', nonposx'}
 ```
 paste <(ls ../NUCMER/*.snps) <(ls ../SPINE/*.core_coords.txt) <(ls ../ASSEMBLIES/*.fasta) <(ls ../SAMS/*.sam) <(ls ../SAMS/) | awk '{gsub("../SAMS/","",$5)}1 {gsub(".sam","",$5)}1' | sed 's/ /\t/g' > config.txt
 ```
-#### (6) FastANI
+#### (6) FastANI on core genomes
 Version: 1.32 <br>
 Work done on graham.computecanada.ca
 
