@@ -233,24 +233,7 @@ Work done on info2020
 ```
 /usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out # query_list contains contigs from 52 2020 samples, reference_list contains contigs from 28 2018 samples
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Method 2: Prokka-Roary-
 (1) Run Prokka
 Version: 1.12-beta <br>
 Work on info114
@@ -263,6 +246,20 @@ prokka --locustag 10_1_8.scaffolds --cpus 5 --outdir /home/xingyuan/rhizo_ee/200
 
 ```
 roary -p 5 *.gff 
+```
+
+## Step 2: Presence and Absence of Genes
+### Method 1 - Glimmer-InterProScan-CDHIT
+Method is taken from Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti. https://journals.asm.org/doi/10.1128/mSphere.00386-18. 
+#### (1) Glimmer
+http://ccb.jhu.edu/software/glimmer/index.shtml 
+
+[glim302notes.pdf](https://github.com/sux21/2020_Experimental_Evoluntion/files/11793551/glim302notes.pdf)
+
+https://academic.oup.com/bioinformatics/article/23/6/673/419055
+
+```
+glimmer3 [options] <sequence-file> <icm-file> <tag>
 ```
 
 
