@@ -132,7 +132,7 @@ done
 ```
 
 # Step 2 - Data Analysis
-## Question 1 - How closely related a subset of the experimentally evolved isolates are to the 2008 strain set?
+## Step 1 - Find the most related 2008 strain for each 2020 strain 
 ### Method 1: Spine-Nucmer-SNPs 
 Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
@@ -207,7 +207,9 @@ Work done on info114
 python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 
 ```
 
-#### (5) FastANI on core genomes
+#### (5) FastANI on core genomes produced by Spine in step (1)
+Instructions are taken from https://github.com/ParBLiSS/FastANI.
+
 Version: 1.32 <br>
 Work done on graham.computecanada.ca
 
@@ -217,15 +219,39 @@ Work done on graham.computecanada.ca
 #SBATCH --account=def-batstone
 
 module load fastani/1.32
-fastANI --ql query_list --rl reference_list --matrix -o fastani.out # query_list contains contigs from 52 2020 samples, reference_list contains contigs from 28 2018 samples
+fastANI --ql query_list --rl reference_list --matrix -o fastani.out # query_list contains core genomes output by Spine from 52 2020 samples, reference_list contains core genomes output by Spine from 28 2018 samples
 ```
 ```
 sbatch fastani.sh
 Submitted batch job 7238556
 ```
 
-### Method 2: average nucleotide diversity
-#### (1) Run Prokka
+#### (6) FastANI on contigs
+Version: 1.32 <br>
+Work done on info2020
+
+```
+/usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out # query_list contains contigs from 52 2020 samples, reference_list contains contigs from 28 2018 samples
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(1) Run Prokka
 Version: 1.12-beta <br>
 Work on info114
 
@@ -233,7 +259,7 @@ Work on info114
 prokka --locustag 10_1_8.scaffolds --cpus 5 --outdir /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/PROKKA/10_1_8-scaffolds --prefix 10_1_8.scaffolds /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta
 ```
 
-#### (2) Run Roary 
+ (2) Run Roary 
 
 ```
 roary -p 5 *.gff 
