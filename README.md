@@ -233,6 +233,12 @@ Work done on info2020
 ```
 /usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out # query_list contains contigs from 52 2020 samples, reference_list contains contigs from 28 2018 samples
 ```
+
+#### (7) FastANI using first sequence of the 28 original strains (assume it is chromosome) as reference
+Version: 1.32 <br>
+Work done on info2020
+
+
 ### Method 2: Prokka-Roary-
 (1) Run Prokka
 Version: 1.12-beta <br>
