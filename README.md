@@ -239,7 +239,7 @@ Version: 1.32 <br>
 Work done on info2020
 
 ```
-/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out # query_list contains core genomes from 52 2020 samples, reference_list contains only the first sequences from each 28 2008 samples
+/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out # query_list contains contigs from 52 2020 samples, reference_list contains only the first sequences from each 28 2008 samples
 ```
 
 ### Method 2: Prokka-Roary-
