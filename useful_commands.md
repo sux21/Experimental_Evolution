@@ -7,7 +7,7 @@ for x in 10_1_8 10_1_9 10_7_6 11_4_2 11_4_4 11_5_6 13_4_1 14_4_6 14_5_3 15_4_4 1
  17_2_1 17_2_8 17_2_9 18_1_4 18_1_5 19_1_1 19_5_8 2_2_5 2_5_2 2_6_4 3_1_5 3_2_1 3_2_3 3_2_6 3_2_7 3_3_5 3_3_7 3_3_9 4_1_2 4_1_4
  4_2_1 6_4_5 6_4_7 6_7_5 7_1_2 7_1_5 7_6_3 7_6_9 7_7_2 7_7_3 8_4_10 8_4_4 9_3_7 9_7_6 9_7_9; do
 
-echo "Finished: $x" 
+echo "Start: $x" 
 
 i=0
 while read line; do
@@ -20,6 +20,8 @@ while read line; do
   fi
 
 done < /home/xingyuan/rhizo_ee/spades_assembly/$x/scaffolds.fasta > $x-largest_scaffold.fasta
+
+echo "Finish: $x"
 
 done 
 
