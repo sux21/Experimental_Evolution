@@ -267,8 +267,21 @@ http://ccb.jhu.edu/software/glimmer/index.shtml
 
 https://academic.oup.com/bioinformatics/article/23/6/673/419055
 
+Change directory paths in ``g3-iterated.csh``
 ```
-glimmer3 [options] <sequence-file> <icm-file> <tag>
+Before changes:
+set awkpath = /fs/szgenefinding/Glimmer3/scripts
+set glimmerpath = /fs/szgenefinding/Glimmer3/bin
+set elphbin = /nfshomes/adelcher/bin/elph
+
+After changes:
+set awkpath = /home/xingyuan/tools/glimmer3.02/scripts
+set glimmerpath = /home/xingyuan/tools/glimmer3.02/bin
+set elphbin = /home/xingyuan/tools/ELPH/bin/Linux-i386/elph
+```
+
+```
+g3-iterated.csh /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/contigs.fasta 10_1_8-contigs.iterated
 ```
 
 
