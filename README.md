@@ -138,7 +138,7 @@ Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs.
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
 
-#### Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
+#### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
 ```
 #!/bin/bash 
 for i in 10_1_8 13_4_1 15_4_6 16_4_2 17_2_8 19_1_1 2_6_4 3_2_6 3_3_9 6_4_5 7_1_5 7_7_3 9_7_6 10_1_9 11_4_2 14_4_6 16_1_6 16_4_3 17_2_9 19_5_8 3_1_5 3_2_7 4_1_2 6_4_7 7_6_3 8_4_10 9_7_9 10_7_6 11_4_4 14_5_3 16_1_7 16_6_6 18_1_4 2_2_5 3_2_1 3_3_5 4_1_4 6_7_5 7_6_9 8_4_4 11_5_6 15_4_4 16_1_8 17_2_1 18_1_5 2_5_2 3_2_3 3_3_7 4_2_1 7_1_2 7_7_2 9_3_7
@@ -148,7 +148,40 @@ cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo
 done
 ```
 
-#### Run BWA to map reads back to contigs, and create SAM files
+#### (2) Run Spine
+Version: 0.3.2 <br>
+Work done on info114. 
+
+```
+ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
+```
+```
+spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
+```
+
+#### PAUSE (3) Run Nucmer 
+Version: 3.1 <br>
+Work done on info114
+
+```
+ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
+```
+
+#### PAUSE (4) Run snps2fasta.py
+Work done on info114
+
+```
+python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
+```
+
+#### PAUSE (5) Run fasta2diffmat.py 
+Work done on info114
+
+```
+python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 
+```
+#### PAUSE (6) Run get_snps_support_MP.py
+**Run BWA to map reads back to contigs, and create SAM files**
 Version: 0.7.17-r1188 <br>
 Work done on info114
 
@@ -174,40 +207,7 @@ bwa mem -t 5 ${R1%_*_L002_*gz}-contigs.fasta $x1 $x2 > /home/xingyuan/rhizo_ee/2
 done
 ```
 
-#### (1) Run Spine
-Version: 0.3.2 <br>
-Work done on info114. 
-
-```
-ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
-```
-```
-spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
-```
-
-#### (2) Run Nucmer 
-Version: 3.1 <br>
-Work done on info114
-
-```
-ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
-```
-
-#### (3) Run snps2fasta.py
-Work done on info114
-
-```
-python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
-```
-
-#### (4) Run fasta2diffmat.py
-Work done on info114
-
-```
-python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 
-```
-
-#### (5) FastANI on core genomes produced by Spine in step (1)
+#### (6) FastANI on core genomes produced by Spine in step (1)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
 Version: 1.32 <br>
@@ -219,25 +219,28 @@ Work done on graham.computecanada.ca
 #SBATCH --account=def-batstone
 
 module load fastani/1.32
-fastANI --ql query_list --rl reference_list --matrix -o fastani.out # query_list contains core genomes output by Spine from 52 2020 samples, reference_list contains core genomes output by Spine from 28 2018 samples
+fastANI --ql query_list --rl reference_list --matrix -o fastani.out # query_list contains core genomes output by Spine from 52 2020 samples, reference_list contains core genomes output by Spine from 28 2008 samples
 ```
 ```
 sbatch fastani.sh
 Submitted batch job 7238556
 ```
 
-#### (6) FastANI on contigs
+#### (7) FastANI on contigs
 Version: 1.32 <br>
 Work done on info2020
 
 ```
-/usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out # query_list contains contigs from 52 2020 samples, reference_list contains contigs from 28 2018 samples
+/usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out # query_list contains contigs from 52 2020 samples, reference_list contains all sequences from 28 2008 samples
 ```
 
-#### (7) FastANI using first sequence of the 28 original strains (assume it is chromosome) as reference
+#### (8) FastANI on core genomes produced by Spine in step (1) (using first sequence of the 28 original strains (assume it is chromosome) as reference) 
 Version: 1.32 <br>
 Work done on info2020
 
+```
+/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.contigs.out # query_list contains core genomes from 52 2020 samples, reference_list contains only the first sequences from each 28 2008 samples
+```
 
 ### Method 2: Prokka-Roary-
 (1) Run Prokka
