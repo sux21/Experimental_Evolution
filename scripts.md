@@ -1,5 +1,5 @@
 ```
-### Take out the first scaffold from the multiple samples, and put all scaffolds into a single file from largest to smallest.
+### Take out the first scaffold from each fasta file, and put all scaffolds into a single file ordered from largest to smallest.
 
 ### Take out the largest scaffolds
 #!/bin/bash
