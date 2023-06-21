@@ -297,8 +297,6 @@ k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
 
 if [[ ! -d ${k%.fasta} ]]; then 
    mkdir ${k%.fasta}
-   cd ${k%.fasta}
-   cd ..
 fi
 
 /home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh $j ${k%.fasta}; mv `ls ${k%.fasta}*` ${k%.fasta}/
