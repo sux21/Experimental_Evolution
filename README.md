@@ -259,13 +259,11 @@ roary -p 5 *.gff
 
 ## Step 2: Presence and Absence of Genes
 ### Method 1 - Glimmer-InterProScan-CDHIT
-Method is taken from Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti. https://journals.asm.org/doi/10.1128/mSphere.00386-18. 
-#### (1) Glimmer
-http://ccb.jhu.edu/software/glimmer/index.shtml 
+Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
-[glim302notes.pdf](https://github.com/sux21/2020_Experimental_Evoluntion/files/11793551/glim302notes.pdf)
-
-https://academic.oup.com/bioinformatics/article/23/6/673/419055
+#### (1) Glimmer3
+Version: <br>
+Work done on info114
 
 Change directory paths in ``g3-iterated.csh``
 ```
@@ -302,6 +300,9 @@ fi
 /home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh $j ${k%.fasta}; mv `ls ${k%.fasta}*` ${k%.fasta}/
 done
 ```
+
+#### (2) InterProScan
+Version:
 
 
 
