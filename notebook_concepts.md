@@ -44,9 +44,139 @@ This chart is not shown if the sample doesn’t contain any indels. <br>
 # Average nucleotide identity 
 - it measures genetic relatedness bwteen two strains. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC549018/?tool=pubmed. 
 
-# Phylogenetics
-## Maximum likelihood approach of estimating evolutionary trees
-[Felsenstein, J. (1981). Evolutionary trees from DNA sequences: A maximum likelihood approach. Journal of Molecular Evolution, 17(6), 368–376](https://github.com/sux21/2020_Experimental_Evoluntion/files/11741445/felsenstein1981.pdf).
+# Glimmer3
+Glimmer is a system for finding genes in microbial DNA, especially the genomes of bacteria, archaea, and viruses.
 
+Notes are taken from [glim302notes.pdf](https://github.com/sux21/2020_Experimental_Evoluntion/files/11819304/glim302notes.pdf). 
 
+## Programs:
+**build-icm** <br>
+This program constructs an interpolated context model (ICM) from an input set of sequences. Input is a set of sequences, and output is ICM. 
 
+**glimmer3** <br>
+This is the main program that makes gene preditions. Inputs are sequences and ICM, and outputs are two files: .detail and .predict. 
+
+**long-orfs** <br>
+This program identifies long, non-overlapping open reading frames (orfs) in a DNA sequence
+file. Input is DNA sequence, and output is coordinates. 
+
+**anomaly** <br>
+This program reads a genome sequence and list of gene coordinates for it and reports genes
+with bad start codons, bad stop codons, in-frame stop codons, or frame shifts. 
+
+**build-fixed** <br>
+This program builds a fixed-length interpolated context model from a set of sequences. 
+
+**entropy-profile** <br>
+This program builds a multi-fasta list of gene sequences and determines the natural and
+entropy distributions of all amino acid residues contained in them.
+
+**entropy-score** <br>
+This program reads a genome sequence and a list of gene coordinates for it and computes
+the entropy distance ratio for each gene.
+
+**extract** <br>
+This program reads a genome sequence and a list of coordinates for it and outputs a multifasta
+file of the regions specified by the coordinates.
+
+**multi-extract** <br>
+This program is a multi-fasta version of the extract program.
+
+**score-fixed** <br>
+This program scores a set of fixed-length input sequences using two fixed-length interpolated
+context models.
+
+**start-codon-distrib** <br>
+This program reads a genome sequence and list of coordinates for it and frequencies of the
+start codons of the genes.
+
+**uncovered** <br>
+This program reads a genome sequence and list of coordinates for it and outputs a multifasta
+file contained the regions of the sequences that are NOT contained in any of the
+regions specified in the coordinates file. 
+
+**window-acgt** <br>
+This program finds the distribution of nucleotides in each of a series of windows across a
+DNA sequence.
+
+## Scripts:
+**get-motif-counts.awk** <br>
+Read output of  elph  program and extract the motif count information.  Output it in a format suitable for reading by  glimmer3.
+
+**glim-diff.awk** <br>
+Read gene predictions in a-pred and b-pred and output them side by side. Both must be in sorted order by stop codon and the format for each must be: id  start  stop [additional columns irrelevant].  Also print summary info at end.
+
+**match-list-col.awk** <br>
+Print lines from stdin whose entry in column col is one of the entries occurring in list-file.
+
+**not-acgt.awk** <br>
+Read a fasta input file and find regions consisting of MIN_RUN or more consecutive non-acgt characters in the first string. If there is more than one string, all strings after the first are ignore. Output is one line per region, with start position and end position on each line. Positions are inclusive, counting from 1 so that the first 10 positions of the file are indicated as "1 10".  
+
+**upstream-coords.awk** <br>
+Read gene prediction coordinates from standard input and output the coordinates of the region of length len that is sep bases before the 5' start of the gene.
+
+**g3-from-scratch.csh** <br>
+It first uses program long-orfs to find a training set of (putative) genes and then runs glimmer3 on the result.
+```
+### What you type
+g3-from-scratch.csh genom.seq run1
+
+=
+
+### What it runs
+long-orfs -n -t 1.15 genom.seq run1.longorfs
+extract -t genom.seq run1.longorfs > run1.train
+build-icm -r run1.icm < run1.train
+glimmer3 -o50 -g110 -t30 genom.seq run1.icm run1
+```
+**g3-from-training.csh** <br>
+It uses a given set of gene coordinates to extract a training set and then run glimmer3. It uses the program elphto create a PWM from the region upstream of the start sites in the specified coordinate sets. It also uses the first codons in the training set to estimate the start-codon distribution for the genome.
+
+```
+### What you type
+g3-from-training.csh genom.seq train.coords run2
+
+=
+
+### What it runs
+extract -t genom.seq train.coords > run2.train
+build-icm -r run2.icm < run2.train
+upstream-coords.awk 25 0 train.coords | extract genom.seq - > run2.upstream
+elph run2.upstream LEN=6 | get-motif-counts.awk > run2.motif
+set startuse = ‘start-codon-distrib -3 genom.seq train.coords‘
+glimmer3 -o50 -g110 -t30 -b run2.motif -P $startuse genom.seq run2.icm run2
+```
+
+**g3-iterated.csh** <br>
+It combines g3-from-scratch.csh and g3-from-training.csh. It uses the predictions from the scratch run to create a training set for the second run.
+
+```
+### What you type
+g3-iterated.csh genom.seq run3
+
+=
+
+### What it runs
+long-orfs -n -t 1.15 genom.seq run3.longorfs
+extract -t genom.seq run3.longorfs > run3.train
+build-icm -r run3.icm < run3.train
+glimmer3 -o50 -g110 -t30 genom.seq run3.icm run3.run1
+
+tail +2 run3.run1.predict > run3.coords
+upstream-coords.awk 25 0 run3.coords | extract genom.seq - > run3.upstream
+elph run3.upstream LEN=6 | get-motif-counts.awk > run3.motif
+set startuse = ‘start-codon-distrib -3 genom.seq run3.coords‘
+glimmer3 -o50 -g110 -t30 -b run3.motif -P $startuse genom.seq run3.icm run3
+```
+
+Output files: 
+- <tag>.longorfs - coordinate file of training sequences
+- <tag>.train - the multifasta file of training sequences
+- <tag>.icm - model
+- <tag>.run1.detail - the first Glimmer3 output detail
+- <tag>.run1.predict - the first Glimmer3 predictions
+- <tag>.coords - the training coordinates for starts and the PWM
+- <tag>.upstream - the regions before the starts in <tag>.coords
+- <tag>.motif -  a PWM of the upstream regions
+- <tag>.detail - the final Glimmer3 output detail 
+- <tag>.predict - the final Glimmer3 predictions
