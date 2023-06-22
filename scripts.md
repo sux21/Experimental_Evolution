@@ -58,5 +58,5 @@ done
 ```
 ```
 ### put the gene in a fasta file
-blastn -query NZ_CP050089.1[121783..123303].fa -outfmt "6 sseqid length sseq" -out 10_1_8-nifD -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/10_1_8-contigs.fasta; grep "NODE" 10_1_8-nifD | awk -F ' BEGIN {OFS="\n"}{print ">gene:nifD, sample:10_1_8, which_contig_it_locates:"$1 ", " "gene_length:"$2" bp",$3}' > 10_1_8-nifD.fasta; rm -f 10_1_8-nifD
+blastn -query NZ_CP050089.1[121783..123303].fa -outfmt "6 sseqid length sseq" -out 10_1_8-nifD -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/10_1_8-contigs.fasta; grep "NODE" 10_1_8-nifD | awk -F ' ' 'BEGIN {OFS="\n"}{print ">gene:nifD, sample:10_1_8, which_contig_it_locates:"$1 ", " "gene_length:"$2" bp",$3}' > 10_1_8-nifD.fasta; rm -f 10_1_8-nifD
 ```
