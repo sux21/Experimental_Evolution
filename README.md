@@ -86,11 +86,6 @@ multiqc .
 Version: 3.15.2 <br>
 Work done on info114
 
-**Sample: 1_1_2**
-```
-nohup spades.py --careful -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2 &
-```
-
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
 ```
 #!/bin/bash 
@@ -102,10 +97,14 @@ spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R
 done
 ```
 
-### 2. Run plasmidSPAdes
-**Sample: 1_1_2**
+**Samples: remaining 311 samples**
 ```
-nohup spades.py --plasmid -1 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz -2 1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz -o /home/xingyuan/rhizo_ee/spades_assembly/1_1_2-plasmids &
+#!/bin/bash
+for R1 in *R1*; do
+R2=${R1//R1_P_001.fastq.gz/R2_P_001.fastq.gz}
+
+spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}
+done
 ```
 
 ## After Assembly 
