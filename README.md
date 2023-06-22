@@ -260,8 +260,8 @@ roary -p 5 *.gff
 ### Method 1 - Glimmer-InterProScan-CDHIT
 Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
-#### (1) Glimmer3
-Version: <br>
+#### (1) Glimmer 
+Version: glimmer3.02 <br>
 Work done on info114
 
 Change directory paths in ``g3-iterated.csh``
@@ -301,7 +301,7 @@ done
 ```
 
 #### (2) InterProScan
-Version:
+Version: 
 
 
 
