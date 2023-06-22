@@ -1,4 +1,4 @@
-# 2020 Experimental Evoluntion 
+# 2020 Experimental Evolution 
 Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on info server. Compute canada server will be used if the info server cannot run a program. Results produced by compute canada server will be transferred to info server. 
