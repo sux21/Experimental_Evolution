@@ -112,14 +112,11 @@ done
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**Sample: 1_1_2** <br>
-```
-quast.py -m 0 scaffolds.fasta
-```
 **Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
 ```
 quast -m 0 scaffolds.fasta 
 ```
+
 **Samples: 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
 ```
 #!/bin/bash 
@@ -129,6 +126,8 @@ do
 /home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
 done
 ```
+
+**Samples: remaining 311 samples from 2020 strains**
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related 2008 strain for each 2020 strain 
@@ -158,7 +157,7 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-#### PAUSE (3) Run Nucmer 
+#### (3) Run Nucmer 
 Version: 3.1 <br>
 Work done on info114
 
@@ -166,19 +165,33 @@ Work done on info114
 ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
 ```
 
-#### PAUSE (4) Run snps2fasta.py
+#### (4) Run snps2fasta.py
 Work done on info114
 
 ```
 python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
 ```
 
-#### PAUSE (5) Run fasta2diffmat.py 
-Work done on info114
+#### (5) Run fasta2diffmat.py 
+Work done on graham.computecanada.ca
 
 ```
-python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -t 5 
+#!/bin/bash
+#SBATCH --time=00:30:00
+#SBATCH --account=def-batstone
+
+module load python/3.11.2
+source ~/matplotlib/bin/activate
+
+python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -z -t 20 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -   ct 2500
 ```
+```
+sbatch run_fasta2diffmat.py.sh 
+Submitted batch job 7378589
+```
+![SNP_dist_hist](https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/a3a7d051-efb0-445f-a341-1f640fb467c3)
+![under_2500_SNP_dist_hist](https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/7c4d1244-76a5-4fd5-b486-e69c9bba7405)
+
 #### PAUSE (6) Run get_snps_support_MP.py
 **Run BWA to map reads back to contigs, and create SAM files**
 Version: 0.7.17-r1188 <br>
@@ -206,7 +219,7 @@ bwa mem -t 5 ${R1%_*_L002_*gz}-contigs.fasta $x1 $x2 > /home/xingyuan/rhizo_ee/2
 done
 ```
 
-#### (6) FastANI on core genomes produced by Spine in step (1)
+### Method 2: FastANI on core genomes produced by Spine in Method 1 step (1)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
 Version: 1.32 <br>
