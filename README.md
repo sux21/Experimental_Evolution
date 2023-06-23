@@ -339,6 +339,10 @@ module load interproscan/5.56-89.0
 
 for i in 10_1_8; do
 
+if [[ ! -d "$i" ]]; then
+   mkdir "$i"
+fi
+
 interproscan.sh -cpu 10 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/$i-contigs.fasta -b /path/to/$i
 
 done
