@@ -131,8 +131,8 @@ done
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related 2008 strain for each 2020 strain 
-### Method 1: Spine-Nucmer-SNPs 
-Commands are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
+### Method 1: Spine-Nucmer-SNPs-IQTree
+Commands in steps (1)-(4) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
 
@@ -146,7 +146,7 @@ cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo
 done
 ```
 
-#### (2) Run Spine
+#### (2) Run Spine: find core genomes 
 Version: 0.3.2 <br>
 Work done on info114. 
 
@@ -157,7 +157,7 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-#### (3) Run Nucmer 
+#### (3) Run Nucmer: align core genomes and output SNPs
 Version: 3.1 <br>
 Work done on info114
 
@@ -165,63 +165,19 @@ Work done on info114
 ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
 ```
 
-#### (4) Run snps2fasta.py
+#### (4) Run snps2fasta.py: process SNPs and output aligned fasta
 Work done on info114
 
 ```
 python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
 ```
 
-#### (5) Run fasta2diffmat.py 
-Work done on graham.computecanada.ca
+#### (5) Run IQ-Tree: build phylogeny 
+Version: 1.4.0 <br>
+Work done on info113
 
 ```
-#!/bin/bash
-#SBATCH --time=00:30:00
-#SBATCH --account=def-batstone
-
-module load python/3.11.2
-source ~/matplotlib/bin/activate
-
-python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -z -t 20 -g SNP_dist_hist.png -c under_2500_SNP_dist_hist.png -   ct 2500
-```
-```
-sbatch run_fasta2diffmat.py.sh 
-Submitted batch job 7378589
-```
-SNP_dist_hist.png <br>
-
-![SNP_dist_hist](https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/a3a7d051-efb0-445f-a341-1f640fb467c3)
-
-under_2500_SNP_dist_hist.png <br>
-
-![under_2500_SNP_dist_hist](https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/7c4d1244-76a5-4fd5-b486-e69c9bba7405)
-
-#### PAUSE (6) Run get_snps_support_MP.py
-**Run BWA to map reads back to contigs, and create SAM files**
-Version: 0.7.17-r1188 <br>
-Work done on info114
-
-```
-#!/bin/bash 
-for i in 10_1_8 13_4_1 15_4_6 16_4_2 17_2_8 19_1_1 2_6_4 3_2_6 3_3_9 6_4_5 7_1_5 7_7_3 9_7_6 10_1_9 11_4_2 14_4_6 16_1_6 16_4_3 17_2_9 19_5_8 3_1_5 3_2_7 4_1_2 6_4_7 7_6_3 8_4_10 9_7_9 10_7_6 11_4_4 14_5_3 16_1_7 16_6_6 18_1_4 2_2_5 3_2_1 3_3_5 4_1_4 6_7_5 7_6_9 8_4_4 11_5_6 15_4_4 16_1_8 17_2_1 18_1_5 2_5_2 3_2_3 3_3_7 4_2_1 7_1_2 7_7_2 9_3_7; do
-
-bwa index $i-contigs.fasta
-
-done
-```
-```
-#!/bin/bash 
-for x1 in /home/xingyuan/rhizo_ee/trimmomatic_reads/{10_1_8_*R1_P_*,10_1_9_*R1_P_*,10_7_6_*R1_P_*,11_4_2_*R1_P_*,11_4_4_*R1_P_*,11_5_6_*R1_P_*,13_4_1_*R1_P_*,14_4_6_*R1_P_*,14_5_3_*R1_P_*,15_4_4_*R1_P_*,15_4_6_*R1_P_*,16_1_6_*R1_P_*,16_1_7_*R1_P_*,16_1_8_*R1_P_*,16_4_2_*R1_P_*,16_4_3_*R1_P_*,16_6_6_*R1_P_*,17_2_1_*R1_P_*,17_2_8_*R1_P_*,17_2_9_*R1_P_*,18_1_4_*R1_P_*,18_1_5_*R1_P_*,19_1_1_*R1_P_*,19_5_8_*R1_P_*,2_2_5_*R1_P_*,2_5_2_*R1_P_*,2_6_4_*R1_P_*,3_1_5_*R1_P_*,3_2_1_*R1_P_*,3_2_3_*R1_P_*,3_2_6_*R1_P_*,3_2_7_*R1_P_*,3_3_5_*R1_P_*,3_3_7_*R1_P_*,3_3_9_*R1_P_*,4_1_2_*R1_P_*,4_1_4_*R1_P_*,4_2_1_*R1_P_*,6_4_5_*R1_P_*,6_4_7_*R1_P_*,6_7_5_*R1_P_*,7_1_2_*R1_P_*,7_1_5_*R1_P_*,7_6_3_*R1_P_*,7_6_9_*R1_P_*,7_7_2_*R1_P_*,7_7_3_*R1_P_*,8_4_10_*R1_P_*,8_4_4_*R1_P_*,9_3_7_*R1_P_*,9_7_6_*R1_P_*,9_7_9_*R1_P_*}
-do
-x2=${x1//R1_P_001.fastq.gz/R2_P_001.fastq.gz}
-R1=${x1#/home/xingyuan/rhizo_ee/trimmomatic_reads/}
-R2=${x2#/home/xingyuan/rhizo_ee/trimmomatic_reads/}
-
-
-bwa mem -t 5 ${R1%_*_L002_*gz}-contigs.fasta $x1 $x2 > /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SAMS/${R1%_*_L002_*gz}.aln.pe.sam
-
-done
+iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m MFP -bb 1000 -wbt 
 ```
 
 ### Method 2: average nucleotide identity (ANI) 
@@ -347,6 +303,8 @@ interproscan.sh -cpu 10 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strai
 
 done
 ```
+
+
 
 
 
