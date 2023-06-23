@@ -84,3 +84,11 @@ See this website for explanation of Kmer content: https://www.bioinformatics.bab
 |50| 9_3_7 (has warning) | 200 | 7314756 | 1493013 | 60.70 | 453203 | 107666 | 589980.0 | 6 | 17 | 9.38 |
 |51| 9_7_6 | 210 | 7559346 | 1036588 | 60.71 | 459276 | 71230 | 448656.9 | 7 | 19 | 5.11 |
 |52| 9_7_9 | 219 | 7340014 | 728361 | 60.78 | 574982 | 147161 | 485798.7 | 6 | 15 | 5.48 |
+
+# find the most related 2008 strain for each 2020 strain
+
+
+
+
+
+
