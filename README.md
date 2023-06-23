@@ -189,7 +189,12 @@ python fasta2diffmat.py -f variant_core.fasta -d diff_dict.pkl -z -t 20 -g SNP_d
 sbatch run_fasta2diffmat.py.sh 
 Submitted batch job 7378589
 ```
+SNP_dist_hist.png <br>
+
 ![SNP_dist_hist](https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/a3a7d051-efb0-445f-a341-1f640fb467c3)
+
+under_2500_SNP_dist_hist.png <br>
+
 ![under_2500_SNP_dist_hist](https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/7c4d1244-76a5-4fd5-b486-e69c9bba7405)
 
 #### PAUSE (6) Run get_snps_support_MP.py
@@ -219,7 +224,8 @@ bwa mem -t 5 ${R1%_*_L002_*gz}-contigs.fasta $x1 $x2 > /home/xingyuan/rhizo_ee/2
 done
 ```
 
-### Method 2: FastANI on core genomes produced by Spine in Method 1 step (1)
+### Method 2: average nucleotide identity (ANI) 
+#### (1) Fastani computed from core genomes produced by Spine in Method 1 step (1)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
 Version: 1.32 <br>
@@ -231,31 +237,37 @@ Work done on graham.computecanada.ca
 #SBATCH --account=def-batstone
 
 module load fastani/1.32
-fastANI --ql query_list --rl reference_list --matrix -o fastani.out # query_list contains core genomes output by Spine from 52 2020 samples, reference_list contains core genomes output by Spine from 28 2008 samples
+fastANI --ql query_list --rl reference_list --matrix -o fastani.out
+
+# query_list contains core genomes output by Spine from 52 2020 samples, reference_list contains core genomes output by Spine from 28 2008 samples
 ```
 ```
 sbatch fastani.sh
 Submitted batch job 7238556
 ```
 
-#### (7) FastANI on contigs
+#### (2) FastANI computed from assembled genome sequences
 Version: 1.32 <br>
 Work done on info2020
 
 ```
-/usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out # query_list contains contigs from 52 2020 samples, reference_list contains all sequences from 28 2008 samples
+/usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out
+
+# query_list contains contigs from 52 2020 samples, reference_list contains all sequences from 28 2008 samples
 ```
 
-#### (8) FastANI on core genomes produced by Spine in step (1) (using first sequence of the 28 original strains (assume it is chromosome) as reference) 
+#### (3) FastANI computed from core genomes produced by Spine in Method 1 step (1) (using first sequence of the 28 original strains)
 Version: 1.32 <br>
 Work done on info2020
 
 ```
-/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out # query_list contains contigs from 52 2020 samples, reference_list contains only the first sequences from each 28 2008 samples
+/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out
+
+# query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from each 28 2008 samples
 ```
 
-### Method 2: Prokka-Roary-
-(1) Run Prokka
+### Method 3: Prokka-Roary-
+#### (1) Run Prokka
 Version: 1.12-beta <br>
 Work on info114
 
@@ -263,7 +275,7 @@ Work on info114
 prokka --locustag 10_1_8.scaffolds --cpus 5 --outdir /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/PROKKA/10_1_8-scaffolds --prefix 10_1_8.scaffolds /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta
 ```
 
- (2) Run Roary 
+#### (2) Run Roary 
 
 ```
 roary -p 5 *.gff 
@@ -314,7 +326,23 @@ done
 ```
 
 #### (2) InterProScan
-Version: 
+Version: interproscan/5.56-89.0
+Work done on graham.computecanada.ca
+
+```
+#!/bin/bash
+#SBATCH --time=6:00:00
+#SBATCH --account=def-batstone
+#SBATCH --cpus-per-task=10
+
+module load interproscan/5.56-89.0
+
+for i in 10_1_8; do
+
+interproscan.sh -cpu 10 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/$i-contigs.fasta -b /path/to/$i
+
+done
+```
 
 
 
