@@ -126,8 +126,17 @@ do
 /home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
 done
 ```
+### 2. Run Quast on contigs
+Version: 5.2.0, 3d87c606 <br>
+Work done on info114 
 
 **Samples: remaining 311 samples from 2020 strains**
+
+```
+#!/bin/bash
+
+/home/xingyuan/tools/quast-5.2.0/quast.py 
+```
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related 2008 strain for each 2020 strain 
