@@ -135,7 +135,6 @@ done
 Commands in steps (1)-(4) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
-
 #### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
 ```
 #!/bin/bash 
@@ -179,6 +178,8 @@ Work done on info113
 ```
 iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m MFP -bb 1000 -wbt 
 ```
+
+**Samples: 363 2020 strains + 28 2018 strains**
 
 ### Method 2: average nucleotide identity (ANI) 
 #### (1) Fastani computed from core genomes produced by Spine in Method 1 step (1)
