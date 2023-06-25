@@ -130,12 +130,18 @@ done
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**Samples: remaining 311 samples from 2020 strains**
-
+**Samples: 363 samples from 2020 strains**
 ```
 #!/bin/bash
+for i in *; do
 
-/home/xingyuan/tools/quast-5.2.0/quast.py 
+if [[ $i =~ ".sh" ]] || [[ $i =~ "quast" ]]; then
+    continue
+fi
+
+/home/xingyuan/tools/quast-5.2.0/quast.py $i/contigs.fasta -m 0 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/$i-contigs
+
+done
 ```
 
 # Step 2 - Data Analysis
