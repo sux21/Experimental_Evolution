@@ -10,7 +10,6 @@ Work done on info server. Compute canada server will be used if the info server 
 
 This week's tasks:
 (1) find whether as5_2_4, 19_6_2, 19_4_7, 19_1_9 are the species or not?
-(2) 
 
 # Step 1 - Genome Assembly using SPAdes <br>
 
@@ -218,7 +217,7 @@ nohup iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/varian
 iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m MFP -bb 1000 -wbt 
 ```
 
-**Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**
+**Samples: 363 samples from 2020 strains + 56 samples from 2008 strains**
 #### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
 ```
 #!/bin/bash 
