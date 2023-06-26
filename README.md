@@ -162,7 +162,7 @@ done
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related 2008 strain for each 2020 strain 
 ### Method 1: Spine-Nucmer-SNPs-IQTree
-Commands in steps (1)-(4) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
+Commands in steps (2)-(5) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
 #### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
@@ -236,7 +236,7 @@ nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE
 
 ### Method 2: average nucleotide identity (ANI) 
 **Samples: 52 samples from 2020 + 28 samples from 2008 strains** <br>
-#### (1) Fastani computed from core genomes produced by Spine in Method 1 step (1)
+#### (1) Fastani computed from core genomes produced by Spine in Method 1 step (2)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
 Version: 1.32 <br>
