@@ -126,6 +126,21 @@ do
 /home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
 done
 ```
+
+**Samples: 363 samples from 2020 strains**
+```
+#!/bin/bash
+for i in *; do
+
+if [[ $i =~ ".sh" ]] || [[ $i =~ "out" ]]; then
+   continue
+fi
+
+/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/${i%.fasta}
+
+done
+```
+
 ### 2. Run Quast on contigs
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
