@@ -8,6 +8,10 @@ Work done on info server. Compute canada server will be used if the info server 
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
 3. Can we detect HGT by examining presence/absence variation? 
 
+This week's tasks:
+(1) find whether as5_2_4, 19_6_2, 19_4_7, 19_1_9 are the species or not?
+(2) 
+
 # Step 1 - Genome Assembly using SPAdes <br>
 
 ## Before Assembly
