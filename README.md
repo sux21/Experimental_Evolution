@@ -135,11 +135,11 @@ Work done on info114
 #!/bin/bash
 for i in *; do
 
-if [[ $i =~ ".sh" ]] || [[ $i =~ "quast" ]]; then
-    continue
+if [[ $i =~ ".sh" ]] || [[ $i =~ "out" ]]; then
+   continue
 fi
 
-/home/xingyuan/tools/quast-5.2.0/quast.py $i/contigs.fasta -m 0 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/$i-contigs
+/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/${i%.fasta}
 
 done
 ```
@@ -195,8 +195,33 @@ iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core
 ```
 
 **Samples: 363 2020 strains + 28 2018 strains**
+#### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
+```
+#!/bin/bash 
+for i in *; do
+
+if [[ $i =~ ".sh" ]] || [[ $i =~ "fasta" ]] || [[ $i =~ "quast" ]]; then
+   continue
+fi
+
+cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$i-contigs.fasta"
+done
+
+```
+
+#### (2) Run Spine: find core genomes 
+Version: 0.3.2 <br>
+Work done on info114. 
+
+```
+ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../SPINE/config.txt
+```
+```
+nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE/config.txt &
+```
 
 ### Method 2: average nucleotide identity (ANI) 
+**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
 #### (1) Fastani computed from core genomes produced by Spine in Method 1 step (1)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
