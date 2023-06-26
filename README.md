@@ -205,6 +205,11 @@ python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p
 Version: 1.4.0 <br>
 Work done on info113
 
+**Select the best-fit model:**
+```
+nohup iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m TEST &
+```
+
 ```
 iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m MFP -bb 1000 -wbt 
 ```
