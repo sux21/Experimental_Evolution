@@ -1,7 +1,7 @@
 # 2020 Experimental Evolution 
 Bioinformatics project on *Rhizobium leguminosarum*
 
-Work done on info server. Compute canada server will be used if the info server cannot run a program. Results produced by compute canada server will be transferred to info server. 
+Work done on info server. Compute canada server will be used if the info server cannot run the program. Results produced by compute canada server will be transferred to info server. 
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
