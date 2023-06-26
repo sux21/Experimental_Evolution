@@ -242,7 +242,7 @@ ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020
 nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE/config.txt &
 ```
 
-### Method 2: average nucleotide identity (ANI) 
+### Method 2: fastANI
 **Samples: 52 samples from 2020 + 28 samples from 2008 strains** <br>
 #### (1) Fastani computed from core genomes produced by Spine in Method 1 step (2)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
@@ -286,20 +286,21 @@ Work done on info2020
 ```
 
 **Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**
+#### (1) FastANI using from core genomes produced by Spine in Method 1 step (2)
 
-### Method 3: Prokka-Roary-
-#### (1) Run Prokka
-Version: 1.12-beta <br>
-Work on info114
-
-```
-prokka --locustag 10_1_8.scaffolds --cpus 5 --outdir /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/PROKKA/10_1_8-scaffolds --prefix 10_1_8.scaffolds /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/scaffolds.fasta
-```
-
-#### (2) Run Roary 
+#### (2) FastANI using raw assembled genome sequences
+Version: 1.32 <br>
+Work done on info2020
 
 ```
-roary -p 5 *.gff 
+### Make reference list
+ls Rht* > reference_list
+
+### Make query_list
+ls *contigs.fasta > contigs_query_list
+
+### Run FastANI
+nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
 ```
 
 ## Step 2: Presence and Absence of Genes
