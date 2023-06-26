@@ -86,7 +86,7 @@ multiqc .
 Version: 3.15.2 <br>
 Work done on info114
 
-**Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
+**Samples: 52 samples from 2020 strains**
 ```
 #!/bin/bash 
 for R1 in 10_1_8_*R1_P_* 10_1_9_*R1_P_* 10_7_6_*R1_P_* 11_4_2_*R1_P_* 11_4_4_*R1_P_* 11_5_6_*R1_P_* 13_4_1_*R1_P_* 14_4_6_*R1_P_* 14_5_3_*R1_P_* 15_4_4_*R1_P_* 15_4_6_*R1_P_* 16_1_6_*R1_P_* 16_1_7_*R1_P_* 16_1_8_*R1_P_* 16_4_2_*R1_P_* 16_4_3_*R1_P_* 16_6_6_*R1_P_* 17_2_1_*R1_P_* 17_2_8_*R1_P_* 17_2_9_*R1_P_* 18_1_4_*R1_P_* 18_1_5_*R1_P_* 19_1_1_*R1_P_* 19_5_8_*R1_P_* 2_2_5_*R1_P_* 2_5_2_*R1_P_* 2_6_4_*R1_P_* 3_1_5_*R1_P_* 3_2_1_*R1_P_* 3_2_3_*R1_P_* 3_2_6_*R1_P_* 3_2_7_*R1_P_* 3_3_5_*R1_P_* 3_3_7_*R1_P_* 3_3_9_*R1_P_* 4_1_2_*R1_P_* 4_1_4_*R1_P_* 4_2_1_*R1_P_* 6_4_5_*R1_P_* 6_4_7_*R1_P_* 6_7_5_*R1_P_* 7_1_2_*R1_P_* 7_1_5_*R1_P_* 7_6_3_*R1_P_* 7_6_9_*R1_P_* 7_7_2_*R1_P_* 7_7_3_*R1_P_* 8_4_10_*R1_P_* 8_4_4_*R1_P_* 9_3_7_*R1_P_* 9_7_6_*R1_P_* 9_7_9_*R1_P_* 
@@ -97,7 +97,7 @@ spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R
 done
 ```
 
-**Samples: remaining 311 samples**
+**Samples: remaining 311 samples from 2020 strains**
 ```
 #!/bin/bash
 for R1 in *R1*; do
@@ -112,12 +112,12 @@ done
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**Samples: 52 samples from 2020 strains in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
+**Samples: 52 samples from 2020 strains**
 ```
 quast -m 0 scaffolds.fasta 
 ```
 
-**Samples: 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets**
+**Samples: 28 samples from 2008 strains**
 ```
 #!/bin/bash 
 for i in Rht*
@@ -164,7 +164,7 @@ done
 ### Method 1: Spine-Nucmer-SNPs-IQTree
 Commands in steps (1)-(4) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
-**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
+**Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
 #### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
 ```
 #!/bin/bash 
@@ -209,7 +209,7 @@ Work done on info113
 iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m MFP -bb 1000 -wbt 
 ```
 
-**Samples: 363 2020 strains + 28 2018 strains**
+**Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**
 #### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
 ```
 #!/bin/bash 
@@ -221,7 +221,6 @@ fi
 
 cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$i-contigs.fasta"
 done
-
 ```
 
 #### (2) Run Spine: find core genomes 
@@ -236,7 +235,7 @@ nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE
 ```
 
 ### Method 2: average nucleotide identity (ANI) 
-**Samples: 52 samples from 2020 + 28 samples from 2008 in Rhizobium_leguminosarum_EE2021-Single_strain_experiment Google sheets** <br>
+**Samples: 52 samples from 2020 + 28 samples from 2008 strains** <br>
 #### (1) Fastani computed from core genomes produced by Spine in Method 1 step (1)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
@@ -277,6 +276,8 @@ Work done on info2020
 
 # query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from each 28 2008 samples
 ```
+
+**Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**
 
 ### Method 3: Prokka-Roary-
 #### (1) Run Prokka
