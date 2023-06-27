@@ -8,9 +8,6 @@ Work done on info server. Compute canada server will be used if the info server 
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
 3. Can we detect HGT by examining presence/absence variation? 
 
-This week's tasks:
-(1) find whether as5_2_4, 19_6_2, 19_4_7, 19_1_9 are the species or not?
-
 # Step 1 - Genome Assembly using SPAdes <br>
 
 ## Before Assembly
@@ -120,16 +117,6 @@ Work done on info114
 quast -m 0 scaffolds.fasta 
 ```
 
-**Samples: 28 samples from 2008 strains**
-```
-#!/bin/bash 
-for i in Rht*
-do
-
-/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
-done
-```
-
 **Samples: 363 samples from 2020 strains**
 ```
 #!/bin/bash
@@ -158,6 +145,20 @@ if [[ $i =~ ".sh" ]] || [[ $i =~ "out" ]]; then
 fi
 
 /home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/${i%.fasta}
+
+done
+```
+
+### Run Quast on 2008 long reads
+
+
+**Samples: 28 samples from 2008 strains**
+```
+#!/bin/bash 
+for i in Rht*
+do
+
+/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
 
 done
 ```
