@@ -285,8 +285,8 @@ Work done on info2020
 # query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from each 28 2008 samples
 ```
 
-**Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**
-Version: 1.32 <br>
+**Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**  <br>
+Version: 1.32  <br>
 Work done on info2020
 
 ```
@@ -301,7 +301,11 @@ nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fast
 
 ### FastANI using from core genomes produced by Spine in Method 1 step (2)
 
-### 
+### FastANI comparing 2008 long reads to itself
+nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.ref_to_ref.out &
+
+### FastANI comparing 2020 contigs to itself
+nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
 ```
 
 ## Step 2: Presence and Absence of Genes
