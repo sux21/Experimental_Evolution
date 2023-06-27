@@ -286,21 +286,22 @@ Work done on info2020
 ```
 
 **Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**
-#### (1) FastANI using from core genomes produced by Spine in Method 1 step (2)
-
-#### (2) FastANI using raw assembled genome sequences
 Version: 1.32 <br>
 Work done on info2020
 
 ```
-### Make reference list
+### Make reference list for long reads from 2008 samples
 ls Rht* > reference_list
 
-### Make query_list
+### Make query_list for contigs from 2020 samples
 ls *contigs.fasta > contigs_query_list
 
-### Run FastANI
+### FastANI using raw assembled genome sequences
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
+
+### FastANI using from core genomes produced by Spine in Method 1 step (2)
+
+### 
 ```
 
 ## Step 2: Presence and Absence of Genes
