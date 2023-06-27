@@ -149,16 +149,16 @@ fi
 done
 ```
 
-### Run Quast on 2008 long reads
+### 3. Run Quast on 56 strains from 2008 long reads
+Version: v5.2.0, 3d87c606 >br>
+Work done on info113
 
-
-**Samples: 28 samples from 2008 strains**
 ```
 #!/bin/bash 
 for i in Rht*
 do
 
-/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/quast_2008_long_reads/${i%.fasta}
+/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/quast_2008_long_reads/${i%.fasta}
 
 done
 ```
