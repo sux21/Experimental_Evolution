@@ -210,7 +210,7 @@ nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE
 
 ### Method 2: fastANI
 **Samples: 52 samples from 2020 + 28 samples from 2008 strains** <br>
-#### (1) Fastani computed from core genomes produced by Spine in Method 1 step (2)
+#### (1) FastANI using core genomes produced by Spine in Method 1 step (2)
 Instructions are taken from https://github.com/ParBLiSS/FastANI.
 
 Version: 1.32 <br>
