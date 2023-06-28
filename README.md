@@ -143,7 +143,7 @@ done
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related 2008 strain for each 2020 strain 
-### Find core genomes: Spine-Nucmer-SNPs
+### Method 1: SPine-FastANI
 Commands in steps (2)-(5) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
