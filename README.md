@@ -15,12 +15,6 @@ Work done on info server. Compute canada server will be used if the info server 
 Versions: FastQC v0.11.5 <br>
 Work done on info114
 
-**Sample: 1_1_2**
-
-Run FastQC:
-```
-nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads 1_1_2* &
-```
 **All 363 samples (726 files)**
 ```
 nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads *gz &
@@ -37,10 +31,6 @@ multiqc .
 Version: 0.39 <br>
 Work done on info114
 
-**Sample: 1_1_2**
-```
-nohup java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/rhizo_ee/raw_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_001.fastq.gz /home/xingyuan/rhizo_ee/raw_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R1_UP_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/1_1_2_GAACTGAGCG-CGCTCCACGA_L002_R2_UP_001.fastq.gz ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 CROP:130 LEADING:3 TRAILING:3 MINLEN:36 &
-```
 **All 363 samples (726 files)**
 ```
 #!/bin/bash 
@@ -59,13 +49,6 @@ done
 ### 4. Run FastQC for trimmed reads 
 Versions: FastQC v0.11.5 <br>
 Work done on info114
-
-**Sample: 1_1_2**
-
-Run FastQC: 
-```
-fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* 
-```
 
 **All 363 samples (726 files)**
 ```
@@ -86,7 +69,7 @@ multiqc .
 Version: 3.15.2 <br>
 Work done on info114
 
-**Samples: 52 samples from 2020 strains**
+**52 samples**
 ```
 #!/bin/bash 
 for R1 in 10_1_8_*R1_P_* 10_1_9_*R1_P_* 10_7_6_*R1_P_* 11_4_2_*R1_P_* 11_4_4_*R1_P_* 11_5_6_*R1_P_* 13_4_1_*R1_P_* 14_4_6_*R1_P_* 14_5_3_*R1_P_* 15_4_4_*R1_P_* 15_4_6_*R1_P_* 16_1_6_*R1_P_* 16_1_7_*R1_P_* 16_1_8_*R1_P_* 16_4_2_*R1_P_* 16_4_3_*R1_P_* 16_6_6_*R1_P_* 17_2_1_*R1_P_* 17_2_8_*R1_P_* 17_2_9_*R1_P_* 18_1_4_*R1_P_* 18_1_5_*R1_P_* 19_1_1_*R1_P_* 19_5_8_*R1_P_* 2_2_5_*R1_P_* 2_5_2_*R1_P_* 2_6_4_*R1_P_* 3_1_5_*R1_P_* 3_2_1_*R1_P_* 3_2_3_*R1_P_* 3_2_6_*R1_P_* 3_2_7_*R1_P_* 3_3_5_*R1_P_* 3_3_7_*R1_P_* 3_3_9_*R1_P_* 4_1_2_*R1_P_* 4_1_4_*R1_P_* 4_2_1_*R1_P_* 6_4_5_*R1_P_* 6_4_7_*R1_P_* 6_7_5_*R1_P_* 7_1_2_*R1_P_* 7_1_5_*R1_P_* 7_6_3_*R1_P_* 7_6_9_*R1_P_* 7_7_2_*R1_P_* 7_7_3_*R1_P_* 8_4_10_*R1_P_* 8_4_4_*R1_P_* 9_3_7_*R1_P_* 9_7_6_*R1_P_* 9_7_9_*R1_P_* 
@@ -97,7 +80,7 @@ spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R
 done
 ```
 
-**Samples: remaining 311 samples from 2020 strains**
+**Remaining 311 samples**
 ```
 #!/bin/bash
 for R1 in *R1*; do
@@ -112,12 +95,7 @@ done
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**Samples: 52 samples from 2020 strains**
-```
-quast -m 0 scaffolds.fasta 
-```
-
-**Samples: 363 samples from 2020 strains**
+**363 samples**
 ```
 #!/bin/bash
 for i in *; do
@@ -135,7 +113,7 @@ done
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**Samples: 363 samples from 2020 strains**
+**363 samples**
 ```
 #!/bin/bash
 for i in *; do
@@ -149,7 +127,7 @@ fi
 done
 ```
 
-### 3. Run Quast on 56 strains from 2008 long reads
+### 3. Run Quast for original strains from 2008
 Version: v5.2.0, 3d87c606 >br>
 Work done on info113
 
@@ -165,7 +143,7 @@ done
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related 2008 strain for each 2020 strain 
-### Method 1: Spine-Nucmer-SNPs-IQTree
+### Find core genomes: Spine-Nucmer-SNPs
 Commands in steps (2)-(5) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
@@ -203,19 +181,6 @@ Work done on info114
 
 ```
 python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
-```
-
-#### (5) Run IQ-Tree: build phylogeny 
-Version: 1.4.0 <br>
-Work done on info113
-
-**Select the best-fit model:**
-```
-nohup iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m TEST &
-```
-
-```
-iqtree -s /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SNPS/variant_core.fasta -m MFP -bb 1000 -wbt 
 ```
 
 **Samples: 363 samples from 2020 strains + 56 samples from 2008 strains**
@@ -286,31 +251,48 @@ Work done on info2020
 # query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from each 28 2008 samples
 ```
 
-**Samples: 363 samples from 2020 strains + 28 samples from 2008 strains**  <br>
+**Samples: 363 genomes from 2020 samples + 28 genomes from 2008 samples**  <br>
 Version: 1.32  <br>
 Work done on info2020
 
+**Make reference list for long reads from 2008 samples**
 ```
-### Make reference list for long reads from 2008 samples
 ls Rht* > reference_list
+```
 
-### Make query_list for contigs from 2020 samples
+**Make query list for contigs from 2020 samples**
+```
 ls *contigs.fasta > contigs_query_list
+```
 
-### FastANI using raw assembled genome sequences
+**Make query list and reference list for core genomes**
+```
+
+```
+
+**Run FastANI using long reads and contigs**
+```
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
+```
 
-### FastANI using from core genomes produced by Spine in Method 1 step (2)
+**FastANI using from core genomes produced by Spine in Method 1 step (2)**
+```
 
-### FastANI comparing 2008 long reads to itself
+```
+
+**Run FastANI for self-comparison of long reads**
+```
 nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.ref_to_ref.out &
+```
 
-### FastANI comparing 2020 contigs to itself
+**FastANI comparing 2020 contigs to itself**
+```
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
 ```
+
 ## Step 1.5 - Phylogeny for the strains in 2008
 ```
-iqtree2 -model=GTR -m SNP data -DNA -bootraps 1000
+iqtree2 -model=GTR -m SNP data -DNA -bb 1000
 ```
 
 ## Step 2: Presence and Absence of Genes
