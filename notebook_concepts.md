@@ -38,8 +38,8 @@ This chart is not shown if the sample doesn’t contain any indels. <br>
 - **Insert Size Histogram:** Histogram of insert size distribution. To construct the histogram all collected insert size values (number of read alignments of a certain insert size) are seprated in bins. The default number of bins is 50. The number of reads in the bin will be the sum from insert size of the bins. The detailed values for insert are reported in raw data report. <br>
 
 # Blast
-- [bit score](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/glossary.html#:~:text=The%20bit%20score%20represents%20the,database%20and%20matrix%20scaling%20parameters.): information content in a sequence alignment. It is expressed in base 2 log units. 
-- [E value](https://www.ncbi.nlm.nih.gov/Class/FieldGuide/glossary.html#EXPECT): the number of alignments with a particular score, or a better score, that are expected to occur by chance when comparing two random sequences.
+- bit score: information content in a sequence alignment. It is expressed in base 2 log units. 
+- E value: the number of alignments with a particular score, or a better score, that are expected to occur by chance when comparing two random sequences.
 
 # FastANI
 https://doi.org/10.1038/s41467-018-07641-9 <br>
