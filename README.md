@@ -291,6 +291,18 @@ nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o 
 ```
 
 ## Step 1.5 - Phylogeny for the strains in 2008
+### 1. Run Spine
+Version: 0.3.2 <br>
+Work done on info113
+
+```
+ls Rht* | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../phylogeny_2008/config.txt
+```
+```
+nohup spine.pl -f config.txt -t 5 &
+```
+
+### IQ-Tree
 ```
 iqtree2 -model=GTR -m SNP data -DNA -bb 1000
 ```
