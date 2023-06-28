@@ -308,6 +308,10 @@ nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.
 ### FastANI comparing 2020 contigs to itself
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
 ```
+## Step 1.5 - Phylogeny for the strains in 2008
+```
+iqtree2 -model=GTR -m SNP data -DNA -bootraps 1000
+```
 
 ## Step 2: Presence and Absence of Genes
 ### Method 1 - Glimmer-InterProScan-CDHIT
