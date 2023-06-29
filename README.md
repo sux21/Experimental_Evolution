@@ -27,6 +27,7 @@ Work done on info114
 ```
 multiqc . 
 ```
+
 ### 3. Run Trimmomatic 
 Version: 0.39 <br>
 Work done on info114
@@ -91,7 +92,7 @@ done
 ```
 
 ## After Assembly 
-### 1. Run Quast on scaffolds
+### 1.1 Run Quast on scaffolds
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
@@ -109,7 +110,7 @@ fi
 done
 ```
 
-### 2. Run Quast on contigs
+### 1.2 Run Quast on contigs
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
@@ -127,7 +128,7 @@ fi
 done
 ```
 
-### 3. Run Quast for original strains from 2008
+### 1.3 Run Quast for original strains from 2008
 Version: v5.2.0, 3d87c606 >br>
 Work done on info113
 
@@ -139,6 +140,13 @@ do
 /home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/quast_2008_long_reads/${i%.fasta}
 
 done
+```
+### 2. Run Sealer to fill gaps in scaffolds
+Version: 2.3.1 <br>
+Work done on info19
+
+```
+/opt/local/bin/abyss-sealer -b10G -k40 -k30 -o 10_1_1.gap_filled -S /home/xingyuan/rhizo_ee/spades_assembly/10_1_1/scaffolds.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R2_P_001.fastq.gz
 ```
 
 # Step 2 - Data Analysis
@@ -304,7 +312,7 @@ iqtree2 -model=GTR -m SNP data -DNA -bb 1000
 ```
 
 ## Step 2: Presence and Absence of Genes
-### Method 1 - Glimmer-InterProScan-CDHIT
+### Glimmer-InterProScan-CDHIT
 Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
 #### (1) Glimmer 
