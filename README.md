@@ -251,23 +251,11 @@ Work done on info2020
 Version: 1.32  <br>
 Work done on info2020
 
-**Make reference list for long reads from 2008 samples**
-```
-ls Rht* > reference_list
-```
-
-**Make query list for contigs from 2020 samples**
-```
-ls *contigs.fasta > contigs_query_list
-```
-
-**Make query list and reference list for core genomes**
-```
-
-```
-
 **Run FastANI using long reads and contigs**
 ```
+ls Rht* > reference_list
+ls *contigs.fasta > contigs_query_list
+
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
 ```
 
@@ -278,12 +266,23 @@ nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fast
 
 **Run FastANI comparing long reads of original strains to itself**
 ```
+ls Rht* > reference_list
+
 nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.ref_to_ref.out &
 ```
 
 **Run FastANI comparing contigs of experimentally evolved strains to itself**
 ```
+ls *contigs.fasta > contigs_query_list
+
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
+```
+
+**Run FastANI comparing all evolved and original strains (exclude as5_2_4)**
+```
+ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
+
+nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5_2_4 -t 5 -o fastani.all_to_all.out &
 ```
 
 ## Step 1.5 - Phylogeny for the strains in 2008
