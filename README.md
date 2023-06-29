@@ -168,19 +168,35 @@ ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2
 spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
 ```
 
-#### (3) Run Nucmer: align core genomes and output SNPs
-Version: 3.1 <br>
-Work done on info114
+#### (3) Run FastANI 
+Instructions are taken from https://github.com/ParBLiSS/FastANI.
+
+Version: 1.32 <br>
+Work done on graham.computecanada.ca
 
 ```
-ls ../SPINE/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../SPINE/output.}; nucmer --prefix=${acc}_core ../SPINE/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
+#!/bin/bash
+#SBATCH --time=00-01:00:00
+#SBATCH --account=def-batstone
+
+module load fastani/1.32
+fastANI --ql query_list --rl reference_list --matrix -o fastani.out
+
+# query_list contains core genomes output by Spine from samples from 2020, reference_list contains core genomes output by Spine from samples from 2008
+```
+```
+sbatch fastani.sh
+Submitted batch job 7238556
 ```
 
-#### (4) Run snps2fasta.py: process SNPs and output aligned fasta
-Work done on info114
+#### (3.5) Run FastANI (using first sequence of the samples from 2008)
+Version: 1.32 <br>
+Work done on info2020
 
 ```
-python3 snps2fasta.py -r ../SPINE/output.backbone.fasta -f variant_core.fasta -p '(.*)_core\.snps' ../NUCMER/*.snps
+/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out
+
+# query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from samples from 2008
 ```
 
 **Samples: 363 samples from 2020 strains + 56 samples from 2008 strains**
@@ -209,46 +225,15 @@ nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE
 ```
 
 ### Method 2: fastANI
-**Samples: 52 samples from 2020 + 28 samples from 2008 strains** <br>
-#### (1) FastANI using core genomes produced by Spine in Method 1 step (2)
-Instructions are taken from https://github.com/ParBLiSS/FastANI.
-
-Version: 1.32 <br>
-Work done on graham.computecanada.ca
-
-```
-#!/bin/bash
-#SBATCH --time=00-01:00:00
-#SBATCH --account=def-batstone
-
-module load fastani/1.32
-fastANI --ql query_list --rl reference_list --matrix -o fastani.out
-
-# query_list contains core genomes output by Spine from 52 2020 samples, reference_list contains core genomes output by Spine from 28 2008 samples
-```
-```
-sbatch fastani.sh
-Submitted batch job 7238556
-```
-
-#### (2) FastANI computed from assembled genome sequences
+**Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
+#### Run FastANI 
 Version: 1.32 <br>
 Work done on info2020
 
 ```
 /usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out
 
-# query_list contains contigs from 52 2020 samples, reference_list contains all sequences from 28 2008 samples
-```
-
-#### (3) FastANI computed from core genomes produced by Spine in Method 1 step (1) (using first sequence of the 28 original strains)
-Version: 1.32 <br>
-Work done on info2020
-
-```
-/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out
-
-# query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from each 28 2008 samples
+# query_list contains contigs from 52 2020 samples, reference_list contains long reads from 28 2008 samples
 ```
 
 **Samples: 363 genomes from 2020 samples + 28 genomes from 2008 samples**  <br>
@@ -280,21 +265,22 @@ nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fast
 
 ```
 
-**Run FastANI for self-comparison of long reads**
+**Run FastANI comparing long reads of original strains to itself**
 ```
 nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.ref_to_ref.out &
 ```
 
-**FastANI comparing 2020 contigs to itself**
+**Run FastANI comparing contigs of experimentally evolved strains to itself**
 ```
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
 ```
 
 ## Step 1.5 - Phylogeny for the strains in 2008
-### 1. Run Spine
+### 1. Run Spine-Nucmer-SNPs
 Version: 0.3.2 <br>
 Work done on info113
 
+**(1)**
 ```
 ls Rht* | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../phylogeny_2008/config.txt
 ```
@@ -302,7 +288,12 @@ ls Rht* | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008
 nohup spine.pl -f config.txt -t 5 &
 ```
 
-### IQ-Tree
+**(2)**
+```
+ls ../spine/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../spine/output.}; nucmer --prefix=${acc}_core ../spine/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${ac}_core.snps; done
+```
+
+### 2. IQ-Tree
 ```
 iqtree2 -model=GTR -m SNP data -DNA -bb 1000
 ```
@@ -374,7 +365,7 @@ interproscan.sh -cpu 10 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strai
 done
 ```
 
-#### (3) CD
+#### (3) CD-HIT
 
 
 
