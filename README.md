@@ -146,7 +146,10 @@ Version: 2.3.1 <br>
 Work done on info19
 
 ```
-/opt/local/bin/abyss-sealer -b10G -k40 -k30 -o 10_1_1.gap_filled -S /home/xingyuan/rhizo_ee/spades_assembly/10_1_1/scaffolds.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R2_P_001.fastq.gz
+#!/bin/bash
+# run as 'ScriptName SampleName $1'
+
+/opt/local/bin/abyss-sealer -b10G -k128 -k100 -k90 -k40 -k30 -k10 -k5 -o $1.gap_filled --print-flanks -v -S /home/xingyuan/rhizo_ee/spades_assembly/$1/scaffolds.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/$1*_R1_P* /home/xingyuan/rhizo_ee/trimmomatic_reads/$1*_R2_P*
 ```
 
 # Step 2 - Data Analysis
