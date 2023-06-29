@@ -300,7 +300,7 @@ python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f v
 
 ### 2. IQ-Tree
 ```
-iqtree2 -model=GTR -m SNP data -DNA -bb 1000
+iqtree2 -model=GTR -m SNP data -DNA -bb 1000 
 ```
 
 ## Step 2: Presence and Absence of Genes
