@@ -37,8 +37,9 @@ See this website for explanation of Kmer content: https://www.bioinformatics.bab
 
 # Pairwise comparison of average nucleotide identity results
 Reference to reference (comparing 56 original strains to itself)
-- Rht_173_C, Rht_209_N: IQ-Tree shows they are identical, but ANI value is 99.9999. Don't know why they are not 100.
-- as_5_2_4: no ANI values using FastANI default settings. Top hits of blast search for the first five contigs are **Paenibacilus**. 
+- Comparing same strain to same strain: 
+- Comparing Rht_173_C to Rht_209_N: IQ-Tree shows they are identical, but ANI value is 99.9999. Don't know why they are not 100.
+- Comparing as_5_2_4 to all: no ANI values using FastANI default settings. Top hits of blast search for the first five contigs are *Paenibacilus*. 
 
 
 
