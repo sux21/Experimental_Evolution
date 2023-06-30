@@ -310,7 +310,10 @@ python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f v
 
 ### 2. IQ-Tree
 ```
-iqtree2 -s alignment_file -bb 1000 -wbt
+iqtree2 -T 5 -s alignment_file -bb 1000 -wbt
+
+For the first 10 sequences
+Best-fit model: TVM+F+I+I+R3 chosen according to BIC
 ```
 
 ## Step 2: Presence and Absence of Genes
