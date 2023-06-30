@@ -311,60 +311,6 @@ python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f v
 ### 2. IQ-Tree
 ```
 iqtree2 -T 5 -s alignment_file -bb 1000 -wbt
-
-For the first 10 sequences
-Best-fit model: TVM+F+I+I+R3 chosen according to BIC
-
-+--Rht_003_C.fasta
-|
-+--Rht_016_N.fasta
-|
-|           +--Rht_040_N.fasta
-|        +--| (100)
-|        |  +--Rht_097_N.fasta
-|     +--| (100)
-|     |  +--Rht_056_N.fasta
-|  +--| (48)
-|  |  |  +----------------------------------------------------------Rht_061_N.fasta
-|  |  +--| (67)
-|  |     |  +--Rht_074_C.fasta
-|  |     +--| (100)
-|  |        +--Rht_100_C.fasta
-+--| (65)
-   |  +--Rht_108_C.fasta
-   +--| (87)
-      +--Rht_113_C.fasta
-
-For the first 15 sequences
-Best-fit model: GTR+F+I+I+R3 chosen according to BIC
-
-+--Rht_003_C.fasta
-|
-+--Rht_016_N.fasta
-|
-|              +--Rht_040_N.fasta
-|           +--| (100)
-|           |  +--Rht_097_N.fasta
-|        +--| (100)
-|        |  |  +--Rht_056_N.fasta
-|        |  +--| (100)
-|        |     +--Rht_156_N.fasta
-|     +--| (64)
-|     |  |  +--Rht_108_C.fasta
-|     |  +--| (80)
-|     |     +--Rht_113_C.fasta
-|  +--| (61)
-|  |  |     +--Rht_074_C.fasta
-|  |  |  +--| (91)
-|  |  |  |  |  +--Rht_100_C.fasta
-|  |  |  |  +--| (100)
-|  |  |  |     +--Rht_160_C.fasta
-|  |  +--| (100)
-|  |     +--Rht_116_N.fasta
-+--| (52)
-   |                                                          +**Rht_061_N.fasta
-   +----------------------------------------------------------| (100)
-                                                              +**Rht_173_C.fasta
 ```
 
 ## Step 2: Presence and Absence of Genes
