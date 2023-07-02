@@ -259,9 +259,9 @@ ls *contigs.fasta > contigs_query_list
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
 ```
 
-**FastANI using from core genomes produced by Spine in Method 1 step (2)**
+**FastANI using core genomes produced by Spine in Method 1 step (2)**
 ```
-
+ls 
 ```
 
 **Run FastANI comparing long reads of original strains to itself**
