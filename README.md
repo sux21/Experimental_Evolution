@@ -358,24 +358,17 @@ done
 ```
 
 #### (2) InterProScan
-Version: interproscan/5.56-89.0
-Work done on graham.computecanada.ca
+Version: interproscan/5.56-89.0 <br>
+Work done on info114
 
 ```
-#!/bin/bash
-#SBATCH --time=6:00:00
-#SBATCH --account=def-batstone
-#SBATCH --cpus-per-task=10
-
-module load interproscan/5.56-89.0
-
 for i in 10_1_8; do
 
 if [[ ! -d "$i" ]]; then
    mkdir "$i"
 fi
 
-interproscan.sh -cpu 10 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/$i-contigs.fasta -b /path/to/$i
+interproscan.sh -cpu 5 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/$i-contigs.fasta -b /path/to/$i
 
 done
 ```
