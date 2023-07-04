@@ -200,7 +200,7 @@ sbatch fastani.sh
 Submitted batch job 7238556
 ```
 
-#### (3.5) Run FastANI (using first sequence of the samples from 2008)
+#### (3.1) Run FastANI (using first sequence of the samples from 2008)
 Version: 1.32 <br>
 Work done on info2020
 
@@ -261,7 +261,10 @@ nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fast
 
 **FastANI using core genomes produced by Spine in Method 1 step (2)**
 ```
-ls 
+ls *contigs.fasta.core.fasta > core_query_list
+ls *_?.fasta.core.fasta > core_reference_list
+
+nohup /usr/local/bin/fastANI --ql core_query_list --rl core_reference_list -t 5 -o fastani.que_core_to_ref_core.out 
 ```
 
 **Run FastANI comparing long reads of original strains to itself**
@@ -374,7 +377,12 @@ done
 ```
 
 #### (3) CD-HIT
+Version: version 4.6 (built on Jan 18 2017) <br>
+Work done on info114
 
+```
+cd-hit -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0.7 
+```
 
 
 
