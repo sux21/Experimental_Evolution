@@ -77,6 +77,6 @@ blastn -query NZ_CP050089.1[121783..123303].fa -outfmt "6 sseqid length sseq" -o
 awk '{if ($1 == $2) { print $1, $2, $3; fi } }' fastani.ref_to_ref.out
 ```
 ```
-### Search two patterns on the same line in vi editor
-/.*pattern_1\&.*pattern_2/
+### Search two patterns on the same line 
+grep "Rht_003" fastani.ref_to_ref.out | grep "Rht_726"
 ```
