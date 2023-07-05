@@ -381,7 +381,7 @@ Version: version 4.6 (built on Jan 18 2017) <br>
 Work done on info114
 
 ```
-cd-hit -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0.7 
+cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0.7 
 ```
 
 
