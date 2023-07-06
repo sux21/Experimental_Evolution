@@ -359,7 +359,9 @@ fi
 /home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh $j ${k%.fasta}; mv `ls ${k%.fasta}*` ${k%.fasta}/
 done
 ```
-
+```
+/usr/local/bedtools/2.19.1/bin/bedtools 
+```
 #### (2) InterProScan
 Version: interproscan/5.56-89.0 <br>
 Work done on info114
