@@ -247,7 +247,7 @@ Work done on info2020
 # query_list contains contigs from 52 2020 samples, reference_list contains long reads from 28 2008 samples
 ```
 
-**Samples: 363 genomes from 2020 samples + 28 genomes from 2008 samples**  <br>
+**Samples: 363 genomes from 2020 samples + 56 genomes from 2008 samples**  <br>
 Version: 1.32  <br>
 Work done on info2020
 
