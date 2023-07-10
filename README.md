@@ -360,8 +360,9 @@ fi
 done
 ```
 ```
-/usr/local/bedtools/2.19.1/bin/bedtools 
+/home/xingyuan/tools/glimmer3.02/bin/multi-extract -d 
 ```
+
 #### (2) InterProScan
 Version: interproscan/5.56-89.0 <br>
 Work done on info114
