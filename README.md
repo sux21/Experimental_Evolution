@@ -264,7 +264,7 @@ nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fast
 ls *contigs.fasta.core.fasta > core_query_list
 ls *_?.fasta.core.fasta > core_reference_list
 
-nohup /usr/local/bin/fastANI --ql core_query_list --rl core_reference_list -t 5 -o fastani.que_core_to_ref_core.out 
+nohup /usr/local/bin/fastANI --ql core_query_list --rl core_reference_list -t 5 --fragLen 10 -o fastani.que_core_to_ref_core.out 
 ```
 
 **Run FastANI comparing long reads of original strains to itself**
