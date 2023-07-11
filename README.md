@@ -252,7 +252,7 @@ iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA
 iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
-## Step 2: Presence and Absence of Genes
+## Step 3: Presence and Absence of Genes
 ### Glimmer-InterProScan-CDHIT
 Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
