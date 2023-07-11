@@ -129,7 +129,7 @@ done
 ```
 
 ### 1.3 Run Quast for original strains 
-Version: v5.2.0, 3d87c606 >br>
+Version: v5.2.0, 3d87c606 <br>
 Work done on info113
 
 ```
