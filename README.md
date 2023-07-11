@@ -214,7 +214,7 @@ ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
 nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5_2_4 -t 5 -o fastani.all_to_all.out &
 ```
 
-## Step 1.5 - Phylogeny for the strains in 2008
+## Step 2 - Phylogeny for the original strains 
 ### 1. Run Spine-Nucmer-SNPs
 Version: 0.3.2 <br>
 Work done on info113
