@@ -144,61 +144,8 @@ done
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related original strain for each experimentally evolved strain 
-### Method 1: Spine-FastANI
-Commands in steps (2)-(5) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
-
-**Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
-#### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison``:
-```
-#!/bin/bash 
-for i in 10_1_8 13_4_1 15_4_6 16_4_2 17_2_8 19_1_1 2_6_4 3_2_6 3_3_9 6_4_5 7_1_5 7_7_3 9_7_6 10_1_9 11_4_2 14_4_6 16_1_6 16_4_3 17_2_9 19_5_8 3_1_5 3_2_7 4_1_2 6_4_7 7_6_3 8_4_10 9_7_9 10_7_6 11_4_4 14_5_3 16_1_7 16_6_6 18_1_4 2_2_5 3_2_1 3_3_5 4_1_4 6_7_5 7_6_9 8_4_4 11_5_6 15_4_4 16_1_8 17_2_1 18_1_5 2_5_2 3_2_3 3_3_7 4_2_1 7_1_2 7_7_2 9_3_7
-do
-
-cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$i-contigs.fasta"
-done
-```
-
-#### (2) Run Spine: find core genomes 
-Version: 0.3.2 <br>
-Work done on info114. 
-
-```
-ls *.fasta | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/"$1, $1, "fasta" }' > ./SPINE/config.txt
-```
-```
-spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/SPINE/config.txt 
-```
-
-#### (3) Run FastANI 
-Instructions are taken from https://github.com/ParBLiSS/FastANI.
-
-Version: 1.32 <br>
-Work done on graham.computecanada.ca
-
-```
-#!/bin/bash
-#SBATCH --time=00-01:00:00
-#SBATCH --account=def-batstone
-
-module load fastani/1.32
-fastANI --ql query_list --rl reference_list --matrix -o fastani.out
-
-# query_list contains core genomes output by Spine from samples from 2020, reference_list contains core genomes output by Spine from samples from 2008
-```
-```
-sbatch fastani.sh
-Submitted batch job 7238556
-```
-
-#### (3.1) Run FastANI (using first sequence of the samples from 2008)
-Version: 1.32 <br>
-Work done on info2020
-
-```
-/usr/local/bin/fastANI --ql query_list --rl reference_list_first_seq --matrix -o fastani.2020_contigs-2008_first_seq.out
-
-# query_list contains contigs from 52 2020 samples, reference_list contains only the first sequence from samples from 2008
-```
+### FastANI
+Commands in step (2) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 samples from 2020 strains + 56 samples from 2008 strains**
 #### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
@@ -225,17 +172,6 @@ ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020
 nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE/config.txt &
 ```
 
-### Method 2: fastANI
-**Samples: 52 samples from 2020 strains + 28 samples from 2008 strains** <br>
-#### Run FastANI 
-Version: 1.32 <br>
-Work done on info2020
-
-```
-/usr/local/bin/fastANI --ql query_list --rl reference_list --matrix -o fastani.contigs.out
-
-# query_list contains contigs from 52 2020 samples, reference_list contains long reads from 28 2008 samples
-```
 
 **Samples: 363 genomes from 2020 samples + 56 genomes from 2008 samples**  <br>
 Version: 1.32  <br>
@@ -307,17 +243,13 @@ Work done on info114
 
 ```
 # For C_only population (14 samples)
-
-# Find the best-fit model according to BIC:
-iqtree2 -T 5 -s C_only.fasta --seqtype DNA -m MF
-
-# Construct tree:
-iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA -m GTR+F+I+I+R6
+iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA
 
 # For N_only population (14 samples)
+iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA
 
 # For mixed population (28 samples)
-
+iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Step 2: Presence and Absence of Genes
