@@ -92,11 +92,10 @@ done
 ```
 
 ## After Assembly 
-### 1.1 Run Quast for experimentally evolved strains (Contigs)
+### 1.1 Run Quast for 363 experimentally evolved strains (Contigs)
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**363 samples**
 ```
 #!/bin/bash
 for i in *; do
@@ -110,11 +109,10 @@ fi
 done
 ```
 
-### 1.2 Run Quast for experimentally evolved strains (Scaffolds)
+### 1.2 Run Quast for 363 experimentally evolved strains (Scaffolds)
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
-**363 samples**
 ```
 #!/bin/bash
 for i in *; do
@@ -128,7 +126,7 @@ fi
 done
 ```
 
-### 1.3 Run Quast for original strains 
+### 1.3 Run Quast for 56 original strains 
 Version: v5.2.0, 3d87c606 <br>
 Work done on info113
 
@@ -146,10 +144,15 @@ done
 ## Step 1 - Find the most related original strain for each experimentally evolved strain 
 Commands in step (2) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
-**Samples: 363 samples from 2020 strains + 56 samples from 2008 strains**
-#### (1) Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
+**Samples: 363 experimentally evolved strains + 56 original strains**
+### (Optional) 1. Run Spine: find core genomes 
+Version: 0.3.2 <br>
+Work done on info114. 
+
 ```
-#!/bin/bash 
+#!/bin/bash
+# Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
+
 for i in *; do
 
 if [[ $i =~ ".sh" ]] || [[ $i =~ "fasta" ]] || [[ $i =~ "quast" ]]; then
@@ -160,10 +163,6 @@ cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo
 done
 ```
 
-#### (2) Run Spine: find core genomes 
-Version: 0.3.2 <br>
-Work done on info114. 
-
 ```
 ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../SPINE/config.txt
 ```
@@ -171,12 +170,14 @@ ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020
 nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE/config.txt &
 ```
 
-
-**Samples: 363 genomes from 2020 samples + 56 genomes from 2008 samples**  <br>
+### 2. Run FastANI
 Version: 1.32  <br>
 Work done on info2020
 
-**Run FastANI using long reads and contigs**
+Query = 363 experimentally evolved strains <br>
+Reference = 56 original strains 
+
+**Query to reference**
 ```
 ls Rht* > reference_list
 ls *contigs.fasta > contigs_query_list
@@ -184,7 +185,7 @@ ls *contigs.fasta > contigs_query_list
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
 ```
 
-**FastANI using core genomes produced by Spine in Method 1 step (2)**
+**Query (core genome) to reference (core genomee)**
 ```
 ls *contigs.fasta.core.fasta > core_query_list
 ls *_?.fasta.core.fasta > core_reference_list
@@ -192,21 +193,21 @@ ls *_?.fasta.core.fasta > core_reference_list
 nohup /usr/local/bin/fastANI --ql core_query_list --rl core_reference_list -t 5 -k 5 --fragLen 10 -o fastani.que_core_to_ref_core.out 
 ```
 
-**Run FastANI comparing long reads of original strains to itself**
+**Reference to reference**
 ```
 ls Rht* > reference_list
 
 nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.ref_to_ref.out &
 ```
 
-**Run FastANI comparing contigs of experimentally evolved strains to itself**
+**Query to query**
 ```
 ls *contigs.fasta > contigs_query_list
 
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
 ```
 
-**Run FastANI comparing all evolved and original strains (exclude as5_2_4)**
+**Query+reference to query+reference (all to all, but exclude as5_2_4)**
 ```
 ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
 
