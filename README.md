@@ -144,7 +144,6 @@ done
 
 # Step 2 - Data Analysis
 ## Step 1 - Find the most related original strain for each experimentally evolved strain 
-### FastANI
 Commands in step (2) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 samples from 2020 strains + 56 samples from 2008 strains**
