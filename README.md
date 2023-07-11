@@ -92,7 +92,7 @@ done
 ```
 
 ## After Assembly 
-### 1.1 Run Quast on scaffolds
+### 1.1 Run Quast for experimentally evolved strains (Contigs)
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
@@ -110,7 +110,7 @@ fi
 done
 ```
 
-### 1.2 Run Quast on contigs
+### 1.2 Run Quast for experimentally evolved strains (Scaffolds)
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
@@ -128,7 +128,7 @@ fi
 done
 ```
 
-### 1.3 Run Quast for original strains from 2008
+### 1.3 Run Quast for original strains 
 Version: v5.2.0, 3d87c606 >br>
 Work done on info113
 
@@ -140,16 +140,6 @@ do
 /home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/quast_2008_long_reads/${i%.fasta}
 
 done
-```
-### 2. Run Sealer to fill gaps in scaffolds
-Version: 2.3.1 <br>
-Work done on info19
-
-```
-#!/bin/bash
-# run as 'ScriptName SampleName $1'
-
-/opt/local/bin/abyss-sealer -b10G -k128 -k100 -k90 -k40 -k30 -k10 -k5 -o $1.gap_filled --print-flanks -v -S /home/xingyuan/rhizo_ee/spades_assembly/$1/scaffolds.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/$1*_R1_P* /home/xingyuan/rhizo_ee/trimmomatic_reads/$1*_R2_P*
 ```
 
 # Step 2 - Data Analysis
@@ -312,8 +302,22 @@ python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f v
 ```
 
 ### 2. IQ-Tree
+Version: <br>
+Work done on info114
+
 ```
-iqtree2 -T 5 -s alignment_file -bb 1000 -wbt
+# For C_only population (14 samples)
+
+# Find the best-fit model according to BIC:
+iqtree2 -T 5 -s C_only.fasta --seqtype DNA -m MF
+
+# Construct tree:
+iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA -m GTR+F+I+I+R6
+
+# For N_only population (14 samples)
+
+# For mixed population (28 samples)
+
 ```
 
 ## Step 2: Presence and Absence of Genes
