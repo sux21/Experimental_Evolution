@@ -297,6 +297,34 @@ done
 ```
 **Extract genes from .predict file**
 ```
+#!/bin/bash
+# Format glimmer .predict file for the multi-extract program  
+# Usage: ./ThisScript .predict
+
+for (( c=1; c<=`grep -c ">" $1`; c++ )); do
+
+i=0
+let y=$c+1
+while read line; do
+  if [[ $line =~ ">" ]]; then
+    let i=$i+1
+  fi
+  if [ $i -eq $c ] && [[ $line =~ ">" ]]; then
+    tag=${line#>}
+  fi
+  if [ $i -eq $c ] && [[ $line =~ "orf" ]]; then
+    id=${line:0:8}
+    string=${line:8} 
+    echo $id $tag $string
+  fi
+  if [ $i -eq $y ]; then
+    break 
+  fi
+done < $1
+
+done
+```
+```
 /home/xingyuan/tools/glimmer3.02/bin/multi-extract -d 
 ```
 
