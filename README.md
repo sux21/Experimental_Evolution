@@ -256,7 +256,7 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ### Glimmer-InterProScan-CDHIT
 Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium Ensifer meliloti](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
-#### (1) Glimmer 
+#### 1. Glimmer 
 Version: glimmer3.02 <br>
 Work done on info114
 
@@ -300,7 +300,7 @@ done
 /home/xingyuan/tools/glimmer3.02/bin/multi-extract -d 
 ```
 
-#### (2) InterProScan
+#### 2. InterProScan
 Version: interproscan/5.56-89.0 <br>
 Work done on info114
 
@@ -316,7 +316,7 @@ interproscan.sh -cpu 5 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strain
 done
 ```
 
-#### (3) CD-HIT
+#### 3. CD-HIT
 Version: version 4.6 (built on Jan 18 2017) <br>
 Work done on info114
 
