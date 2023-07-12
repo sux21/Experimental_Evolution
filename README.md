@@ -295,6 +295,7 @@ fi
 /home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh $j ${k%.fasta}; mv `ls ${k%.fasta}*` ${k%.fasta}/
 done
 ```
+**Extract genes from .predict file**
 ```
 /home/xingyuan/tools/glimmer3.02/bin/multi-extract -d 
 ```
