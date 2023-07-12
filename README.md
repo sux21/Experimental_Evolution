@@ -207,7 +207,7 @@ ls *contigs.fasta > contigs_query_list
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
 ```
 
-**Query+reference to query+reference (all to all, but exclude as5_2_4)**
+**Query+reference to query+reference (exclude as5_2_4)**
 ```
 ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
 
