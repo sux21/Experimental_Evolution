@@ -141,7 +141,7 @@ done
 ```
 
 # Step 2 - Data Analysis
-## Step 1 - Find the most related original strain for each experimentally evolved strain 
+## Analysis 1 - Find the most related original strain for each experimentally evolved strain 
 Commands in step (2) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
@@ -214,7 +214,7 @@ ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
 nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5_2_4 -t 5 -o fastani.all_to_all.out &
 ```
 
-## Step 2 - Phylogeny for the original strains 
+## Analysis 2 - Phylogeny for the original strains 
 ### 1. Run Spine-Nucmer-SNPs
 Version: 0.3.2 <br>
 Work done on info113
@@ -252,7 +252,7 @@ iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA
 iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
-## Step 3: Presence and Absence of Genes
+## Analysis 3: Presence and Absence of Genes
 ### Glimmer-InterProScan-CDHIT
 Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium *Ensifer meliloti*](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
