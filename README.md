@@ -365,6 +365,8 @@ Work done on info114
 cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0.7 
 ```
 
+## Analysis 4: Characterize plasmids
+Methods are taken from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/. 
 
 
 
