@@ -377,37 +377,12 @@ cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0
 ## Analysis 4: Characterize plasmids
 Methods are taken from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/. 
 
-#### 1. Prokka
-https://github.com/tseemann/prokka <br>
+#### 1. tblastn
+The following sequences are downloaded from NCBI to local computer (MacBook Pro) first and uploaded to info server, node 114. 
 
-Version: 1.12-beta <br>
-Work done on info114
+Table S4: https://figshare.com/articles/dataset/Gene_alignments_and_SNP_matrices_of_a_Rhizobium_complex/11568894/5?file=21156690
+<img width="1081" alt="Screenshot 2023-07-14 at 7 39 54 PM" src="https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/24dce3c3-6f02-46a0-9a4d-bad414242dd3">
 
-```
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do
-file=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}
-sample=${file%.fasta}
-
-/usr/local/prokka/bin/prokka $i --outdir $sample --prefix $sample --cpus 5
-
-done
-```
-
-```
-#!/bin/bash
-
-for i in /home/xingyuan/rhizo_ee/spades_assembly/*/contigs.fasta; do
-file=${i#/home/xingyuan/rhizo_ee/spades_assembly/}
-sample=${a%/contigs.fasta}
-
-/usr/local/prokka/bin/prokka $i --outdir $sample
-
-/usr/local/prokka/bin/prokka /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/contigs.fasta --outdir 10_1_8 --prefix 10_1_8-contigs --cpus 5
-
-/usr/local/prokka/bin/prokka /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_003_C.fasta --outdir Rht_003_C --prefix Rht_003_C --kingdom Bacteria --genus --cpus 5
-done
-```
-
+**Problem:** RepA_Rh02 sequence does not match the one on NCBI. 
 
 
