@@ -3,6 +3,11 @@ Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on info server. Compute canada server will be used if the info server cannot run the program. Results produced by compute canada server will be transferred to info server. 
 
+# Questions for Monday meeting
+- Do ANI values from core genomes agree with values from whole genomes? Do iq-tree results agree with ANI results for the original strains?
+- two samples that don't produce any glimmer outputs?
+- how to characterize plasmids?
+
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
@@ -372,7 +377,37 @@ cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0
 ## Analysis 4: Characterize plasmids
 Methods are taken from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/. 
 
+#### 1. Prokka
+https://github.com/tseemann/prokka <br>
 
+Version: 1.12-beta <br>
+Work done on info114
+
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do
+file=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}
+sample=${file%.fasta}
+
+/usr/local/prokka/bin/prokka $i --outdir $sample --prefix $sample --cpus 5
+
+done
+```
+
+```
+#!/bin/bash
+
+for i in /home/xingyuan/rhizo_ee/spades_assembly/*/contigs.fasta; do
+file=${i#/home/xingyuan/rhizo_ee/spades_assembly/}
+sample=${a%/contigs.fasta}
+
+/usr/local/prokka/bin/prokka $i --outdir $sample
+
+/usr/local/prokka/bin/prokka /home/xingyuan/rhizo_ee/spades_assembly/10_1_8/contigs.fasta --outdir 10_1_8 --prefix 10_1_8-contigs --cpus 5
+
+/usr/local/prokka/bin/prokka /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_003_C.fasta --outdir Rht_003_C --prefix Rht_003_C --kingdom Bacteria --genus --cpus 5
+done
+```
 
 
 
