@@ -164,9 +164,11 @@ done
 ```
 
 ```
+# Create a config.txt file for Spine
 ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../SPINE/config.txt
 ```
 ```
+# Run Spine
 nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE/config.txt &
 ```
 
@@ -185,7 +187,7 @@ ls *contigs.fasta > contigs_query_list
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
 ```
 
-**Query (core genome) to reference (core genomee)**
+**Query (core genome) to reference (core genome)**
 ```
 ls *contigs.fasta.core.fasta > core_query_list
 ls *_?.fasta.core.fasta > core_reference_list
@@ -215,6 +217,8 @@ nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5
 ```
 
 ## Analysis 2 - Phylogeny for the original strains 
+Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
+
 ### 1. Run Spine-Nucmer-SNPs
 Version: 0.3.2 <br>
 Work done on info113
