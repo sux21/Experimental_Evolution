@@ -142,7 +142,7 @@ done
 
 # Step 2 - Data Analysis
 ## Analysis 1 - Find the most related original strain for each experimentally evolved strain 
-Commands in step (2) are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
+Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
 ### (Optional) 1. Run Spine: find core genomes 
