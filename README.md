@@ -266,7 +266,7 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Presence and Absence of Genes
-Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium *Ensifer meliloti*](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
+Methods are taken from [Genome-Wide Association Analyses in the Model Rhizobium *Ensifer meliloti*](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
 **52 experimentally evolved strains + 28 original strains**
 
