@@ -398,7 +398,7 @@ for i in RepA-Rh0{1..8}.fasta; do
 a=${i#RepA-}
 b=${a%.fasta}
 
-/usr/local/bin/tblastn -query $i -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta -out 10_1_1-$b.blast
+/usr/local/bin/tblastn -query $i -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta -qcov_hsp_perc 70 -out 10_1_1-$b.blast
 done
 ```
 
