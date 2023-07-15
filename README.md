@@ -7,7 +7,7 @@ Work done on info server. Compute canada server will be used if the info server 
 - Do ANI values from core genomes agree with values from whole genomes? Do iq-tree results agree with ANI results for the original strains?
 - two samples that don't produce any glimmer outputs?
 - Should I treat contigs as circular or linear sequences for glimmer?
-- how to characterize plasmids?
+- How to characterize plasmids? How many samples to use?
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
@@ -268,7 +268,7 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ## Analysis 3: Presence and Absence of Genes
 Methods are taken from [Genome-Wide Association Analyses in the Model Rhizobium *Ensifer meliloti*](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
-**52 experimentally evolved strains + 28 original strains**
+**Samples: 52 experimentally evolved strains + 28 original strains**
 
 #### 1. Glimmer 
 Version: glimmer3.02 <br>
