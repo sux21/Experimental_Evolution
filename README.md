@@ -151,6 +151,7 @@ done
 Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
+
 ### (Optional) 1. Run Spine: find core genomes 
 Version: 0.3.2 <br>
 Work done on info114. 
@@ -225,6 +226,8 @@ nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5
 ## Analysis 2 - Phylogeny for the original strains 
 Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
+**Samples: 56 original strains**
+
 ### 1. Run Spine-Nucmer-SNPs
 Version: 0.3.2 <br>
 Work done on info113
@@ -263,7 +266,6 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Presence and Absence of Genes
-### Glimmer-InterProScan-CDHIT
 Method is taken from [Genome-Wide Association Analyses in the Model Rhizobium *Ensifer meliloti*](https://journals.asm.org/doi/10.1128/mSphere.00386-18). 
 
 **52 experimentally evolved strains + 28 original strains**
@@ -376,7 +378,7 @@ cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0
 ```
 
 ## Analysis 4: Characterize plasmids
-Methods are taken from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/. 
+Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
 
 #### 1. tblastn
 Version: 2.9.0+ <br>
