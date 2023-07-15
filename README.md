@@ -394,6 +394,11 @@ makeblastdb -in 10_1_1-contigs.fasta -title "10_1_1-contigs" -dbtype nucl
 ```
 # Run tblastn
 
-/usr/local/bin/tblastn -query RepA-Rh01.fasta -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta -out 10_1_1-Rh01.blast
+for i in RepA-Rh0{1..8}.fasta; do
+a=${i#RepA-}
+b=${a%.fasta}
+
+/usr/local/bin/tblastn -query $i -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta -out 10_1_1-$b.blast
+done
 ```
 
