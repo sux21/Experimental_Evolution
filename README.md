@@ -378,11 +378,23 @@ cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0
 Methods are taken from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/. 
 
 #### 1. tblastn
-The following sequences are downloaded from NCBI to local computer (MacBook Pro) first and uploaded to info server, node 114. 
+Version: 2.9.0+ <br>
+Work done on info114
 
+The following sequences are copied and pasted to 8 separate files as query sequences for tblastn: <br>
 Table S4: https://figshare.com/articles/dataset/Gene_alignments_and_SNP_matrices_of_a_Rhizobium_complex/11568894/5?file=21156690
 <img width="1081" alt="Screenshot 2023-07-14 at 7 39 54 PM" src="https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/24dce3c3-6f02-46a0-9a4d-bad414242dd3">
 
-**Problem:** RepA_Rh02 sequence does not match the one on NCBI. 
+```
+# Make assemblies as blast database
 
+makeblastdb -in 10_1_1-contigs.fasta -title "10_1_1-contigs" -dbtype nucl
+```
+
+```
+# Run tblastn
+
+/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY
+
+```
 
