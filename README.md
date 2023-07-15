@@ -388,13 +388,12 @@ Table S4: https://figshare.com/articles/dataset/Gene_alignments_and_SNP_matrices
 ```
 # Make assemblies as blast database
 
-makeblastdb -in 10_1_1-contigs.fasta -title "10_1_1-contigs" -dbtype nucl
+makeblastdb -in 10_1_1-contigs.fasta -title "10_1_1-contigs" -dbtype nucl 
 ```
 
 ```
 # Run tblastn
 
-/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY
-
+/usr/local/bin/tblastn -query RepA-Rh01.fasta -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta -out 10_1_1-Rh01.blast
 ```
 
