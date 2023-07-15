@@ -6,7 +6,7 @@ Work done on info server. Compute canada server will be used if the info server 
 # Questions for Monday meeting
 - Do ANI values from core genomes agree with values from whole genomes? Do iq-tree results agree with ANI results for the original strains?
 - two samples that don't produce any glimmer outputs?
-- - Should I treat contigs as circular or linear sequences for glimmer?
+- Should I treat contigs as circular or linear sequences for glimmer?
 - how to characterize plasmids?
 
 # Key questions in this project
