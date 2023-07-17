@@ -283,10 +283,10 @@ Work done on info114
 
 ```
 # For C_only population (28 samples)
-iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA
+nohup iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA &
 
 # For N_only population (28 samples)
-iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA
+nohup iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA &
 
 # For mixed population (28 samples)
 iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
