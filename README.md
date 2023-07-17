@@ -186,14 +186,41 @@ Work done on info2020
 Query = 363 experimentally evolved strains <br>
 Reference = 56 original strains 
 
-**Query to reference**
+**Query to reference (default)**
 ```
 ls Rht* > reference_list
 ls *contigs.fasta > contigs_query_list
 
 nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
 ```
+**Query to reference (--fragLen 4000)**
+```
+ls Rht* > reference_list
+ls *contigs.fasta > contigs_query_list
 
+nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 4000 -o fastani.contigs4000.out &
+```
+**Query to reference (--fragLen 3500)**
+```
+ls Rht* > reference_list
+ls *contigs.fasta > contigs_query_list
+
+nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 3500 -o fastani.contigs3500.out &
+```
+**Query to reference (--fragLen 2500)**
+```
+ls Rht* > reference_list
+ls *contigs.fasta > contigs_query_list
+
+nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 2500 -o fastani.contigs2500.out &
+```
+**Query to reference (--fragLen 2000)**
+```
+ls Rht* > reference_list
+ls *contigs.fasta > contigs_query_list
+
+nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 2000 -o fastani.contigs2000.out &
+```
 **Query (core genome) to reference (core genome)**
 ```
 ls *contigs.fasta.core.fasta > core_query_list
@@ -255,10 +282,10 @@ Version: <br>
 Work done on info114
 
 ```
-# For C_only population (14 samples)
+# For C_only population (28 samples)
 iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA
 
-# For N_only population (14 samples)
+# For N_only population (28 samples)
 iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA
 
 # For mixed population (28 samples)
