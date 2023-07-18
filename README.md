@@ -375,7 +375,7 @@ done
 ```
 
 #### 2. InterProScan
-Version: interproscan/5.56-89.0 <br>
+Version: 5.62-94.0 <br>
 Work done on info114
 
 ```
