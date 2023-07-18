@@ -385,7 +385,7 @@ if [[ ! -d "$i" ]]; then
    mkdir "$i"
 fi
 
-interproscan.sh -cpu 5 -i /home/sux21/2023_summer_coop/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/$i-contigs.fasta -b /path/to/$i
+interproscan.sh -cpu 5 -i glimmer_genes.fasta -b /path/to/$i
 
 done
 ```
