@@ -291,7 +291,7 @@ Methods are taken from [Genome-Wide Association Analyses in the Model Rhizobium 
 
 **Samples: 52 experimentally evolved strains + 28 original strains**
 
-#### 1. Glimmer 
+### 1. Glimmer 
 Version: glimmer3.02 <br>
 Work done on info114
 
@@ -374,7 +374,7 @@ k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
 done
 ```
 
-#### 2. InterProScan
+### 2. InterProScan
 Version: 5.62-94.0 <br>
 Work done on info114
 
@@ -390,7 +390,7 @@ interproscan.sh -cpu 5 -i glimmer_genes.fasta -b /path/to/$i
 done
 ```
 
-#### 3. CD-HIT
+### 3. CD-HIT
 Version: version 4.6 (built on Jan 18 2017) <br>
 Work done on info114
 
@@ -398,10 +398,24 @@ Work done on info114
 cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0.7 
 ```
 
+## Analysis 3 (Method 2): Presence and Absence of Genes
+### 1. Prokka
+https://github.com/tseemann/prokka
+
+Version: 1.12-beta <br>
+Work done on info114
+
+```
+/usr/local/prokka/bin/prokka --cpus 5 --outdir 10_1_1 --prefix 10_1_1-contigs --locustag 10_1_1 /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta 
+```
+
+### 2. Roary
+https://sanger-pathogens.github.io/Roary/
+
 ## Analysis 4: Characterize plasmids
 Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
 
-#### 1. tblastn
+### 1. tblastn
 Version: 2.9.0+ <br>
 Work done on info114
 
