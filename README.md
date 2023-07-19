@@ -442,7 +442,8 @@ https://github.com/ncbi/pgap/tree/1126_Test
 ### 2. BWA
 https://github.com/lh3/bwa
 
-Version: 0.7.17-r1188 <br>
+BWA Version: 0.7.17-r1188 <br>
+Samtools Version: 1.11 <br>
 Work done on info114
 
 ```
@@ -458,6 +459,9 @@ Most closely related experimentally evolved strains of Rht_108_C based on ANI re
 
 # Run BWA
 bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_001.fastq.gz /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_001.fastq.gz > Rht_108_C-6_4_5.sam
+
+# Convert .sam to .bam
+samtools view -S -b Rht_108_C-6_4_5.sam > Rht_108_C-6_4_5.bam
 
 
 samtools view -f 4 file.bam > unmapped.sam
