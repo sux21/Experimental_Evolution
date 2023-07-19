@@ -399,6 +399,8 @@ cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0
 ```
 
 ## Analysis 3 (Method 2): Presence and Absence of Genes
+Methods are from https://github.com/microgenomics/tutorials/blob/master/pangenome.md.
+
 ### 1. Prokka
 https://github.com/tseemann/prokka
 
@@ -425,6 +427,20 @@ done
 
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
+
+Version: 1.007001 <br>
+Work done on info114
+
+```
+/usr/local/bin/roary -p 5 -e -n -v -qc /home/xingyuan/rhizo_ee/presence_absence_variation_analysis/method_2/prokka/10_1_8/10_1_8-contigs.gff
+```
+## Analysis 3 (Method 3): Presence and Absence of Genes
+
+### 1. PGAP
+https://github.com/ncbi/pgap/tree/1126_Test 
+
+### 2. BWA
+samtools view -f 4 file.bam > unmapped.sam
 
 ## Analysis 4: Characterize plasmids
 Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
