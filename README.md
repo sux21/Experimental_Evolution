@@ -453,19 +453,14 @@ Query sequences: Illumina reads
 # Index reference genomes
 for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do bwa index $i; done
 
-# Test example:
-
-Most closely related experimentally evolved strains of Rht_108_C based on ANI results: 6_4_5, 9_3_7, 16_4_3, 4_1_2, 4_1_4, 16_1_8, 2_5_2, 3_1_5
-
 # Run BWA
 bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_001.fastq.gz /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_001.fastq.gz > Rht_108_C-6_4_5.sam
 
 # Convert .sam to .bam
 samtools view -S -b Rht_108_C-6_4_5.sam > Rht_108_C-6_4_5.bam
 
-
-samtools view -f 4 file.bam > unmapped.sam
-
+# Get unmapped reads
+samtools fastq -f 4 -s Rht_108_C-6_4_5.unmapped.unpaired.fastq -1 Rht_108_C-6_4_5.unmapped.R1.fastq -2 Rht_108_C-6_4_5.unmapped.R2.fastq Rht_108_C-6_4_5.bam
 
 ```
 ## Analysis 4: Characterize plasmids
