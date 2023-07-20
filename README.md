@@ -443,6 +443,10 @@ https://github.com/ncbi/pgap/tree/1126_Test
 ### 2. BWA and Samtools
 https://github.com/lh3/bwa
 
+https://broadinstitute.github.io/picard/explain-flags.html
+
+https://www.novocraft.com/documentation/novoalign-2/novoalign-ngs-quick-start-tutorial/1040-2/
+
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.11 <br>
 makeblastdb Version: 2.13.0+ <br>
@@ -456,13 +460,10 @@ Query sequences: Illumina reads
 # Index reference genomes
 for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do bwa index $i; done
 
-# Run BWA (re-do this with trimmed reads)
-bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_P_001.fastq.gz > Rht_108_C-6_4_5.sam
+# Run BWA, Samtools
+bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_P_001.fastq.gz | samtools view -S -b > Rht_108_C-6_4_5.bam
 
-# Convert .sam to .bam
-samtools view -S -b Rht_108_C-6_4_5.sam > Rht_108_C-6_4_5.bam
-
-# Get unmapped reads 
+# Get unmapped reads
 samtools fasta -f 4 Rht_108_C-6_4_5.bam > Rht_108_C_unmapped_reads.fasta
 
 Check number of reads:
