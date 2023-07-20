@@ -453,16 +453,21 @@ Query sequences: Illumina reads
 # Index reference genomes
 for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do bwa index $i; done
 
-# Run BWA
+# Run BWA (re-do this with trimmed reads)
 bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_001.fastq.gz /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_001.fastq.gz > Rht_108_C-6_4_5.sam
 
 # Convert .sam to .bam
 samtools view -S -b Rht_108_C-6_4_5.sam > Rht_108_C-6_4_5.bam
 
 # Get unmapped reads
-samtools fastq -f 4 -s Rht_108_C-6_4_5.unmapped.unpaired.fastq -1 Rht_108_C-6_4_5.unmapped.R1.fastq -2 Rht_108_C-6_4_5.unmapped.R2.fastq Rht_108_C-6_4_5.bam
+samtools fastq -f 4 Rht_108_C-6_4_5.bam > unmapped_reads.fastq
 
+Samtools notes:
+# Count total reads: samtools view -c file.bam
+# Count unmapped reads: samtools view -f 4 -c file.bam
+# Count mapped reads: samtools view -c -F 260 file.bam
 ```
+
 ## Analysis 4: Characterize plasmids
 Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
 
