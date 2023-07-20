@@ -439,11 +439,13 @@ Work done on info114
 ### 1. PGAP
 https://github.com/ncbi/pgap/tree/1126_Test 
 
-### 2. BWA
+### 2. BWA and Samtools
 https://github.com/lh3/bwa
 
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.11 <br>
+makeblastdb Version: 2.13.0+ <br>
+blastn Version: 2.13.0+ <br>
 Work done on info114
 
 ```
@@ -454,19 +456,27 @@ Query sequences: Illumina reads
 for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do bwa index $i; done
 
 # Run BWA (re-do this with trimmed reads)
-bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_001.fastq.gz /home/xingyuan/rhizo_ee/raw_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_001.fastq.gz > Rht_108_C-6_4_5.sam
+bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_P_001.fastq.gz > Rht_108_C-6_4_5.sam
 
 # Convert .sam to .bam
 samtools view -S -b Rht_108_C-6_4_5.sam > Rht_108_C-6_4_5.bam
 
-# Get unmapped reads
-samtools fastq -f 4 Rht_108_C-6_4_5.bam > unmapped_reads.fastq
+# Get unmapped reads 
+samtools fasta -f 4 Rht_108_C-6_4_5.bam > Rht_108_C_unmapped_reads.fasta
 
-Samtools notes:
+Check number of reads:
 # Count total reads: samtools view -c file.bam
 # Count unmapped reads: samtools view -f 4 -c file.bam
 # Count mapped reads: samtools view -c -F 260 file.bam
+
+# Make blast database for original strains
+for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/makeblastdb -in $i -title "$k" -dbtype nucl; done
+
+# Align unmapped reads from Rht_108_C to other original strains using blastn
+for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/blastn -query Rht_108_C_unmapped_reads.fasta -out Rht_108_C_unmapped_reads_blast_to_$k.out -db $i; done
 ```
+
+
 
 ## Analysis 4: Characterize plasmids
 Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
