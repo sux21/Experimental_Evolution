@@ -432,8 +432,9 @@ Version: 1.007001 <br>
 Work done on info114
 
 ```
-/usr/local/bin/roary -p 5 -e -n -v -qc /home/xingyuan/rhizo_ee/presence_absence_variation_analysis/method_2/prokka/10_1_8/10_1_8-contigs.gff
+/usr/local/bin/roary -p 5 *.gff
 ```
+
 ## Analysis 3 (Method 3): Presence and Absence of Genes
 
 ### 1. PGAP
@@ -473,10 +474,10 @@ Check number of reads:
 for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/makeblastdb -in $i -title "$k" -dbtype nucl; done
 
 # Align unmapped reads from Rht_108_C to other original strains using blastn
-for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/blastn -query Rht_108_C_unmapped_reads.fasta -out Rht_108_C_unmapped_reads_blast_to_$k.out -db $i; done
+for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/blastn -qcov_hsp_perc 70 -query Rht_108_C_unmapped_reads.fasta -out Rht_108_C_unmapped_reads_blast_to_$k.out -db $i; done
+
+/usr/local/blast/2.13.0+/bin/blastn -query Rht_108_C_unmapped_reads.fasta -out Rht_108_C_unmapped_reads_blast_to_$k.out -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta
 ```
-
-
 
 ## Analysis 4: Characterize plasmids
 Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
