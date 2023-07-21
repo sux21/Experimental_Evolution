@@ -375,6 +375,8 @@ done
 ```
 
 ### 2. InterProScan
+https://interproscan-docs.readthedocs.io/en/latest/
+
 Version: 5.62-94.0 <br>
 Work done on info114
 
@@ -410,22 +412,24 @@ Work done on info114
 ```
 #!/bin/bash
 
-for i in 10_1_8 10_1_9 10_7_6 11_4_2 11_4_4 11_5_6 13_4_1 14_4_6 14_5_3 15_4_4 15_4_6 16_1_6 16_1_7 16_1_8 16_4_2 16_4_3 16_6_6 17_2_1 17_2_8 17_2_9 18_1_4 18_1_5 19_1_1 19_5_8 2_2_5 2_5_2 2_6_4 3_1_5 3_2_1 3_2_3 3_2_6 3_2_7 3_3_5 3_3_7 3_3_9 4_1_2 4_1_4 4_2_1 6_4_5 6_4_7 6_7_5 7_1_2 7_1_5 7_6_3 7_6_9 7_7_2 7_7_3 8_4_10 8_4_4 9_3_7 9_7_6 9_7_9; do
+for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/*contigs.fasta; do
+a=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}
+b=${a%-contigs.fasta}
 
-/usr/local/prokka/bin/prokka --cpus 5 --outdir $i --prefix $i-contigs --locustag $i /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/$i-contigs.fasta 
+/usr/local/prokka/bin/prokka --cpus 5 --outdir $b --prefix $b-contigs --locustag $b $i 
 
 done
 
-for j in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/*Rht*_?.fasta; do
-k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
-l=${k%.fasta}
+for j in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/*Rht*_?.fasta; do
+c=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}
+d=${c%.fasta}
 
-/usr/local/prokka/bin/prokka --cpus 5 --outdir $l --prefix $l-contigs --locustag $l $j
+/usr/local/prokka/bin/prokka --cpus 5 --outdir $d --prefix $d-contigs --locustag $d $j
 
 done
 ```
 
-### 2. Roary
+### 2 (Method 1). Roary
 https://sanger-pathogens.github.io/Roary/
 
 Version: 1.007001 <br>
@@ -434,6 +438,9 @@ Work done on info114
 ```
 /usr/local/bin/roary -p 5 *.gff
 ```
+
+### 2 (Method 2): GenAPI
+https://github.com/MigleSur/GenAPI
 
 ## Analysis 3 (Method 3): Presence and Absence of Genes
 
