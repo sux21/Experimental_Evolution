@@ -440,6 +440,42 @@ Work done on info114
 ### 1. PGAP
 https://github.com/ncbi/pgap/tree/1126_Test 
 
+```
+# Create YAML file 
+
+fasta:
+   class: File
+   location: K_pneu.fasta
+submol:
+   class: File
+   location: K_pneu_meta.yaml
+
+# Create metadata file
+
+topology: 'linear'
+organism:
+   genus_species: 'Klebsiella pneumoniae'
+contact_info:
+   last_name: 'NAME'
+   first_name: 'NAME'
+   email: 'EMAIL'
+   organization: '...'
+   department: '...'
+   street: '...'
+   city: '...'
+   postal_code: '...'
+   state: '...'
+   country: '...'
+authors:
+- author:
+   first_name: '...'
+   last_name: '...'
+
+# Annotate
+
+./pgap.py -r -o output_dir file.yaml
+
+```
 ### 2. BWA and Samtools
 https://github.com/lh3/bwa
 
