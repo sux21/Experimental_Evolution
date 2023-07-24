@@ -442,6 +442,13 @@ Work done on info114
 ### 2 (Method 2): GenAPI
 https://github.com/MigleSur/GenAPI
 
+Version: 1.0 <br>
+Work done on info2020
+
+```
+nohup genapi --threads 5 --matrix *.gff &
+```
+
 ## Analysis 3 (Method 3): Presence and Absence of Genes
 
 ### 1. PGAP
