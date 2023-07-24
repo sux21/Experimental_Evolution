@@ -337,6 +337,17 @@ nohup genapi --threads 5 --matrix *.gff &
 ## Analysis 4: Call SNPS
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
+### 1. BWA
+BWA Version: 0.7.17-r1188 <br>
+Samtools Version: 1.11 (using htslib 1.11) <br>
+Work done on info114
 
+#### Index 56 genomes of original strains for bwa
+```
+#!/bin/bash
+for i in Rht*fasta; do
+bwa index $i
+done
+```
 
 
