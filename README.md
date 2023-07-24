@@ -288,8 +288,6 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 
 ## Analysis 3: Gene Presence Absence
 
-Methods are from https://github.com/microgenomics/tutorials/blob/master/pangenome.md.
-
 ### 1. Prokka
 https://github.com/tseemann/prokka
 
@@ -316,7 +314,7 @@ d=${c%.fasta}
 done
 ```
 
-### 2 (Method 1). Roary
+### 2. Roary
 https://sanger-pathogens.github.io/Roary/
 
 Version: 1.007001 <br>
@@ -326,7 +324,7 @@ Work done on info114
 /usr/local/bin/roary -p 5 *.gff
 ```
 
-### 2 (Method 2): GenAPI
+### (Optional, not using roary) 2. GenAPI
 https://github.com/MigleSur/GenAPI
 
 Version: 1.0 <br>
@@ -336,112 +334,9 @@ Work done on info2020
 nohup genapi --threads 5 --matrix *.gff &
 ```
 
-## Analysis 3 (Method 3): Presence and Absence of Genes
+## Analysis 4: Call SNPS
+https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
-### 1. PGAP
-https://github.com/ncbi/pgap/tree/1126_Test 
 
-```
-# Create YAML file 
 
-fasta:
-   class: File
-   location: K_pneu.fasta
-submol:
-   class: File
-   location: K_pneu_meta.yaml
-
-# Create metadata file
-
-topology: 'linear'
-organism:
-   genus_species: 'Klebsiella pneumoniae'
-contact_info:
-   last_name: 'NAME'
-   first_name: 'NAME'
-   email: 'EMAIL'
-   organization: '...'
-   department: '...'
-   street: '...'
-   city: '...'
-   postal_code: '...'
-   state: '...'
-   country: '...'
-authors:
-- author:
-   first_name: '...'
-   last_name: '...'
-
-# Annotate
-
-./pgap.py -r -o output_dir file.yaml
-
-```
-### 2. BWA and Samtools
-https://github.com/lh3/bwa
-
-https://broadinstitute.github.io/picard/explain-flags.html
-
-https://www.novocraft.com/documentation/novoalign-2/novoalign-ngs-quick-start-tutorial/1040-2/
-
-BWA Version: 0.7.17-r1188 <br>
-Samtools Version: 1.11 <br>
-makeblastdb Version: 2.13.0+ <br>
-blastn Version: 2.13.0+ <br>
-Work done on info114
-
-```
-Reference genomes: 56 original strains
-Query sequences: Illumina reads
-
-# Index reference genomes
-for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do bwa index $i; done
-
-# Run BWA, Samtools
-bwa mem /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/6_4_5_ATATGCATGT-CCAGGCACCA_L002_R2_P_001.fastq.gz | samtools view -S -b > Rht_108_C-6_4_5.bam
-
-# Get unmapped reads
-samtools fasta -f 4 Rht_108_C-6_4_5.bam > Rht_108_C_unmapped_reads.fasta
-
-Check number of reads:
-# Count total reads: samtools view -c file.bam
-# Count unmapped reads: samtools view -f 4 -c file.bam
-# Count mapped reads: samtools view -c -F 260 file.bam
-
-# Make blast database for original strains
-for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/makeblastdb -in $i -title "$k" -dbtype nucl; done
-
-# Align unmapped reads from Rht_108_C to other original strains using blastn
-for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht*fasta; do j=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}; k=${j%.fasta}; /usr/local/blast/2.13.0+/bin/blastn -qcov_hsp_perc 70 -query Rht_108_C_unmapped_reads.fasta -out Rht_108_C_unmapped_reads_blast_to_$k.out -db $i; done
-
-/usr/local/blast/2.13.0+/bin/blastn -query Rht_108_C_unmapped_reads.fasta -out Rht_108_C_unmapped_reads_blast_to_$k.out -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/Rht_108_C.fasta
-```
-
-## Analysis 4: Characterize plasmids
-Methods are taken from [Symbiosis genes show a unique pattern of introgression and selection within a *Rhizobium leguminosarum* species complex](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7276703/). 
-
-### 1. tblastn
-Version: 2.9.0+ <br>
-Work done on info114
-
-The following sequences are copied and pasted to 8 separate files as query sequences for tblastn: <br>
-Table S4: https://figshare.com/articles/dataset/Gene_alignments_and_SNP_matrices_of_a_Rhizobium_complex/11568894/5?file=21156690
-<img width="1081" alt="Screenshot 2023-07-14 at 7 39 54 PM" src="https://github.com/sux21/2020_Experimental_Evoluntion/assets/132287930/24dce3c3-6f02-46a0-9a4d-bad414242dd3">
-
-```
-# Make assemblies as blast database
-
-makeblastdb -in 10_1_1-contigs.fasta -title "10_1_1-contigs" -dbtype nucl 
-```
-
-```
-# Run tblastn
-
-for i in RepA-Rh0{1..8}.fasta; do
-a=${i#RepA-}
-b=${a%.fasta}
-
-/usr/local/bin/tblastn -query $i -db /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/10_1_1-contigs.fasta -qcov_hsp_perc 70 -out 10_1_1-$b.blast
-done
-```
 
