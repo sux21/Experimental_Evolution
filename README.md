@@ -272,7 +272,7 @@ python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f v
 ```
 
 ### 2. IQ-Tree
-Version: <br>
+Version: 2.2.0 <br>
 Work done on info114
 
 ```
