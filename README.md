@@ -314,7 +314,7 @@ d=${c%.fasta}
 done
 ```
 
-### 2. Roary
+### (Compare the results with genapi) 2. Roary
 https://sanger-pathogens.github.io/Roary/
 
 Version: 1.007001 <br>
@@ -324,7 +324,7 @@ Work done on info114
 /usr/local/bin/roary -p 5 *.gff
 ```
 
-### (Optional, not using roary) 2. GenAPI
+### (Compare the results with roary) 2. GenAPI
 https://github.com/MigleSur/GenAPI
 
 Version: 1.0 <br>
@@ -342,6 +342,19 @@ BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.11 (using htslib 1.11) <br>
 Work done on info114
 
+#### Create a csv file as the following
+```
+#Format: derived isolate,the most probable ancestor (samples are separated by comma)
+20_6_10,Rht_511_N
+10_3_2,Rht_511_N
+19_6_10,Rht_511_N
+20_2_6,Rht_596_N
+.
+.
+.
+(362 lines)
+```
+
 #### Index 56 genomes of original strains for bwa
 ```
 #!/bin/bash
@@ -349,5 +362,20 @@ for i in Rht*fasta; do
 bwa index $i
 done
 ```
+
+#### Run bwa
+```
+bwa mem -t 5 -M -R "@RG\tID:"20_6_10_TCGTTGCTGC-TTCACGAGAC"\tSM:"20_6_10_TCGTTGCTGC-TTCACGAGAC /home/xingyuan/rhizo_ee/find_most_probable_ancestors_363+56/ASSEMBLY/Rht_511_N.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R2_P_001.fastq.gz | samtools view -huS -o 20_6_10-Rht_511_N.bam -
+```
+
+
+
+
+
+
+
+
+
+
 
 
