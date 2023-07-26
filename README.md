@@ -327,15 +327,18 @@ Work done on info114
 ```
 /usr/local/bin/roary -p 5 *.gff
 ```
-
 #### Visualize in R
 ```
-# Open R or RStudio
-# Load the file gene_presence_absence.Rtab
-pav <- read.table(/Users/xingyuansu/Desktop/gene_presence_absence.Rtab)
-
+```{r}
+# Import gene_presence_absence.Rtab file
+pav <- read.delim('~/Desktop/gene_presence_absence.Rtab', row.names = 1, header = TRUE)
 ```
 
+```{r}
+library(pheatmap)
+pheatmap(pav,col= c('green', 'blue'), legend_breaks = c(T,F), legend_labels = c("Present", "Absent"), treeheight_row = 0, treeheight_col = 0)
+```
+```
 ### (Compare the results with roary) 2. GenAPI
 https://github.com/MigleSur/GenAPI
 
@@ -377,7 +380,9 @@ done
 
 #### Run bwa
 ```
-bwa mem -t 5 -M -R "@RG\tID:"20_6_10_TCGTTGCTGC-TTCACGAGAC"\tSM:"20_6_10_TCGTTGCTGC-TTCACGAGAC /home/xingyuan/rhizo_ee/find_most_probable_ancestors_363+56/ASSEMBLY/Rht_511_N.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R2_P_001.fastq.gz | samtools view -huS -o 20_6_10-Rht_511_N.bam -
+bwa mem -t 5 -M -R "@RG\tID:"20_6_10_TCGTTGCTGC-TTCACGAGAC"\tSM:"20_6_10_TCGTTGCTGC-TTCACGAGAC /home/xingyuan/rhizo_ee/find_most_probable_ancestors_363+56/ASSEMBLY/Rht_511_N.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R2_P_001.fastq.gz | samtools view -huS -o 20_6_10-Rht_511_N.bam - ; samtools sort -o 20_6_10-Rht_511_N.sort.bam 20_6_10-Rht_511_N.bam ; samtools index 20_6_10-Rht_511_N.sort.bam ; samtools flagstat 20_6_10-Rht_511_N.sort.bam > mapping summary
+
+
 ```
 
 
