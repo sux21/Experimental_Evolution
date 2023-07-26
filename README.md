@@ -323,8 +323,17 @@ https://sanger-pathogens.github.io/Roary/
 Version: 1.007001 <br>
 Work done on info114
 
+#### Run roary
 ```
 /usr/local/bin/roary -p 5 *.gff
+```
+
+#### Visualize in R
+```
+# Open R or RStudio
+# Load the file gene_presence_absence.Rtab
+pav <- read.table(/Users/xingyuansu/Desktop/gene_presence_absence.Rtab)
+
 ```
 
 ### (Compare the results with roary) 2. GenAPI
