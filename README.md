@@ -329,15 +329,11 @@ Work done on info114
 ```
 #### Visualize in R
 ```
-```{r}
 # Import gene_presence_absence.Rtab file
 pav <- read.delim('~/Desktop/gene_presence_absence.Rtab', row.names = 1, header = TRUE)
-```
 
-```{r}
 library(pheatmap)
 pheatmap(pav,col= c('green', 'blue'), legend_breaks = c(T,F), legend_labels = c("Present", "Absent"), treeheight_row = 0, treeheight_col = 0)
-```
 ```
 ### (Compare the results with roary) 2. GenAPI
 https://github.com/MigleSur/GenAPI
