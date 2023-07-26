@@ -8,6 +8,9 @@ Work done on info server. Compute canada server will be used if the info server 
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
 3. Can we detect HGT by examining presence/absence variation? 
 
+# Samples used in this project
+- Original strains: starting populations at the start of this experimental evolution experiment. Number of strains is 56.
+- Experimental evolved strains: derived populations at the end of this experimental evolution experiment. Number of strains is 363.
 # Step 1 - Genome Assembly using SPAdes <br>
 
 ## Before Assembly
