@@ -3,6 +3,10 @@ Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on info server. Compute canada server will be used if the info server cannot run the program. Results produced by compute canada server will be transferred to info server. 
 
+# Monday meeting
+- Discuss graphing the data in R. Show the script which genapi uses to graphs the gene presence-absence matrix.
+- For roary, should I disable split paralogs because genapi does not split paralogs?
+
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
@@ -345,7 +349,7 @@ Work done on info2020
 nohup genapi --threads 5 --matrix *.gff &
 ```
 
-## Analysis 4: Call SNPS
+## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor based on ANI values in Analysis 1
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 ### 1. BWA
@@ -354,8 +358,10 @@ Samtools Version: 1.11 (using htslib 1.11) <br>
 Work done on info114
 
 #### Create a csv file as the following
+Since the csv file is saved by excel, it may say ``dos`` when opening using vi text editor. If so, unix can not read the file correctly. Opne the csv file using vi, and type ``:set ff=unix``. The ``dos`` should be gone. 
+
 ```
-#Format: derived isolate,the most probable ancestor (samples are separated by comma)
+#Format: evolved strain,the most probable ancestor (samples are separated by comma)
 20_6_10,Rht_511_N
 10_3_2,Rht_511_N
 19_6_10,Rht_511_N
@@ -389,10 +395,38 @@ bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | samtools view -huS -o $a
 done < $1
 ```
 
+### 2. Create dictionary file (``.dict``) and index file (``.fai``) for gatk tools.
+https://gatk.broadinstitute.org/hc/en-us/articles/360035531652-FASTA-Reference-genome-format#:~:text=We%20use%20the%20faidx%20command,coordinates%20in%20the%20FASTA%20file.
 
+#### Create index file (``.fai``) for reference using samtools
+http://www.htslib.org/doc/samtools-faidx.html
+```
+#!/bin/bash
+for i in Rht*fasta; do
+samtools faidx $i
+done
+```
 
+#### Create dictionary file (``.dict``) for reference using picard.jar 
+https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard- <br> 
 
+```
+#!/bin/bash
+for i in Rht*fasta; do
+ref=${i%.fasta}
+java -jar /home/xingyuan/tools/picard.jar CreateSequenceDictionary R="$ref".fasta O="$ref".dict
+done
+```
 
+### 3. Reorder a SAM/BAM input file according to the order of contigs in a second reference file
+https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
+```
+#!/bin/bash
+for i in *bam; do
+sample=${i%.bam}
+ref=${sample#*-}
+java -jar /home/xingyuan/tools/picard.jar ReorderSam INPUT="$sample".bam OUTPUT="$sample".reordered.bam REFERENCE="$ref".fasta
+```
 
 
 
