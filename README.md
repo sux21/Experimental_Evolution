@@ -148,7 +148,7 @@ done
 ```
 
 # Step 2 - Data Analysis
-## Analysis 1 - Find the most related original strain for each experimentally evolved strain 
+## Analysis 1 - Find the most probable ancestor for each experimentally evolved strain 
 Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
@@ -349,7 +349,7 @@ Work done on info2020
 nohup genapi --threads 5 --matrix *.gff &
 ```
 
-## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor based on ANI values in Analysis 1
+## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 Install the latest version of picard at https://github.com/broadinstitute/picard. Use this command as an example to download: ``wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar``.
