@@ -374,11 +374,19 @@ bwa index $i
 done
 ```
 
-#### Run bwa
+#### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS), and produce alignment statistics (samtools stats)
+Samtools stats: http://www.htslib.org/doc/samtools-stats.html
 ```
-bwa mem -t 5 -M -R "@RG\tID:"20_6_10_TCGTTGCTGC-TTCACGAGAC"\tSM:"20_6_10_TCGTTGCTGC-TTCACGAGAC /home/xingyuan/rhizo_ee/find_most_probable_ancestors_363+56/ASSEMBLY/Rht_511_N.fasta /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R1_P_001.fastq.gz /home/xingyuan/rhizo_ee/trimmomatic_reads/20_6_10_TCGTTGCTGC-TTCACGAGAC_L002_R2_P_001.fastq.gz | samtools view -huS -o 20_6_10-Rht_511_N.bam - ; samtools sort -o 20_6_10-Rht_511_N.sort.bam 20_6_10-Rht_511_N.bam ; samtools index 20_6_10-Rht_511_N.sort.bam ; samtools flagstat 20_6_10-Rht_511_N.sort.bam > mapping summary
+#!/bin/bash
+# Usage: ./ThisScript file.csv
+while IFS=',' read -r a b; do
+r1=/home/xingyuan/rhizo_ee/trimmomatic_reads/"$a"_*R1_P*
+r2=/home/xingyuan/rhizo_ee/trimmomatic_reads/"$a"_*R2_P*
+ref=/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$b".fasta
 
+bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | samtools view -huS -o $a-"$b".bam - && samtools stats $a-"$b".bam > $a-"$b".stats
 
+done < $1
 ```
 
 
