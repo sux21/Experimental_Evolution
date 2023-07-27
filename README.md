@@ -352,12 +352,14 @@ nohup genapi --threads 5 --matrix *.gff &
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor based on ANI values in Analysis 1
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
+Install the latest version of picard at https://github.com/broadinstitute/picard. Use this command as an example to download: ``wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar``.
+
 ### 1. BWA
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.11 (using htslib 1.11) <br>
 Work done on info114
 
-#### Create a csv file as the following
+#### Prepare a csv file as the following
 Since the csv file is saved by excel, it may say ``dos`` when opening using vi text editor. If so, unix can not read the file correctly. Opne the csv file using vi, and type ``:set ff=unix``. The ``dos`` should be gone. 
 
 ```
@@ -395,7 +397,60 @@ bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | samtools view -huS -o $a
 done < $1
 ```
 
-### 2. Create dictionary file (``.dict``) and index file (``.fai``) for gatk tools.
+### 2. Reorder BAM input file according to the order of contigs in a second reference file
+https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
+
+Picard Version: 3.0.0 <br>
+Work done one info114
+
+```
+#!/bin/bash
+for i in *bam; do
+sample=${i%.bam}
+ref=${sample#*-}
+java -jar /home/xingyuan/tools/picard.jar ReorderSam INPUT="$sample".bam OUTPUT="$sample".reordered.bam REFERENCE="$ref".fasta
+```
+
+### 3. Assign all the reads in a file to a single new read-group
+https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
+```
+#!/bin/bash
+for i in *.reordered.bam; do
+sample=${i%.reordered.bam}
+java -jar /home/xingyuan/tools/picard.jar AddOrReplaceReadGroups I="$sample".reordered.bam O="$sample".rg.bam RGLB=rhizo_ee RGPL=Illumina RGPU=1 RGSM="$sample"
+done
+```
+
+### 4. Sort the input BAM file by coordinate
+https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
+```
+#!/bin/bash
+for i in *.rg.bam; do
+sample=${i%.rg.bam}
+java -jar /home/xingyuan/tools/picard.jar SortSam I="$sample".rg.bam O="$sample".coordinate_sorted.bam SORT_ORDER=coordinate
+done
+```
+
+### 5. Identify duplicate reads
+https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-
+```
+#!/bin/bash
+for i in *.coordinate_sorted.bam; do
+sample=${i%.coordinate_sorted.bam}
+java -jar /home/xingyuan/tools/picard.jar MarkDuplicates I="$sample".coordinate_sorted.bam O="$sample".marked_duplicates.bam M=marked_dup_metrics.txt
+done
+```
+
+### 6. Generate BAM index ".bai" file
+https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
+```
+#!/bin/bash
+for i in *.marked_duplicates.bam; do
+java -jar /home/xingyuan/tools/picard.jar BuildBamIndex I=$i
+done
+```
+
+### 7. Create dictionary file (``.dict``) and index file (``.fai``) for gatk tools.
 https://gatk.broadinstitute.org/hc/en-us/articles/360035531652-FASTA-Reference-genome-format#:~:text=We%20use%20the%20faidx%20command,coordinates%20in%20the%20FASTA%20file.
 
 #### Create index file (``.fai``) for reference using samtools
@@ -406,7 +461,6 @@ for i in Rht*fasta; do
 samtools faidx $i
 done
 ```
-
 #### Create dictionary file (``.dict``) for reference using picard.jar 
 https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard- <br> 
 
@@ -417,18 +471,6 @@ ref=${i%.fasta}
 java -jar /home/xingyuan/tools/picard.jar CreateSequenceDictionary R="$ref".fasta O="$ref".dict
 done
 ```
-
-### 3. Reorder a SAM/BAM input file according to the order of contigs in a second reference file
-https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
-```
-#!/bin/bash
-for i in *bam; do
-sample=${i%.bam}
-ref=${sample#*-}
-java -jar /home/xingyuan/tools/picard.jar ReorderSam INPUT="$sample".bam OUTPUT="$sample".reordered.bam REFERENCE="$ref".fasta
-```
-
-
 
 
 
