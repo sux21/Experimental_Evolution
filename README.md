@@ -294,7 +294,7 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Gene Presence Absence
-
+### Compare results of prokka-genapi, prokka-roary, pgap-genapi, pgap-roary
 ### 1. Prokka
 https://github.com/tseemann/prokka
 
@@ -320,8 +320,13 @@ d=${c%.fasta}
 
 done
 ```
+### 1. PGAP
+https://github.com/ncbi/pgap/tree/1126_Test
 
-### (Compare the results with genapi) 2. Roary
+Version: 2023-05-17.build6771 <br>
+Work done on compute canada graham cluster 
+
+### 2. Roary
 https://sanger-pathogens.github.io/Roary/
 
 Version: 1.007001 <br>
@@ -339,7 +344,7 @@ pav <- read.delim('~/Desktop/gene_presence_absence.Rtab', row.names = 1, header 
 library(pheatmap)
 pheatmap(pav,col= c('green', 'blue'), legend_breaks = c(T,F), legend_labels = c("Present", "Absent"), treeheight_row = 0, treeheight_col = 0)
 ```
-### (Compare the results with roary) 2. GenAPI
+### 2. GenAPI
 https://github.com/MigleSur/GenAPI
 
 Version: 1.0 <br>
