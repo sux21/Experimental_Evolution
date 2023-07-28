@@ -402,19 +402,31 @@ bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | samtools view -huS -o $a
 done < $1
 ```
 
-### 2. Reorder BAM input file according to the order of contigs in a second reference file
-https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
-
+### 2. Use picard to manipulate the SAM files
 Picard Version: 3.0.0 <br>
 Work done one info2020
 
+#### (1) Reorder reads in the BAM file to match the contig ordering in reference file
+https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
+
+##### Create sequence dictionary file (.dict) for reference 
+https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard-
+```
+#!/bin/bash
+for i in Rht*fasta; do
+ref=${i%.fasta}
+java -jar /home/xingyuan/tools/picard.jar CreateSequenceDictionary -R "$ref".fasta -O "$ref".dict
+done
+```
+
+##### Run ReorderSam
 ```
 #!/bin/bash
 for i in *bam; do
 sample=${i%.bam}
 ref=${sample#*-}
 
-java -jar /home/xingyuan/tools/picard.jar ReorderSam --INPUT "$sample".bam --OUTPUT "$sample".reordered.bam --SEQUENCE_DICTIONARY /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta
+java -jar /home/xingyuan/tools/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".dict
 done
 ```
 
@@ -448,7 +460,7 @@ java -jar /home/xingyuan/tools/picard.jar MarkDuplicates I="$sample".coordinate_
 done
 ```
 
-### 6. Generate BAM index ".bai" file
+##### Generate BAM index (.bai) file.
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
 ```
 #!/bin/bash
@@ -457,10 +469,7 @@ java -jar /home/xingyuan/tools/picard.jar BuildBamIndex I=$i
 done
 ```
 
-### 7. Create dictionary file (``.dict``) and index file (``.fai``) for gatk tools.
-https://gatk.broadinstitute.org/hc/en-us/articles/360035531652-FASTA-Reference-genome-format#:~:text=We%20use%20the%20faidx%20command,coordinates%20in%20the%20FASTA%20file.
-
-#### Create index file (``.fai``) for reference using samtools
+### Create index file (``.fai``) for reference using samtools
 http://www.htslib.org/doc/samtools-faidx.html
 ```
 #!/bin/bash
@@ -468,16 +477,9 @@ for i in Rht*fasta; do
 samtools faidx $i
 done
 ```
-#### Create dictionary file (``.dict``) for reference using picard.jar 
-https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard- <br> 
 
-```
-#!/bin/bash
-for i in Rht*fasta; do
-ref=${i%.fasta}
-java -jar /home/xingyuan/tools/picard.jar CreateSequenceDictionary R="$ref".fasta O="$ref".dict
-done
-```
+
+
 
 
 
