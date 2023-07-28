@@ -458,21 +458,22 @@ https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadG
 #!/bin/bash
 for i in *.reordered.bam; do
 sample=${i%.reordered.bam}
-java -jar /home/xingyuan/tools/picard.jar AddOrReplaceReadGroups I="$sample".reordered.bam O="$sample".rg.bam RGLB=rhizo_ee RGPL=Illumina RGPU=1 RGSM="$sample"
+
+java -jar /home/xingyuan/tools/picard.jar AddOrReplaceReadGroups -I "$sample".reordered.bam -O "$sample".new_rg.bam -ID "$sample" -LB rhizo_ee -PL Illumina -PU 1 -SM "$sample" 
 done
 ```
 
-### 4. Sort the input BAM file by coordinate
+### (3) Sort the input BAM file by coordinate
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
 ```
 #!/bin/bash
 for i in *.rg.bam; do
 sample=${i%.rg.bam}
-java -jar /home/xingyuan/tools/picard.jar SortSam I="$sample".rg.bam O="$sample".coordinate_sorted.bam SORT_ORDER=coordinate
+java -jar /home/xingyuan/tools/picard.jar SortSam I="$sample".new_rg.bam O="$sample".coordinate_sorted.bam SORT_ORDER=coordinate
 done
 ```
 
-### 5. Identify duplicate reads
+### (4) Identify duplicate reads
 https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-
 ```
 #!/bin/bash
@@ -482,7 +483,7 @@ java -jar /home/xingyuan/tools/picard.jar MarkDuplicates I="$sample".coordinate_
 done
 ```
 
-##### Generate BAM index (.bai) file.
+### (5) Generate BAM index (.bai) file.
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
 ```
 #!/bin/bash
