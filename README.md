@@ -406,14 +406,16 @@ done < $1
 https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
 
 Picard Version: 3.0.0 <br>
-Work done one info114
+Work done one info2020
 
 ```
 #!/bin/bash
 for i in *bam; do
 sample=${i%.bam}
 ref=${sample#*-}
-java -jar /home/xingyuan/tools/picard.jar ReorderSam INPUT="$sample".bam OUTPUT="$sample".reordered.bam REFERENCE="$ref".fasta
+
+java -jar /home/xingyuan/tools/picard.jar ReorderSam --INPUT "$sample".bam --OUTPUT "$sample".reordered.bam --SEQUENCE_DICTIONARY /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta
+done
 ```
 
 ### 3. Assign all the reads in a file to a single new read-group
