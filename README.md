@@ -6,6 +6,7 @@ Work done on info server. Compute canada server will be used if the info server 
 # Monday meeting
 - Discuss graphing the data in R. Show the script which genapi uses to graphs the gene presence-absence matrix.
 - For roary, should I disable split paralogs because genapi does not split paralogs?
+- What read group should be in sam file?
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
@@ -323,8 +324,29 @@ done
 ### 1. PGAP
 https://github.com/ncbi/pgap/tree/1126_Test
 
-Version: 2023-05-17.build6771 <br>
-Work done on compute canada graham cluster 
+Version:  <br>
+Work done on compute canada cedar cluster (Note: pgap requires internet access to run, and cedar cluster is the only compute canada cluster that has internet access)
+
+#### Download pgap.py
+```
+# At the directory where you want to download pgap.py, type the following lines one line at a time:
+
+module load apptainer 
+wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
+chmod +x pgap.py
+./pgap.py -D apptainer 
+```
+
+#### Test run
+```
+# At the directory of your pgap.py, type the following lines one line at a time:
+
+salloc --time=00-01:00 --account=def-batstone --mem=16000M (replace the account with your account)
+module load apptainer
+./pgap.py -D apptainer --no-internet --no-self-update -r -o mg37_results -g ASM2732v1.annotation.nucleotide.1.fasta -s 'Mycoplasmoides genitalium'
+
+--container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif
+```
 
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
