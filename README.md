@@ -430,7 +430,7 @@ java -jar /home/xingyuan/tools/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/
 done
 ```
 
-### 3. Assign all the reads in a file to a single new read-group
+### (2) Assign all the reads in a file to a single new read-group
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
 ```
 #!/bin/bash
