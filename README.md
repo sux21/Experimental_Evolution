@@ -452,7 +452,7 @@ java -jar /home/xingyuan/tools/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/
 done
 ```
 
-### (2) Assign all the reads in a file to a single new read-group
+#### (2) Assign all the reads in a file to a single new read-group
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
 ```
 #!/bin/bash
@@ -463,7 +463,7 @@ java -jar /home/xingyuan/tools/picard.jar AddOrReplaceReadGroups -I "$sample".re
 done
 ```
 
-### (3) Sort the input BAM file by coordinate
+#### (3) Sort the input BAM file by coordinate
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
 ```
 #!/bin/bash
@@ -473,7 +473,7 @@ java -jar /home/xingyuan/tools/picard.jar SortSam I="$sample".new_rg.bam O="$sam
 done
 ```
 
-### (4) Identify duplicate reads
+#### (4) Identify duplicate reads
 https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-
 ```
 #!/bin/bash
@@ -483,7 +483,7 @@ java -jar /home/xingyuan/tools/picard.jar MarkDuplicates I="$sample".coordinate_
 done
 ```
 
-### (5) Generate BAM index (.bai) file.
+#### (5) Generate BAM index (.bai) file.
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
 ```
 #!/bin/bash
