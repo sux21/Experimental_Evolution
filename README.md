@@ -426,6 +426,7 @@ done < $1
 
 ### 2. Use picard to manipulate the SAM files
 Picard Version: 3.0.0 <br>
+Samtools Version: 1.13 <br>
 Work done one info2020
 
 #### (1) Reorder reads in the BAM file to match the contig ordering in reference file
