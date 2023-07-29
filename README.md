@@ -14,8 +14,8 @@ Work done on info server. Compute canada server will be used if the info server 
 3. Can we detect HGT by examining presence/absence variation? 
 
 # Samples used in this project
-- Original strains: starting populations at the start of this experimental evolution experiment. Number of strains is 56. I receive complete genomes for these strains.
-- Experimentally evolved strains: derived populations at the end of this experimental evolution experiment. Number of strains is 363. I receive Illumina paired-end reads for these strains.
+- **Original strains**: starting populations at the start of this experimental evolution experiment. Number of strains is 56. I receive complete genomes for these strains.
+- **Experimentally evolved strains**: derived populations at the end of this experimental evolution experiment. Number of strains is 363. I receive Illumina paired-end reads for these strains.
 
 # Step 1 - Genome Assembly of experimentally evolved strains
 ## Before Assembly
