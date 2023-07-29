@@ -467,9 +467,10 @@ done
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
 ```
 #!/bin/bash
-for i in *.rg.bam; do
-sample=${i%.rg.bam}
-java -jar /home/xingyuan/tools/picard.jar SortSam I="$sample".new_rg.bam O="$sample".coordinate_sorted.bam SORT_ORDER=coordinate
+for i in *.new_rg.bam; do
+sample=${i%.new_rg.bam}
+
+java -jar /home/xingyuan/tools/picard.jar SortSam -I "$sample".new_rg.bam -O "$sample".coordinate_sorted.bam -SO coordinate
 done
 ```
 
