@@ -480,7 +480,8 @@ https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Pi
 #!/bin/bash
 for i in *.coordinate_sorted.bam; do
 sample=${i%.coordinate_sorted.bam}
-java -jar /home/xingyuan/tools/picard.jar MarkDuplicates I="$sample".coordinate_sorted.bam O="$sample".marked_duplicates.bam M=marked_dup_metrics.txt
+
+java -jar /home/xingyuan/tools/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt
 done
 ```
 
