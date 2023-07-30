@@ -325,7 +325,7 @@ done
 https://github.com/ncbi/pgap/tree/1126_Test
 
 Version:  <br>
-Work done on compute canada cedar cluster (Note: pgap requires internet access to run, and cedar cluster is the only compute canada cluster that has internet access)
+Work done on compute canada graham cluster 
 
 #### Download pgap.py
 ```
@@ -488,7 +488,16 @@ done
 ```
 
 ### 3. Run HaplotypeCaller
+GATK Version: 4.4.0.0 <br>
+Work done on info114
+
 https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller#:~:text=The%20HaplotypeCaller%20is%20capable%20of,the%20reads%20in%20that%20region 
+
+#### Download the latest release at https://github.com/broadinstitute/gatk/releases
+```
+wget https://github.com/broadinstitute/gatk/releases/download/4.4.0.0/gatk-4.4.0.0.zip
+unzip gatk-4.4.0.0.zip
+```
 
 #### Create index file (``.fai``) for reference using samtools
 http://www.htslib.org/doc/samtools-faidx.html
