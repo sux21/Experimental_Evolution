@@ -475,27 +475,22 @@ java -jar /home/xingyuan/tools/picard.jar SortSam -I "$sample".new_rg.bam -O "$s
 done
 ```
 
-#### (4) Identify duplicate reads
-https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-
+#### (4) Identify duplicate reads and index the BAM files
+https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard- <br>
+https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
 ```
 #!/bin/bash
 for i in *.coordinate_sorted.bam; do
 sample=${i%.coordinate_sorted.bam}
 
-java -jar /home/xingyuan/tools/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt
+java -jar /home/xingyuan/tools/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt && java -jar /home/xingyuan/tools/picard.jar BuildBamIndex -I "$sample".marked_duplicates.bam
 done
 ```
 
-#### (5) Generate BAM index (.bai) file.
-https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
-```
-#!/bin/bash
-for i in *.marked_duplicates.bam; do
-java -jar /home/xingyuan/tools/picard.jar BuildBamIndex I=$i
-done
-```
+### 3. Run HaplotypeCaller
+https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller#:~:text=The%20HaplotypeCaller%20is%20capable%20of,the%20reads%20in%20that%20region 
 
-### Create index file (``.fai``) for reference using samtools
+#### Create index file (``.fai``) for reference using samtools
 http://www.htslib.org/doc/samtools-faidx.html
 ```
 #!/bin/bash
