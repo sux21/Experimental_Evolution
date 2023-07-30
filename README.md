@@ -7,6 +7,7 @@ Work done on info server. Compute canada server will be used if the info server 
 - Discuss graphing the data in R. Show the script which genapi uses to graphs the gene presence-absence matrix.
 - For roary, should I disable split paralogs because genapi does not split paralogs?
 - What read group should be in sam file?
+- Difference of pre-built and built gatk?
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
@@ -488,10 +489,9 @@ done
 ```
 
 ### 3. Run HaplotypeCaller
+Samtools Version: 1.13 (using htslib 1.13) <br>
 GATK Version: 4.4.0.0 <br>
-Work done on info114
-
-https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller#:~:text=The%20HaplotypeCaller%20is%20capable%20of,the%20reads%20in%20that%20region 
+Work done on info2020
 
 #### Download the latest release at https://github.com/broadinstitute/gatk/releases
 ```
@@ -499,7 +499,7 @@ wget https://github.com/broadinstitute/gatk/releases/download/4.4.0.0/gatk-4.4.0
 unzip gatk-4.4.0.0.zip
 ```
 
-#### Create index file (``.fai``) for reference using samtools
+#### Create index file (``.fai``) of reference for GATK
 http://www.htslib.org/doc/samtools-faidx.html
 ```
 #!/bin/bash
@@ -508,7 +508,17 @@ samtools faidx $i
 done
 ```
 
+#### HaplotypeCaller
+https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller#:~:text=The%20HaplotypeCaller%20is%20capable%20of,the%20reads%20in%20that%20region  
+```
+#!/bin/bash
+for i in *.marked_duplicates.bam; do
+sample=${i%.marked_duplicates.bam}
+ref=${sample#*-}
 
+/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" HaplotypeCaller -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O "$sample".g.vcf.gz -ERC GVCF
+done
+```
 
 
 
