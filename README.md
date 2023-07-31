@@ -296,7 +296,6 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Gene Presence Absence
-### Compare results of prokka-genapi, prokka-roary, pgap-genapi, pgap-roary
 ### 1. Prokka
 https://github.com/tseemann/prokka
 
@@ -340,13 +339,20 @@ chmod +x pgap.py
 
 #### Test run
 ```
-# At the directory of your pgap.py, type the following lines one line at a time:
-
-salloc --time=00-01:00 --account=def-batstone --mem=16000M (replace the account with your account)
+#!/bin/bash
+#SBATCH --time=00-01:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=8
+ 
 module load apptainer
-./pgap.py -D apptainer --no-internet --no-self-update -r -o mg37_results -g ASM2732v1.annotation.nucleotide.1.fasta -s 'Mycoplasmoides genitalium'
+ 
+./pgap.py -D apptainer --container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o mg37_result
+s -g ASM2732v1.annotation.nucleotide.1.fasta -s 'Mycoplasmoides genitalium'
+```
+#### Test sample
+```
 
---container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif
 ```
 
 ### 2. Roary
@@ -359,14 +365,7 @@ Work done on info114
 ```
 /usr/local/bin/roary -p 5 *.gff
 ```
-#### Visualize in R
-```
-# Import gene_presence_absence.Rtab file
-pav <- read.delim('~/Desktop/gene_presence_absence.Rtab', row.names = 1, header = TRUE)
 
-library(pheatmap)
-pheatmap(pav,col= c('green', 'blue'), legend_breaks = c(T,F), legend_labels = c("Present", "Absent"), treeheight_row = 0, treeheight_col = 0)
-```
 ### 2. GenAPI
 https://github.com/MigleSur/GenAPI
 
@@ -520,7 +519,11 @@ ref=${sample#*-}
 done
 ```
 
-
+#### Mutect2
+https://gatk.broadinstitute.org/hc/en-us/articles/13832710384155-Mutect2
+```
+/home/xingyuan/tools/gatk-4.4.0.0/gatk 
+```
 
 
 
