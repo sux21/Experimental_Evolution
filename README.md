@@ -508,7 +508,7 @@ done
 ```
 
 #### HaplotypeCaller
-https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller#:~:text=The%20HaplotypeCaller%20is%20capable%20of,the%20reads%20in%20that%20region  
+https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
 ```
 #!/bin/bash
 for i in *.marked_duplicates.bam; do
@@ -519,14 +519,55 @@ ref=${sample#*-}
 done
 ```
 
-#### Mutect2
-https://gatk.broadinstitute.org/hc/en-us/articles/13832710384155-Mutect2
+#### CombineGVCFs, GenotypeGVCFs
+CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
+GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
-https://github.com/broadinstitute/GATK-for-Microbes
+**For evolved strains with most probable ancestors as Rht_016_N**
 ```
-/home/xingyuan/tools/gatk-4.4.0.0/gatk 
+find *Rht_016_N*.gz > MPA-Rht_016_N.list && /home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta --variant MPA-Rht_016_N.list -O Rht_016_N.cohort.g.vcf.gz && /home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -V Rht_016_N.cohort.g.vcf.gz -ploidy 1 -O genotype_Rht_016_N.vcf.gz -stand-call-conf 30
 ```
+**Instead of doing the above command for every most probable ancestor, use the following script to do this task:**
+**Firstly, create a list of the most probable ancestors (25) named MPA.list:**
+```
+Rht_016_N
+Rht_056_N
+Rht_074_C
+Rht_097_N
+Rht_108_C
+Rht_113_C
+Rht_156_N
+Rht_173_C
+Rht_325_C
+Rht_415_C
+Rht_438_C
+Rht_449_C
+Rht_460_C
+Rht_462_C
+Rht_493_C
+Rht_511_N
+Rht_527_N
+Rht_559_C
+Rht_596_N
+Rht_706_C
+Rht_758_C
+Rht_773_N
+Rht_837_C
+Rht_861_C
+Rht_901_C
+```
+**script which does the above command for all 25**
+```
+#!/bin/bash
+while read line; do
 
+find *"$line"*.gz > MPA-"$line".list &&
 
+/home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta --variant MPA-"$line".list -O "$line".cohort.g.vcf.gz &&
+
+/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta -V "$line".cohort.g.vcf.gz -ploidy 1 -O genotype_"$line".vcf.gz -stand-call-conf 30
+
+done < MPA.list
+```
 
 
