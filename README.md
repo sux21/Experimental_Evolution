@@ -560,14 +560,23 @@ done < MPA.list
 ```
 
 ## Analysis 5: Variant Filtering
-### 1. Rename samples using bcftools
-Version: 1.13 (using htslib 1.13) <br>
-Work done on info2020
+https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_filtering.md
 
-```
-/home/xingyuan/rhizo_ee/call_snps/step7_gatk_combinegvcfs_genotypegvcfs/genotype*vcf.gz 
-```
+Vcftools Version:  <br>
+Work done on info114
 
+### 1. Download the latest release of vcftools at https://github.com/vcftools/vcftools
+Follow instructions at https://vcftools.github.io/examples.html for installation
+```
+wget https://github.com/vcftools/vcftools/releases/download/v0.1.16/vcftools-0.1.16.tar.gz
+tar -xvf vcftools-0.1.16.tar.gz
+export PERL5LIB=/home/xingyuan/tools/vcftools-0.1.16/src/perl:$PERL5LIB (Add this line in .bashrc file, exit the server and login again, and type echo $PERL5LIB to check if the path is added correctly)
+
+# In vcftools-0.1.16/ directory, type the following commands to compile vcftools:
+./configure
+make
+make install
+```
 
 
 
