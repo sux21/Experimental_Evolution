@@ -630,6 +630,7 @@ done < alternative_MPA.list
 ```
 **Run CombineGVCFs, GenotypeGVCFs for each list**
 ```
+#!/bin/bash
 for i in alternative_MPA-Rht_*; do
 j=${i#alternative_MPA-}
 ref=${j%.list}
