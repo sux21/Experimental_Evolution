@@ -562,21 +562,15 @@ done < MPA.list
 ## Analysis 5: Variant Filtering
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_filtering.md
 
-Vcftools Version:  <br>
-Work done on info114
+Vcftools Version: 0.1.16 <br>
+Work done on info2020
 
-### 1. Download the latest release of vcftools at https://github.com/vcftools/vcftools
+**Download the latest release of vcftools at https://github.com/vcftools/vcftools**
 Follow instructions at https://vcftools.github.io/examples.html for installation
+
+### 1. Run vcftools
+https://vcftools.github.io/man_latest.html 
 ```
-wget https://github.com/vcftools/vcftools/releases/download/v0.1.16/vcftools-0.1.16.tar.gz
-tar -xvf vcftools-0.1.16.tar.gz
-export PERL5LIB=/home/xingyuan/tools/vcftools-0.1.16/src/perl:$PERL5LIB (Add this line in .bashrc file, exit the server and login again, and type echo $PERL5LIB to check if the path is added correctly)
-
-# In vcftools-0.1.16/ directory, type the following commands to compile vcftools:
-./configure
-make
-make install
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf FILE.in --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --max-non-ref-ac 48 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out FILE.out
 ```
-
-
 
