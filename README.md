@@ -1,7 +1,7 @@
 # 2020 Experimental Evolution 
 Bioinformatics project on *Rhizobium leguminosarum*
 
-Work done on info server. Compute canada server will be used if the info server cannot run the program. Results produced by compute canada server will be transferred to info server. 
+Work done on info server (contact Brian Golding at golding@mcmaster.ca for an info account). Compute canada server will be used if the info server cannot run the program (register for an compute canada account at https://ccdb.alliancecan.ca/security/login). Results produced by compute canada server will be transferred to info server. 
 
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
@@ -517,8 +517,7 @@ done
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
-#### Most probable ancestors
-**Create a list, named ``MPA.list``,  for original strains in column MPA as the most probable ancestors (25 lines)**
+**Create a list, named ``MPA.list``,  for the most probable ancestors (25 lines)**
 ```
 Rht_016_N
 Rht_056_N
@@ -559,89 +558,15 @@ find *"$line"*.gz > MPA-"$line".list &&
 
 done < MPA.list
 ```
-#### Alternative most probable ancestors
-**For evolved strains (samples in que_name column) that has a value less than 0.01 in diff_ab column, use the original strains in MPA_b as alternative most probable ancestors.**
 
-**Create a list, named ``alternative_MPA.list``, containing evolved strains with its alternative most probable ancestors. If MPA and MPA_b are the same, use original strain in ref_name column as the alternative most probable ancestor; evolved strains in this case include 8_2_9, 8_2_5, 20_6_10, 10_3_2, 19_6_10, 12_7_4, 19_6_2, 5_6_1, 10_5_1, 8_1_6, 8_1_9, 19_6_8, 16_3_4 (13 samples). The list has 31 lines.**
+## Analysis 5: Variant Filtering
+### 1. Rename samples using bcftools
+Version: 1.13 (using htslib 1.13) <br>
+Work done on info2020
+
 ```
-16_1_6,Rht_061_N
-5_3_2,Rht_511_N
-8_2_9,Rht_511_N
-15_2_1,Rht_511_N
-8_2_5,Rht_511_N
-20_6_10,Rht_415_C
-10_3_2,Rht_415_C
-19_6_10,Rht_415_C
-12_7_4,Rht_415_C
-12_7_6,Rht_415_C
-14_2_3,Rht_415_C
-10_5_8,Rht_415_C
-19_6_2,Rht_415_C
-5_6_1,Rht_415_C
-7_2_9,Rht_415_C
-15_3_5,Rht_415_C
-2_3_4,Rht_415_C
-13_1_8,Rht_415_C
-7_2_5,Rht_415_C
-10_5_1,Rht_415_C
-8_1_6,Rht_415_C
-8_1_9,Rht_415_C
-19_3_3,Rht_415_C
-19_6_8,Rht_415_C
-14_2_1,Rht_415_C
-20_3_1,Rht_415_C
-19_6_4,Rht_415_C
-15_3_6,Rht_415_C
-12_7_1,Rht_415_C
-20_2_6,Rht_116_N
-16_3_4,Rht_003_C
+/home/xingyuan/rhizo_ee/call_snps/step7_gatk_combinegvcfs_genotypegvcfs/genotype*vcf.gz 
 ```
-**Group the evolved strains with the same alternative most probable ancestor. This will create 5 lists.**
-```
-#!/bin/bash
-while IFS=',' read a b; do
-
-# Create a list for files with Rht_061_N as the alternative most probable ancestor
-if [[ $b =~ "Rht_061_N" ]]; then
-   find "$a"-*.gz >> alternative_MPA-"$b".list
-fi
-
-# Create a list for files with Rht_511_N as the alternative most probable ancestor
-if [[ $b =~ "Rht_511_N" ]]; then
-   find "$a"-*.gz >> alternative_MPA-"$b".list
-fi
-
-# Create a list for files with Rht_415_C as the alternative most probable ancestor
-if [[ $b =~ "Rht_415_C" ]]; then
-   find "$a"-*.gz >> alternative_MPA-"$b".list
-fi
-
-# Create a list for files with Rht_116_N as the alternative most probable ancestor
-if [[ $b =~ "Rht_116_N" ]]; then
-   find "$a"-*.gz >> alternative_MPA-"$b".list
-fi
-
-# Create a list for files with Rht_003_C as the alternative most probable ancestor
-if [[ $b =~ "Rht_003_C" ]]; then
-   find "$a"-*.gz >> alternative_MPA-"$b".list
-fi
-
-done < alternative_MPA.list
-```
-**Run CombineGVCFs, GenotypeGVCFs for each list**
-```
-#!/bin/bash
-for i in alternative_MPA-Rht_*; do
-j=${i#alternative_MPA-}
-ref=${j%.list}
-
-/home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta --variant $i -O alternative_"$ref".cohort.g.vcf.gz &&
-
-/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -V alternative_"$ref".cohort.g.vcf.gz -ploidy 1 -O alternative_genotype_"$ref".vcf.gz -stand-call-conf 30
-done 
-```
-
-
 
 
 
