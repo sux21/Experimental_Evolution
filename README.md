@@ -528,7 +528,7 @@ GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-
 find *Rht_016_N*.gz > MPA-Rht_016_N.list && /home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta --variant MPA-Rht_016_N.list -O Rht_016_N.cohort.g.vcf.gz && /home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -V Rht_016_N.cohort.g.vcf.gz -ploidy 1 -O genotype_Rht_016_N.vcf.gz -stand-call-conf 30
 ```
 **Instead of doing the above command for every most probable ancestor, use the following script to do this task:**
-**Firstly, create a list of the most probable ancestors (25) named MPA.list:**
+**Firstly, create a list, named ``MPA.list``,  for original strains in column MPA as the most probable ancestors (25 lines)**
 ```
 Rht_016_N
 Rht_056_N
@@ -569,5 +569,60 @@ find *"$line"*.gz > MPA-"$line".list &&
 
 done < MPA.list
 ```
+**For evolved strains (samples in que_name column) that has a value less than 0.01 in diff_ab column, use the original strains in MPA_b as alternative most probable ancestors.**
+
+**Create a list, named ``alternative_MPA.list``, with evolved strains with its alternative most probable ancestors. If MPA and MPA_b are the same, but MPA and ref_name are different, use ref_name as the alternative most probable ancestor (8_2_9, 8_2_5, 20_6_10, 10_3_2, 19_6_10, 12_7_4, 19_6_2, 5_6_1, 10_5_1, 8_1_6, 8_1_9, 19_6_8, 16_3_4 (13 samples)). (31 lines)**
+```
+16_1_6, Rht_061_N
+5_3_2, Rht_511_N
+8_2_9, Rht_511_N
+15_2_1, Rht_511_N
+8_2_5, Rht_511_N
+20_6_10, Rht_415_C
+10_3_2, Rht_415_C
+19_6_10, Rht_415_C
+12_7_4, Rht_415_C
+12_7_6, Rht_415_C
+14_2_3, Rht_415_C
+10_5_8, Rht_415_C
+19_6_2, Rht_415_C
+5_6_1, Rht_415_C
+7_2_9, Rht_415_C
+15_3_5, Rht_415_C
+2_3_4, Rht_415_C
+13_1_8, Rht_415_C
+7_2_5, Rht_415_C
+10_5_1, Rht_415_C
+8_1_6, Rht_415_C
+8_1_9, Rht_415_C
+19_3_3, Rht_415_C
+19_6_8, Rht_415_C
+14_2_1, Rht_415_C
+20_3_1, Rht_415_C
+19_6_4, Rht_415_C
+15_3_6, Rht_415_C
+12_7_1, Rht_415_C
+20_2_6, Rht_116_N
+16_3_4, Rht_003_C
+```
+**Run CombineGVCFs and GenotypeGVCFs for these 31 samples**
+```
+#!/bin/bash
+while IFS=',' read $a $b; do
+
+if [[ $b =~ "Rht_061_N" ]]; then
+   find *"$a"*.gz > alternative_MPA-"$b".list
+fi
+
+#/home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$b".fasta --variant MPA-"$line".list -O alternative."$b".cohort.g.vcf.gz &&
+
+#/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta -V "$line".cohort.g.vcf.gz -ploidy 1 -O genotype_"$line".vcf.gz -stand-call-conf 30
+
+done < alternative_MPA.list
+```
+
+
+
+
 
 
