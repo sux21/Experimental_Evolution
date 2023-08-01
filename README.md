@@ -3,12 +3,6 @@ Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on info server. Compute canada server will be used if the info server cannot run the program. Results produced by compute canada server will be transferred to info server. 
 
-# Monday meeting
-- Discuss graphing the data in R. Show the script which genapi uses to graphs the gene presence-absence matrix.
-- For roary, should I disable split paralogs because genapi does not split paralogs?
-- What read group should be in sam file?
-- Difference of pre-built and built gatk?
-
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
@@ -605,41 +599,48 @@ done < MPA.list
 20_2_6,Rht_116_N
 16_3_4,Rht_003_C
 ```
-**Run CombineGVCFs and GenotypeGVCFs for these 31 samples**
+**Create lists of evolved strains with the same alternative most probable ancestor (5 lists)**
 ```
 #!/bin/bash
 while IFS=',' read a b; do
 
 # Create a list for files with Rht_061_N as the alternative most probable ancestor
 if [[ $b =~ "Rht_061_N" ]]; then
-   find *"$a"*.gz > alternative_MPA-"$b".list
+   find "$a"-*.gz >> alternative_MPA-"$b".list
 fi
 
 # Create a list for files with Rht_511_N as the alternative most probable ancestor
 if [[ $b =~ "Rht_511_N" ]]; then
-   find *"$a"*.gz > alternative_MPA-"$b".list
+   find "$a"-*.gz >> alternative_MPA-"$b".list
 fi
 
 # Create a list for files with Rht_415_C as the alternative most probable ancestor
 if [[ $b =~ "Rht_415_C" ]]; then
-   find *"$a"*.gz > alternative_MPA-"$b".list
+   find "$a"-*.gz >> alternative_MPA-"$b".list
 fi
 
 # Create a list for files with Rht_116_N as the alternative most probable ancestor
 if [[ $b =~ "Rht_116_N" ]]; then
-   find *"$a"*.gz > alternative_MPA-"$b".list
+   find "$a"-*.gz >> alternative_MPA-"$b".list
 fi
 
 # Create a list for files with Rht_003_C as the alternative most probable ancestor
 if [[ $b =~ "Rht_003_C" ]]; then
-   find *"$a"*.gz > alternative_MPA-"$b".list
+   find "$a"-*.gz >> alternative_MPA-"$b".list
 fi
 
-#/home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$b".fasta --variant MPA-"$line".list -O alternative."$b".cohort.g.vcf.gz &&
-
-#/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta -V "$line".cohort.g.vcf.gz -ploidy 1 -O genotype_"$line".vcf.gz -stand-call-conf 30
-
 done < alternative_MPA.list
+```
+**Run CombineGVCFs, GenotypeGVCFs**
+```
+for i in alternative_MPA-Rht_*; do
+j=${i#alternative_MPA-}
+ref=${j%.list}
+
+/home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta --variant $i -O alternative_"$ref".cohort.g.vcf.gz &&
+
+/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -V alternative_"$ref".cohort.g.vcf.gz -ploidy 1 -O alternative_genotype_"$ref".vcf.gz -stand-call-conf 30
+done 
 ```
 
 
