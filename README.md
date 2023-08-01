@@ -573,44 +573,65 @@ done < MPA.list
 
 **Create a list, named ``alternative_MPA.list``, with evolved strains with its alternative most probable ancestors. If MPA and MPA_b are the same, but MPA and ref_name are different, use ref_name as the alternative most probable ancestor (8_2_9, 8_2_5, 20_6_10, 10_3_2, 19_6_10, 12_7_4, 19_6_2, 5_6_1, 10_5_1, 8_1_6, 8_1_9, 19_6_8, 16_3_4 (13 samples)). (31 lines)**
 ```
-16_1_6, Rht_061_N
-5_3_2, Rht_511_N
-8_2_9, Rht_511_N
-15_2_1, Rht_511_N
-8_2_5, Rht_511_N
-20_6_10, Rht_415_C
-10_3_2, Rht_415_C
-19_6_10, Rht_415_C
-12_7_4, Rht_415_C
-12_7_6, Rht_415_C
-14_2_3, Rht_415_C
-10_5_8, Rht_415_C
-19_6_2, Rht_415_C
-5_6_1, Rht_415_C
-7_2_9, Rht_415_C
-15_3_5, Rht_415_C
-2_3_4, Rht_415_C
-13_1_8, Rht_415_C
-7_2_5, Rht_415_C
-10_5_1, Rht_415_C
-8_1_6, Rht_415_C
-8_1_9, Rht_415_C
-19_3_3, Rht_415_C
-19_6_8, Rht_415_C
-14_2_1, Rht_415_C
-20_3_1, Rht_415_C
-19_6_4, Rht_415_C
-15_3_6, Rht_415_C
-12_7_1, Rht_415_C
-20_2_6, Rht_116_N
-16_3_4, Rht_003_C
+16_1_6,Rht_061_N
+5_3_2,Rht_511_N
+8_2_9,Rht_511_N
+15_2_1,Rht_511_N
+8_2_5,Rht_511_N
+20_6_10,Rht_415_C
+10_3_2,Rht_415_C
+19_6_10,Rht_415_C
+12_7_4,Rht_415_C
+12_7_6,Rht_415_C
+14_2_3,Rht_415_C
+10_5_8,Rht_415_C
+19_6_2,Rht_415_C
+5_6_1,Rht_415_C
+7_2_9,Rht_415_C
+15_3_5,Rht_415_C
+2_3_4,Rht_415_C
+13_1_8,Rht_415_C
+7_2_5,Rht_415_C
+10_5_1,Rht_415_C
+8_1_6,Rht_415_C
+8_1_9,Rht_415_C
+19_3_3,Rht_415_C
+19_6_8,Rht_415_C
+14_2_1,Rht_415_C
+20_3_1,Rht_415_C
+19_6_4,Rht_415_C
+15_3_6,Rht_415_C
+12_7_1,Rht_415_C
+20_2_6,Rht_116_N
+16_3_4,Rht_003_C
 ```
 **Run CombineGVCFs and GenotypeGVCFs for these 31 samples**
 ```
 #!/bin/bash
-while IFS=',' read $a $b; do
+while IFS=',' read a b; do
 
+# Create a list for files with Rht_061_N as the alternative most probable ancestor
 if [[ $b =~ "Rht_061_N" ]]; then
+   find *"$a"*.gz > alternative_MPA-"$b".list
+fi
+
+# Create a list for files with Rht_511_N as the alternative most probable ancestor
+if [[ $b =~ "Rht_511_N" ]]; then
+   find *"$a"*.gz > alternative_MPA-"$b".list
+fi
+
+# Create a list for files with Rht_415_C as the alternative most probable ancestor
+if [[ $b =~ "Rht_415_C" ]]; then
+   find *"$a"*.gz > alternative_MPA-"$b".list
+fi
+
+# Create a list for files with Rht_116_N as the alternative most probable ancestor
+if [[ $b =~ "Rht_116_N" ]]; then
+   find *"$a"*.gz > alternative_MPA-"$b".list
+fi
+
+# Create a list for files with Rht_003_C as the alternative most probable ancestor
+if [[ $b =~ "Rht_003_C" ]]; then
    find *"$a"*.gz > alternative_MPA-"$b".list
 fi
 
