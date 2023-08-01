@@ -513,16 +513,12 @@ ref=${sample#*-}
 done
 ```
 
-#### CombineGVCFs, GenotypeGVCFs
+### 4. CombineGVCFs, GenotypeGVCFs
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
-**For evolved strains with most probable ancestors as Rht_016_N**
-```
-find *Rht_016_N*.gz > MPA-Rht_016_N.list && /home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta --variant MPA-Rht_016_N.list -O Rht_016_N.cohort.g.vcf.gz && /home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -V Rht_016_N.cohort.g.vcf.gz -ploidy 1 -O genotype_Rht_016_N.vcf.gz -stand-call-conf 30
-```
-**Instead of doing the above command for every most probable ancestor, use the following script to do this task:**
-**Firstly, create a list, named ``MPA.list``,  for original strains in column MPA as the most probable ancestors (25 lines)**
+#### Most probable ancestors
+**Create a list, named ``MPA.list``,  for original strains in column MPA as the most probable ancestors (25 lines)**
 ```
 Rht_016_N
 Rht_056_N
@@ -550,7 +546,7 @@ Rht_837_C
 Rht_861_C
 Rht_901_C
 ```
-**script which does the above command for all 25**
+**Run CombineGVCFs and GenotypeGVCFs**
 ```
 #!/bin/bash
 while read line; do
@@ -563,9 +559,10 @@ find *"$line"*.gz > MPA-"$line".list &&
 
 done < MPA.list
 ```
+#### Alternative most probable ancestors
 **For evolved strains (samples in que_name column) that has a value less than 0.01 in diff_ab column, use the original strains in MPA_b as alternative most probable ancestors.**
 
-**Create a list, named ``alternative_MPA.list``, with evolved strains with its alternative most probable ancestors. If MPA and MPA_b are the same, but MPA and ref_name are different, use ref_name as the alternative most probable ancestor (8_2_9, 8_2_5, 20_6_10, 10_3_2, 19_6_10, 12_7_4, 19_6_2, 5_6_1, 10_5_1, 8_1_6, 8_1_9, 19_6_8, 16_3_4 (13 samples)). (31 lines)**
+**Create a list, named ``alternative_MPA.list``, containing evolved strains with its alternative most probable ancestors. If MPA and MPA_b are the same, use original strain in ref_name column as the alternative most probable ancestor; evolved strains in this case include 8_2_9, 8_2_5, 20_6_10, 10_3_2, 19_6_10, 12_7_4, 19_6_2, 5_6_1, 10_5_1, 8_1_6, 8_1_9, 19_6_8, 16_3_4 (13 samples). The list has 31 lines.**
 ```
 16_1_6,Rht_061_N
 5_3_2,Rht_511_N
@@ -599,7 +596,7 @@ done < MPA.list
 20_2_6,Rht_116_N
 16_3_4,Rht_003_C
 ```
-**Create lists of evolved strains with the same alternative most probable ancestor (5 lists)**
+**Group the evolved strains with the same alternative most probable ancestor. This will create 5 lists.**
 ```
 #!/bin/bash
 while IFS=',' read a b; do
@@ -631,7 +628,7 @@ fi
 
 done < alternative_MPA.list
 ```
-**Run CombineGVCFs, GenotypeGVCFs**
+**Run CombineGVCFs, GenotypeGVCFs for each list**
 ```
 for i in alternative_MPA-Rht_*; do
 j=${i#alternative_MPA-}
