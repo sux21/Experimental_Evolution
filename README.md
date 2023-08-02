@@ -638,15 +638,21 @@ out=${i%.filt1.recode.vcf}
 done
 ```
 ### 2. Pick representative singletons 
+**If R package tidyverse is not installed, open R and install it by typeing ``install.packages("tidyverse")``**
+
 ```
-CHROM   POS     SINGLETON/DOUBLETON     ALLELE  INDV
-cluster_001_consensus   4720654 S       C       13_1_1-Rht_056_N
-cluster_001_consensus   4720654 S       T       14_2_2-Rht_056_N
-cluster_002_consensus   381061  S       G       13_1_1-Rht_056_N
-cluster_002_consensus   381061  S       T       14_2_2-Rht_056_N
+library("tidyverse")
+singletons <- read_csv("./genotype_Rht_758_C.singletons")
+
 ```
-```
-CHROM   POS     QUAL
-cluster_001_consensus   4720654 2246.63
-cluster_002_consensus   381061  3594.63
-```
+
+
+
+
+
+
+
+
+
+
+
