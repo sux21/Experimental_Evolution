@@ -350,19 +350,19 @@ chmod +x pgap.py
 #### Test run
 ```
 #!/bin/bash
-#SBATCH --time=00-01:00
+#SBATCH --time=00-00:30
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=40
  
 module load apptainer
- 
-./pgap.py -D apptainer --container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o mg37_result
-s -g ASM2732v1.annotation.nucleotide.1.fasta -s 'Mycoplasmoides genitalium'
-```
-#### Test sample
-```
 
+for i in /home/sux21/2023_summer_coop/rhizo_ee/genomes/Rht_773_N.fasta; do
+sample=${i#/home/sux21/2023_summer_coop/rhizo_ee/genomes/}
+out=${sample%.fasta}
+
+/home/sux21/2023_summer_coop/tools/pgap/pgap.py -D apptainer -c 40 --container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o /home/sux21/2023_summer_coop/rhizo_ee/pgap/"$out" -g "$i" -s Rhizobium leguminosarum
+done
 ```
 
 ### 2. Roary
