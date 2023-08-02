@@ -361,7 +361,7 @@ for i in /home/sux21/2023_summer_coop/rhizo_ee/genomes/Rht_773_N.fasta; do
 sample=${i#/home/sux21/2023_summer_coop/rhizo_ee/genomes/}
 out=${sample%.fasta}
 
-/home/sux21/2023_summer_coop/tools/pgap/pgap.py -D apptainer -c 40 --container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o /home/sux21/2023_summer_coop/rhizo_ee/pgap/"$out" -g "$i" -s Rhizobium leguminosarum
+/home/sux21/2023_summer_coop/tools/pgap/pgap.py -D apptainer -c 40 --container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o /home/sux21/2023_summer_coop/rhizo_ee/pgap/"$out" -g "$i" -s 'Rhizobium leguminosarum'
 done
 ```
 
