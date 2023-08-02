@@ -15,6 +15,8 @@ Work done on **info server** (contact Brian Golding at golding@mcmaster.ca for a
 # Step 1 - Genome Assembly of experimentally evolved strains
 ## Before Assembly
 ### 1. Run FastQC for raw data
+https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+
 Versions: FastQC v0.11.5 <br>
 Work done on info114
 
@@ -24,6 +26,8 @@ nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads *gz &
 ```
 
 ### 2. Run MultiQC for raw data
+https://multiqc.info/
+
 Version: MultiQC v1.9 <br>
 Work done on info114
 
@@ -32,6 +36,8 @@ multiqc .
 ```
 
 ### 3. Run Trimmomatic 
+http://www.usadellab.org/cms/?page=trimmomatic
+
 Version: 0.39 <br>
 Work done on info114
 
@@ -70,6 +76,8 @@ multiqc .
 
 ## During Assembly 
 ### 1. Run SPAdes 
+https://github.com/ablab/spades
+
 Version: 3.15.2 <br>
 Work done on info114
 
@@ -96,6 +104,8 @@ done
 
 ## After Assembly 
 ### 1.1 Run Quast for 363 experimentally evolved strains (Contigs)
+https://github.com/ablab/quast
+
 Version: 5.2.0, 3d87c606 <br>
 Work done on info114 
 
@@ -145,11 +155,12 @@ done
 
 # Step 2 - Data Analysis
 ## Analysis 1 - Find the most probable ancestor for each experimentally evolved strain 
-Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
 
 ### (Optional) 1. Run Spine: find core genomes 
+https://github.com/Alan-Collins/Spine-Nucmer-SNPs
+
 Version: 0.3.2 <br>
 Work done on info114. 
 
@@ -177,6 +188,8 @@ nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE
 ```
 
 ### 2. Run FastANI
+https://github.com/ParBLiSS/FastANI
+
 Version: 1.32  <br>
 Work done on info2020
 
@@ -248,11 +261,12 @@ nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5
 ```
 
 ## Analysis 2 - Phylogeny for the original strains 
-Commands in step 1 are taken from https://github.com/Alan-Collins/Spine-Nucmer-SNPs. 
 
 **Samples: 56 original strains**
 
 ### 1. Run Spine-Nucmer-SNPs
+https://github.com/Alan-Collins/Spine-Nucmer-SNPs
+
 Version: 0.3.2 <br>
 Work done on info113
 
@@ -275,6 +289,8 @@ python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f v
 ```
 
 ### 2. IQ-Tree
+http://www.iqtree.org/doc/Tutorial
+
 Version: 2.2.0 <br>
 Work done on info114
 
@@ -376,6 +392,8 @@ https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discover
 Install the latest version of picard at https://github.com/broadinstitute/picard. Use this command as an example to download: ``wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar``.
 
 ### 1. BWA
+https://bio-bwa.sourceforge.net/
+
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.11 (using htslib 1.11) <br>
 Work done on info114
@@ -565,7 +583,7 @@ https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discover
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
 
-**Download the latest release of vcftools at https://github.com/vcftools/vcftools**
+**Download the latest release of vcftools at https://github.com/vcftools/vcftools** <br>
 Follow instructions at https://vcftools.github.io/examples.html for installation
 
 ### 1. Run vcftools
