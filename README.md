@@ -638,5 +638,15 @@ out=${i%.filt1.recode.vcf}
 done
 ```
 ### 2. Pick representative singletons 
-
-
+```
+CHROM   POS     SINGLETON/DOUBLETON     ALLELE  INDV
+cluster_001_consensus   4720654 S       C       13_1_1-Rht_056_N
+cluster_001_consensus   4720654 S       T       14_2_2-Rht_056_N
+cluster_002_consensus   381061  S       G       13_1_1-Rht_056_N
+cluster_002_consensus   381061  S       T       14_2_2-Rht_056_N
+```
+```
+CHROM   POS     QUAL
+cluster_001_consensus   4720654 2246.63
+cluster_002_consensus   381061  3594.63
+```
