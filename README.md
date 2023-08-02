@@ -535,6 +535,9 @@ done
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
+GATK Version: 4.4.0.0 <br>
+Work done on info2020
+
 **Create a list, named ``MPA.list``,  for the most probable ancestors (25 most probable ancestors, 25 lines)**
 ```
 Rht_016_N
@@ -580,77 +583,64 @@ find *"$line"*.gz > MPA-"$line".list &&
 done < MPA.list
 ```
 
-## Analysis 5: Variant Filtering
-https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_filtering.md
-
+### 5. Filter SNPs
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
 
 **Download the latest release of vcftools at https://github.com/vcftools/vcftools. Follow instructions at https://vcftools.github.io/examples.html for installation.**
 
-### 1. Run vcftools
-#### Filter SNPs
+#### Run vcftools (with --max-meanDP 230)
 https://vcftools.github.io/man_latest.html 
 ```
 #!/bin/bash
 for i in genotype*gz; do
 out=${i%.vcf.gz}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --max-non-ref-ac 48 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
 done
 ```
-
-#### Summarize each of the filtered vcf files
-##### Mean depth per site averaged across all individuals
+#### Run vcftools (with --max-meanDP 150)
 ```
 #!/bin/bash
-for i in genotype*filt1.recode.vcf; do
-out=${i%.filt1.recode.vcf}
+for i in genotype*gz; do
+out=${i%.vcf.gz}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --site-mean-depth --out "$out"
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 150 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt2
 done
 ```
-##### r2, D, and D’ statistics using phased haplotypes
+#### Run vcftools (with --max-meanDP 200)
 ```
 #!/bin/bash
-for i in genotype*filt1.recode.vcf; do
-out=${i%.filt1.recode.vcf}
+for i in genotype*gz; do
+out=${i%.vcf.gz}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --hap-r2 --out "$out"
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 200 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt3
 done
 ```
-##### Location of singletons, and the individual they occur in
+#### Run vcftools (with --max-meanDP 250)
 ```
 #!/bin/bash
-for i in genotype*filt1.recode.vcf; do
-out=${i%.filt1.recode.vcf}
+for i in genotype*gz; do
+out=${i%.vcf.gz}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --singletons --out "$out"
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt4
 done
 ```
-##### Per-site SNP quality
+### 6. VariantsToTable
+https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
+
+GATK Version: 4.4.0.0 <br>
+Work done on info2020
+
 ```
 #!/bin/bash
-for i in genotype*filt1.recode.vcf; do
-out=${i%.filt1.recode.vcf}
+for i in genotype_Rht_*vcf*; do
+j=${i%.filt*vcf}
+ref=${j#genotype_}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --site-quality --out "$out"
+/home/xingyuan/tools/gatk-4.4.0.0/gatk VariantsToTable -V "$i" -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -F CHROM -F POS -F REF -F ALT -F QUAL -F AF -F ANN -F DP -GF GT -O "$i".table
 done
 ```
-### 2. Pick representative singletons 
-**If R package tidyverse is not installed, open R and install it by typeing ``install.packages("tidyverse")``**
-
-```
-library("tidyverse")
-singletons <- read_csv("./genotype_Rht_758_C.singletons")
-
-```
-
-
-
-
-
-
 
 
 
