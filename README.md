@@ -535,7 +535,7 @@ done
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
-**Create a list, named ``MPA.list``,  for the most probable ancestors (25 lines)**
+**Create a list, named ``MPA.list``,  for the most probable ancestors (25 most probable ancestors, 25 lines)**
 ```
 Rht_016_N
 Rht_056_N
@@ -568,10 +568,13 @@ Rht_901_C
 #!/bin/bash
 while read line; do
 
+# Group evolved strains with the same most probable ancestors to a list. This should create 25 lists.
 find *"$line"*.gz > MPA-"$line".list &&
 
+# Run CombineGVCFs to combine the vcf files in each list to one vcf files. This should create 25 cohort.g.vcf.gz files.
 /home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta --variant MPA-"$line".list -O "$line".cohort.g.vcf.gz &&
 
+# Run GenotypeGVCFs on each 25 cohort.g.vcf.gz files
 /home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta -V "$line".cohort.g.vcf.gz -ploidy 1 -O genotype_"$line".vcf.gz -stand-call-conf 30
 
 done < MPA.list
@@ -583,12 +586,57 @@ https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discover
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
 
-**Download the latest release of vcftools at https://github.com/vcftools/vcftools** <br>
-Follow instructions at https://vcftools.github.io/examples.html for installation
+**Download the latest release of vcftools at https://github.com/vcftools/vcftools. Follow instructions at https://vcftools.github.io/examples.html for installation.**
 
 ### 1. Run vcftools
+#### Filter SNPs
 https://vcftools.github.io/man_latest.html 
 ```
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf FILE.in --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --max-non-ref-ac 48 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out FILE.out
+#!/bin/bash
+for i in genotype*gz; do
+out=${i%.vcf.gz}
+
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --max-non-ref-ac 48 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
+done
 ```
+
+#### Summarize each of the filtered vcf files
+##### Mean depth per site averaged across all individuals
+```
+#!/bin/bash
+for i in genotype*filt1.recode.vcf; do
+out=${i%.filt1.recode.vcf}
+
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --site-mean-depth --out "$out"
+done
+```
+##### r2, D, and D’ statistics using phased haplotypes
+```
+#!/bin/bash
+for i in genotype*filt1.recode.vcf; do
+out=${i%.filt1.recode.vcf}
+
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --hap-r2 --out "$out"
+done
+```
+##### Location of singletons, and the individual they occur in
+```
+#!/bin/bash
+for i in genotype*filt1.recode.vcf; do
+out=${i%.filt1.recode.vcf}
+
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --singletons --out "$out"
+done
+```
+##### Per-site SNP quality
+```
+#!/bin/bash
+for i in genotype*filt1.recode.vcf; do
+out=${i%.filt1.recode.vcf}
+
+/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --vcf "$i" --site-quality --out "$out"
+done
+```
+### 2. Pick representative singletons 
+
 
