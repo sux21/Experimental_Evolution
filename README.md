@@ -374,6 +374,22 @@ Work done on info114
 /usr/local/bin/roary -p 5 *.gff
 ```
 
+### Run roary for all samples
+Version: <br>
+Work done on graham cluster
+
+```
+#!/bin/bash
+#SBATCH --time=01-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=40
+
+module spider roary/3.13.0
+
+roary -p 40 *.gff
+```
+
 ### 2. GenAPI
 https://github.com/MigleSur/GenAPI
 
