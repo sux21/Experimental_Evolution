@@ -334,13 +334,11 @@ done
 ### 1. PGAP
 https://github.com/ncbi/pgap/tree/1126_Test
 
-Version:  <br>
+Version: 2023-05-17.build6771 <br>
 Work done on compute canada graham cluster 
 
 #### Download pgap.py
 ```
-# At the directory where you want to download pgap.py, type the following lines one line at a time:
-
 module load apptainer 
 wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
 chmod +x pgap.py
