@@ -643,6 +643,7 @@ out=${i%.vcf.gz}
 /home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt4
 done
 ```
+
 ### 6. VariantsToTable
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
 
@@ -658,6 +659,10 @@ ref=${j#genotype_}
 /home/xingyuan/tools/gatk-4.4.0.0/gatk VariantsToTable -V "$i" -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -F CHROM -F POS -F REF -F ALT -F QUAL -F AF -F ANN -F DP -GF GT -O "$i".table
 done
 ```
+
+### Summarize SNPs for each evolved strain: number of SNPs from MPA, genomic location, genes SNPs fall in 
+
+
 
 
 
