@@ -403,7 +403,10 @@ nohup genapi --threads 5 --matrix *.gff &
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
-Install the latest version of picard at https://github.com/broadinstitute/picard. Use this command as an example to download: ``wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar``.
+**Install the latest version of picard at https://github.com/broadinstitute/picard** 
+```
+wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar
+```
 
 ### 1. BWA
 https://bio-bwa.sourceforge.net/
@@ -518,7 +521,7 @@ Samtools Version: 1.13 (using htslib 1.13) <br>
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
 
-#### Download the latest release at https://github.com/broadinstitute/gatk/releases
+**Download the latest release of gatk at https://github.com/broadinstitute/gatk/releases**
 ```
 wget https://github.com/broadinstitute/gatk/releases/download/4.4.0.0/gatk-4.4.0.0.zip
 unzip gatk-4.4.0.0.zip
