@@ -645,6 +645,7 @@ out=${i%.vcf.gz}
 /home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt4
 done
 ```
+**After this steps, Rht_016_N, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_861_C have no SNPs for analysis in all four options of max-meanDP**
 
 ### 6. VariantsToTable
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
