@@ -337,6 +337,8 @@ https://github.com/ncbi/pgap/tree/1126_Test
 Version: 2023-05-17.build6771 <br>
 Work done on compute canada graham cluster 
 
+https://github.com/shenwei356/seqkit
+
 #### Download pgap.py
 ```
 module load apptainer 
