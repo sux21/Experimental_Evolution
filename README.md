@@ -332,14 +332,31 @@ d=${c%.fasta}
 done
 ```
 ### 1. PGAP
+#### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
+https://github.com/shenwei356/seqkit
+
+Seqkit Version: 2.3.0 <br>
+Work done on graham cluster
+
+```
+#!/bin/bash
+#SBATCH --time=00-00:05
+#SBATCH --account=def-batstone
+
+module load seqkit/2.3.1
+
+for i in *contigs.fasta; do
+sample=${i%-contigs.fasta}
+
+seqkit seq -m 200 "$sample"-contigs.fasta > "$sample"-contigs.filter.fasta
+done
+```
+
+#### Download pgap.py
 https://github.com/ncbi/pgap/tree/1126_Test
 
 Version: 2023-05-17.build6771 <br>
-Work done on compute canada graham cluster 
-
-https://github.com/shenwei356/seqkit
-
-#### Download pgap.py
+Work done on graham cluster 
 ```
 module load apptainer 
 wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
@@ -347,7 +364,7 @@ chmod +x pgap.py
 ./pgap.py -D apptainer 
 ```
 
-#### Test run
+#### Run pgap
 ```
 #!/bin/bash
 #SBATCH --time=00-00:30
