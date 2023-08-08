@@ -680,8 +680,29 @@ ref=${j#genotype_}
 done
 ```
 
-### Summarize SNPs for each evolved strain: number of SNPs from MPA, genomic location, genes SNPs fall in 
+### 7. Find genes at the positions of SNPs
+https://github.com/bedops/bedops
 
+#### Covert gff and vcf to bed format
+Bedops Version: 2.4.41 <br>
+Work done on info2020
+
+```
+gff2bed < Rht_056_N-contigs.gff > Rht_056_N.bed
+gff2bed < annot_with_genomic_fasta.gff > annot_with_genomic_fasta.bed
+
+vcf2bed < genotype_Rht_056_N.filt1.recode.vcf > genotype_Rht_056_N.filt1.bed
+```
+
+#### Run bedtools 
+Bedtools Version: 2.19.1 <br>
+Work done on info114
+
+```
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/annotations/Rht_056_N/annot_with_genomic_fasta.bed -b genotype_Rht_056_N.filt1.bed -header -wa >  genotype_Rht_056_N.filt1.genes.2
+
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/Rht_056_N.bed -b genotype_Rht_056_N.filt1.bed -header -wa > genotype_Rht_056_N.filt1.genes.1
+```
 
 
 
