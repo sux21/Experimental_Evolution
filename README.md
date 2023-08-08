@@ -364,24 +364,49 @@ chmod +x pgap.py
 ./pgap.py -D apptainer 
 ```
 
-#### Run pgap
+#### Run pgap (Prepare 5 scripts and run them at the same time)
+**script 1 (92 samples)**
 ```
 #!/bin/bash
-#SBATCH --time=00-00:30
+#SBATCH --time=05-00:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
+#SBATCH --cpus-per-task=10
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
  
 module load apptainer
 
-for i in /home/sux21/2023_summer_coop/rhizo_ee/genomes/Rht_773_N.fasta; do
-sample=${i#/home/sux21/2023_summer_coop/rhizo_ee/genomes/}
-out=${sample%.fasta}
+export APPTAINER_BIND=/project
 
-/home/sux21/2023_summer_coop/tools/pgap/pgap.py -D apptainer -c 40 --container-path /home/sux21/2023_summer_coop/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o /home/sux21/2023_summer_coop/rhizo_ee/pgap/"$out" -g "$i" -s 'Rhizobium leguminosarum'
+for i in /project/6078724/sux21/rhizo_ee/genomes/1_*_*filter.fasta 1{0..4}_*_*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%-contigs.filter.fasta}
+
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g /project/6078724/sux21/rhizo_ee/genomes/Rht_462_C.fasta -s 'Rhizobium leguminosarum' -c 10
 done
 ```
+**script 2 (92 samples)**
+```
+#!/bin/bash
+#SBATCH --time=05-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=10
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+ 
+module load apptainer
 
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/1_*_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/1{0..4}_*_*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%-contigs.filter.fasta}
+
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g /project/6078724/sux21/rhizo_ee/genomes/Rht_462_C.fasta -s 'Rhizobium leguminosarum' -c 10
+done
+```
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
 
@@ -417,6 +442,30 @@ Work done on info2020
 
 ```
 nohup genapi --threads 5 --matrix *.gff &
+```
+
+### Method 3: Don't use clustering softwares
+#### Find genes lost in evolved strains 
+
+Bedtools Version: 2.19.1 <br>
+Work done info114
+
+**Using prokka annotation**
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*bam; do
+j=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*-}
+ref=${j%.bam}
+k=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/}
+sample=${k%.bam}
+
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -v > "$sample".genes_lost
+done
+```
+
+**Using pgap annotation**
+```
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b 14_2_2-Rht_056_N.bam -header -v > 14_2_2-Rht_056_N.genes_lost
 ```
 
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
@@ -662,7 +711,7 @@ out=${i%.vcf.gz}
 /home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt4
 done
 ```
-**After this steps, Rht_016_N, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_861_C have no SNPs for analysis in all four options of max-meanDP**
+**After this steps, Rht_016_N, Rht_074_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C have no SNPs for analysis in all four options of max-meanDP (10 with no data)**
 
 ### 6. VariantsToTable
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
@@ -687,21 +736,52 @@ https://github.com/bedops/bedops
 Bedops Version: 2.4.41 <br>
 Work done on info2020
 
+**Prokka gff files**
 ```
-gff2bed < Rht_056_N-contigs.gff > Rht_056_N.bed
-gff2bed < annot_with_genomic_fasta.gff > annot_with_genomic_fasta.bed
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*gff; do
+j=${i#/home/xingyuan/rhizo_ee/genes_presence_absence/prokka/}
+sample=${j%-contigs.gff}
 
-vcf2bed < genotype_Rht_056_N.filt1.recode.vcf > genotype_Rht_056_N.filt1.bed
+gff2bed < "$i" > "$sample".bed
+done
+```
+
+**Pgap gff files**
+```
+gff2bed < annot_with_genomic_fasta.gff > annot_with_genomic_fasta.bed
+```
+**Vcf files**
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/call_snps/*vcf; do
+j=${i#/home/xingyuan/rhizo_ee/call_snps/}
+sample=${j%.recode.vcf}
+
+vcf2bed < "$i" > "$sample".bed
+done
 ```
 
 #### Run bedtools 
 Bedtools Version: 2.19.1 <br>
 Work done on info114
 
-```
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/annotations/Rht_056_N/annot_with_genomic_fasta.bed -b genotype_Rht_056_N.filt1.bed -header -wa >  genotype_Rht_056_N.filt1.genes.2
 
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/Rht_056_N.bed -b genotype_Rht_056_N.filt1.bed -header -wa > genotype_Rht_056_N.filt1.genes.1
+```
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b genotype_Rht_056_N.filt1.bed -header -wa >  genotype_Rht_056_N.filt1.genes.2
+```
+
+**Find genes based on prokka annotation**
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/call_snps/*bed; do
+j=${i#/home/xingyuan/rhizo_ee/call_snps/genotype_}
+ref=${j%.filt?.bed}
+k=${i#/home/xingyuan/rhizo_ee/call_snps/}
+sample=${k%.bed}
+
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -wa > "$sample".prokka_genes
+done
 ```
 
 
