@@ -490,6 +490,10 @@ Work done on cedar cluster
 #SBATCH --mail-user=sux21@mcmaster.ca
 #SBATCH --mail-type=ALL
 
+module load apptainer
+
+export APPTAINER_BIND=/project
+
 /project/6078724/sux21/tools/pgap.py -D apptainer -r -o Rht_773_N -g /project/6078724/sux21/rhizo_ee/genomes/Rht_773_N.fasta -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
 ```
 
