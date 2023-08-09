@@ -357,6 +357,7 @@ https://github.com/ncbi/pgap/tree/1126_Test
 
 Version: 2023-05-17.build6771 <br>
 Work done on graham cluster 
+
 ```
 module load apptainer 
 wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
@@ -365,6 +366,10 @@ chmod +x pgap.py
 ```
 
 #### Run pgap (Prepare 4 scripts and run them separately, because one sample takes about 1h.)
+
+Version: 2023-05-17.build6771 <br>
+Work done on graham cluster 
+
 **script 1 (94 samples)**
 ```
 #!/bin/bash
