@@ -517,6 +517,32 @@ bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$re
 done
 ```
 
+**Using prokka annotation (using mapped reads extracted by samtools)**
+
+Samtools Version: 1.11 (using htslib 1.11) <br>
+Bedtools Version: 2.19.1 <br>
+Work done info114
+
+```
+#!/bin/bash
+for i in *bam; do
+sample=${i/.bam/.mapped.bam}
+
+samtools view -F 260 -o "$sample".mapped.bam "$i"
+done
+```
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*.mapped.bam; do
+j=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*-}
+ref=${j%.mapped.bam}
+k=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/}
+sample=${k%.mapped.bam}
+
+bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -v > "$sample".genes_absence
+done
+```
+
 **Using pgap annotation**
 ```
 bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b 14_2_2-Rht_056_N.bam -header -v > 14_2_2-Rht_056_N.genes_lost
@@ -532,6 +558,8 @@ wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar
 
 ### 1. BWA
 https://bio-bwa.sourceforge.net/
+
+**Useful tools: decoding SAM flags: https://broadinstitute.github.io/picard/explain-flags.html**
 
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.11 (using htslib 1.11) <br>
