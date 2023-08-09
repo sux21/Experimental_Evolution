@@ -388,7 +388,7 @@ for i in /project/6078724/sux21/rhizo_ee/genomes/{1..5}_*filter.fasta; do
 j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
 sample=${j%-contigs.filter.fasta}
 
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g /project/6078724/sux21/rhizo_ee/genomes/Rht_462_C.fasta -s 'Rhizobium leguminosarum' -c 40
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
 **script 2 (70 samples)**
