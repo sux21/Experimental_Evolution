@@ -265,7 +265,7 @@ nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5
 Rscript Version: 3.6.3 (2020-02-29) <br>
 Work done on info2020
 
-**Open R and install genoplotr using ``install.packages("genoPlotR")``**
+**Open R and install genoplotr using ``install.packages("genoPlotR")`` before running the following lines**
 
 ```
 /usr/local/bin/fastANI -q 20_6_10-contigs.fasta -r Rht_511_N.fasta --visualize -o 20_6_10-Rht_511_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 20_6_10-contigs.fasta Rht_511_N.fasta 20_6_10-Rht_511_N.fastani.out.visual 
