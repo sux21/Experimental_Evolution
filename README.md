@@ -260,6 +260,11 @@ ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
 nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5_2_4 -t 5 -o fastani.all_to_all.out &
 ```
 
+**Get mapping diagram for these comparisons: 20_6_10 vs 511_N, 20_6_10 vs 415_C; 20_2_6 vs 596_N, 20_2_6 vs 116_N; 16_1_6 vs 173_C, 16_1_6 vs 173_C, 016_N; 16_3_4 vs 003_c, 16_3_4 vs 706_N**
+```
+/usr/local/bin/fastANI -q 20_6_10-contigs.fasta -r Rht_511_N.fasta --visualize -o 20_6_10-Rht_511_N.fastani.out && 
+```
+
 ## Analysis 2 - Phylogeny for the original strains 
 
 **Samples: 56 original strains**
@@ -475,15 +480,16 @@ sample=${j%.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-#### Check species name for failed samples
+#### Verify species taxonomy 
+https://github.com/ncbi/pgap/wiki/Taxonomy-Check
 
 Version: 2023-05-17.build6771 <br>
 Work done on cedar cluster
 
-**Rht_773_N**
+**Evolved strains**
 ```
 #!/bin/bash
-#SBATCH --time=00-01:10
+#SBATCH --time=01-10:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=40
@@ -494,7 +500,34 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-/project/6078724/sux21/tools/pgap.py -D apptainer -r -o Rht_773_N -g /project/6078724/sux21/rhizo_ee/genomes/Rht_773_N.fasta -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
+for i in /project/6078724/sux21/rhizo_ee/genomes/*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%-contigs.filter.fasta}
+
+/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
+done
+```
+
+**Original Strains**
+```
+#!/bin/bash
+#SBATCH --time=00-13:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=40
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+module load apptainer
+
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/Rht*fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%.fasta}
+
+/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
+done
 ```
 
 ### 2. Roary
@@ -519,7 +552,7 @@ Work done on info2020
 nohup genapi --threads 5 --matrix *.gff &
 ```
 
-### Method 3: Don't use clustering softwares
+### 3. Don't use clustering softwares
 #### Find genes lost in evolved strains 
 
 Bedtools Version: 2.19.1 <br>
