@@ -535,9 +535,9 @@ done
 #!/bin/bash
 for i in /home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*.mapped.bam; do
 j=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*-}
-ref=${j%.mapped.bam}
+ref=${j%.mapped.bam.mapped.bam}
 k=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/}
-sample=${k%.mapped.bam}
+sample=${k%.mapped.bam.mapped.bam}
 
 bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -v > "$sample".genes_absence
 done
