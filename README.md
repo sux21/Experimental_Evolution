@@ -475,6 +475,23 @@ sample=${j%.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+#### Check species name for failed samples
+
+Version: 2023-05-17.build6771 <br>
+Work done on cedar cluster
+
+**Rht_773_N**
+```
+#!/bin/bash
+#SBATCH --time=00-01:10
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=40
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+/project/6078724/sux21/tools/pgap.py -D apptainer -r -o Rht_773_N -g /project/6078724/sux21/rhizo_ee/genomes/Rht_773_N.fasta -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
+```
 
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
