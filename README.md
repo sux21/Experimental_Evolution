@@ -365,7 +365,7 @@ chmod +x pgap.py
 ./pgap.py -D apptainer 
 ```
 
-#### Run pgap (Prepare 4 scripts and run them separately, because one sample takes about 1h.)
+#### Run pgap (Prepare 5 scripts and run them separately, because one sample takes about 1h.)
 
 Version: 2023-05-17.build6771 <br>
 Work done on graham cluster 
@@ -412,7 +412,7 @@ sample=${j%-contigs.filter.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 2 (109 samples)**
+**script 3 (109 samples)**
 ```
 #!/bin/bash
 #SBATCH --time=05-00:00
@@ -433,7 +433,7 @@ sample=${j%-contigs.filter.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 3 (90 samples)**
+**script 4 (90 samples)**
 ```
 #!/bin/bash
 #SBATCH --time=04-12:00
@@ -454,7 +454,7 @@ sample=${j%-contigs.filter.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 4 (56 samples)**
+**script 5 (56 samples)**
 ```
 #!/bin/bash
 #SBATCH --time=03-00:00
