@@ -513,10 +513,28 @@ https://github.com/ncbi/pgap/wiki/Taxonomy-Check
 Version: 2023-05-17.build6771 <br>
 Work done on cedar cluster
 
-**Evolved strains**
+**Run one script at a time. When it finishes, then run the next one. This is because pgap creates yaml file when it is running. When two pgap jobs run at the same time, one of the jobs may use the yaml produced from the other job. Creating  an error like the following:**
+```
+Original command: /project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o 10_5_8 -g /project/6078724/sux21/rhizo_ee/genomes/10_5_8-contigs.filter.fasta -s Rhizobium leguminosarum -c 40 --taxcheck-only
+
+Docker command: /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer exec --bind /home/sux21/.pgap/input-2023-05-17.build6771:/pgap/input:ro --bind /project/6078724/sux21/rhizo_ee/taxcheck:/pgap/user_input --bind /project/6078724/sux21/rhizo_ee/taxcheck/pgap_input_39ew9cbl.yaml:/pgap/user_input/pgap_input.yaml:ro --bind /tmp:/tmp:rw --bind /project/6078724/sux21/rhizo_ee/taxcheck/10_5_8:/pgap/output:rw --pwd /pgap /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif /bin/taskset -c 0-39 cwltool --timestamps --debug --disable-color --preserve-entire-environment --outdir /pgap/output pgap/taxcheck.cwl /pgap/user_input/pgap_input.yaml
+
+--- Start YAML Input ---
+fasta:
+    class: File
+    location: /project/6078724/sux21/rhizo_ee/genomes/Rht_061_N.fasta
+submol:
+    class: File
+    location: pgap_submol_bdp39o2k.yaml
+supplemental_data: { class: Directory, location: /pgap/input }
+report_usage: true
+--- End YAML Input ---
+```
+
+**Script 1: Evolved strains**
 ```
 #!/bin/bash
-#SBATCH --time=01-10:00
+#SBATCH --time=00-20:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=40
@@ -535,7 +553,7 @@ sample=${j%-contigs.filter.fasta}
 done
 ```
 
-**Original Strains**
+**Script 2: Original Strains**
 ```
 #!/bin/bash
 #SBATCH --time=00-13:00
@@ -568,7 +586,6 @@ Work done on info115
 ```
 nohup /usr/local/bin/roary -p 5 /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*.gff &
 ```
-
 
 ### 2. GenAPI
 https://github.com/MigleSur/GenAPI
@@ -640,6 +657,15 @@ for i in *_?.bam; do
 sample=${i/.bam/.unmapped.bam}
 
 samtools view -f 4 -o "$sample" "$i"
+done
+```
+**Convert bam to fasta**
+```
+#!/bin/bash
+for i in *unmapped.bam; do
+sample=${i/.bam/.fasta}
+
+samtools fasta "$i" > "$sample"
 done
 ```
 
