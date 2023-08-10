@@ -556,6 +556,7 @@ sample=${j%.fasta}
 /project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
 done
 ```
+**Samples with INCONCLUSIVE status: Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
 
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
@@ -576,7 +577,7 @@ Version: 1.0 <br>
 Work done on info2020
 
 ```
-nohup genapi --threads 5 --matrix *.gff &
+nohup genapi -p 5 -m *.gff &
 ```
 
 ### 3. Don't use clustering softwares
@@ -627,6 +628,19 @@ done
 **Using pgap annotation**
 ```
 bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b 14_2_2-Rht_056_N.bam -header -v > 14_2_2-Rht_056_N.genes_lost
+```
+#### Find genes gained in evolved strains 
+Samtools Version: 1.11 (using htslib 1.11) <br>
+Work done info114
+
+**Extract unmapped reads**
+```
+#!/bin/bash
+for i in *_?.bam; do
+sample=${i/.bam/.unmapped.bam}
+
+samtools view -f 4 -o "$sample" "$i"
+done
 ```
 
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
