@@ -283,7 +283,7 @@ Work done on info2020
 /usr/local/bin/fastANI -q 16_1_6-contigs.fasta -r Rht_173_C.fasta --visualize -o 16_1_6-Rht_173_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_1_6-contigs.fasta Rht_173_C.fasta 16_1_6-Rht_173_C.fastani.out.visual 
 ```
 ```
-/usr/local/bin/fastANI -q 16_1_6-contigs.fasta -r Rht_016_N.fasta --visualize -o 16_1_6-Rht_016_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_1_6-contigs.fasta Rht_016_N.fasta 16_1_6-Rht_016_N.fastani.out.visual 
+/usr/local/bin/fastANI -q 16_1_6-contigs.fasta -r Rht_061_N.fasta --visualize -o 16_1_6-Rht_061_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_1_6-contigs.fasta Rht_061_N.fasta 16_1_6-Rht_061_N.fastani.out.visual 
 ```
 ```
 /usr/local/bin/fastANI -q 16_3_4-contigs.fasta -r Rht_003_C.fasta --visualize -o 16_3_4-Rht_003_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_3_4-contigs.fasta Rht_003_C.fasta 16_3_4-Rht_003_C.fastani.out.visual 
