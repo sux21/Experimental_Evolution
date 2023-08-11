@@ -672,8 +672,11 @@ done
 **Blast unmapped reads to all 56 original strains**
 ```
 /usr/local/blast/2.13.0+/bin/makeblastdb -in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -title "Rht_016_N" -dbtype nucl
-/usr/local/blast/2.13.0+/bin/blastn -query 9_7_9-Rht_016_N.unmapped.fasta -db /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -qcov_hsp_perc 100 -out 9_7_9-Rht_016_N.unmapped.blast
 ```
+```
+/usr/local/blast/2.13.0+/bin/blastn -query 9_7_9-Rht_016_N.unmapped.fasta -db /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -qcov_hsp_perc 95 -out 9_7_9-Rht_016_N.unmapped.blast
+```
+-qcov_hsp_perc 100 
 
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
