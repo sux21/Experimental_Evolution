@@ -648,6 +648,7 @@ bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_05
 ```
 #### Find genes gained in evolved strains 
 Samtools Version: 1.11 (using htslib 1.11) <br>
+Seqkit Version: 2.5.1 <br>
 Blast Version: 2.13.0, build Sep 13 2022 22:19:14 <br>
 Work done info114
 
@@ -669,12 +670,37 @@ sample=${i/.bam/.fasta}
 samtools fasta "$i" > "$sample"
 done
 ```
+**Rename fasta header for the 56 original strains and combine all fasta files into one**
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*fasta; do
+j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
+sample=${j/.fasta/_}
+out=${j/.fasta/.rename.fasta}
+
+/home/xingyuan/tools/seqkit replace -p ^ -r "$sample" "$i" > "$out"
+done
+```
+```
+cat *.rename.fasta > 56_original.combine.fasta
+```
+**Make 56_original.combine.fasta as blast database**
+```
+/usr/local/blast/2.13.0+/bin/makeblastdb -in 56_original.combine.fasta -title "original starins" -dbtype nucl
+```
+**Make 56 original strains as blast database (Creating files ``ndb``,``nhr``,``nin``,``njs``,``not``,``nsq``,``ntf``,``nto``)**
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*fasta; do
+j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
+sample=${j%.fasta}
+
+/usr/local/blast/2.13.0+/bin/makeblastdb -in "$i" -title "$sample" -dbtype nucl
+done
+```
 **Blast unmapped reads to all 56 original strains**
 ```
-/usr/local/blast/2.13.0+/bin/makeblastdb -in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -title "Rht_016_N" -dbtype nucl
-```
-```
-/usr/local/blast/2.13.0+/bin/blastn -query 9_7_9-Rht_016_N.unmapped.fasta -db /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht_016_N.fasta -qcov_hsp_perc 95 -out 9_7_9-Rht_016_N.unmapped.blast
+/usr/local/blast/2.13.0+/bin/blastn -query 9_7_9-Rht_016_N.unmapped.fasta -db /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/56_original.combine.fasta -qcov_hsp_perc 95 -out 9_7_9-Rht_016_N.unmapped.blast.to.all
 ```
 -qcov_hsp_perc 100 
 
