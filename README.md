@@ -1029,4 +1029,3 @@ CHROM   POS     REF     ALT     QUAL    AF      ANN     DP      10_1_1-Rht_460_C
 cluster_001_consensus   1135251 A       G       47102.7 0.365   NA      1415    A       G       A       A       A       A       A       G       G       A A       G       G       A       G       G       A       G       A       A       G       G       A       A       A       G       A       G       G A       A       A       A       A       A       A       A       A       A       A       G       A       G       G       G       G       G       A A       A       A       A
 ```
 
-
