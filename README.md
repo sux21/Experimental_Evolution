@@ -397,7 +397,7 @@ chmod +x pgap.py
 ./pgap.py -D apptainer 
 ```
 
-#### Run pgap (Prepare 5 scripts and run them separately, because one sample takes about 1h.)
+#### Run pgap (Prepare 5 scripts and run each script in a different directory)
 
 Version: 2023-05-17.build6771 <br>
 Work done on graham cluster 
