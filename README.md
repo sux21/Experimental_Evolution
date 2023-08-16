@@ -574,7 +574,7 @@ sample=${j%.fasta}
 /project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
 done
 ```
-**Samples with INCONCLUSIVE status: 10_5_8, 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
+**Samples with INCONCLUSIVE status: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
 
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
