@@ -587,7 +587,7 @@ Work done info114
 for i in *bam; do
 sample=${i/.bam/.mapped.bam}
 
-samtools view -F 260 -o "$sample".mapped.bam "$i"
+samtools view -F 260 -o "$sample" "$i"
 done
 ```
 
@@ -606,20 +606,13 @@ Work done info114
 ```
 #!/bin/bash
 for i in *_?.bam; do
-sample=${i/.bam/.unmapped.bam}
+r1=${i/.bam/.r1.fastq}
+r2=${i/.bam/.r2.fastq}
 
-samtools view -f 4 -o "$sample" "$i"
+samtools fastq -f 4 -1 "$r1" -2 "$r2" "$i"
 done
 ```
-**Convert bam to fasta**
-```
-#!/bin/bash
-for i in *unmapped.bam; do
-sample=${i/.bam/.fasta}
 
-samtools fasta "$i" > "$sample"
-done
-```
 **Rename fasta header for the 56 original strains with sample name, and combine all genomes into one file**
 ```
 #!/bin/bash
