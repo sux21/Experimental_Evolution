@@ -140,7 +140,7 @@ while read line; do
   if [ $i -eq $c ] && [[ $line =~ "orf" ]]; then
     id=${line:0:8}
     string=${line:8} 
-    echo $id $tag $string
+    echo $tag_$id $tag $string
   fi
   if [ $i -eq $y ]; then
     break 
