@@ -338,32 +338,8 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Gene Presence Absence
-### 1. Prokka
-https://github.com/tseemann/prokka
 
-Version: 1.12-beta <br>
-Work done on info114
-
-```
-#!/bin/bash
-
-for i in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/*contigs.fasta; do
-a=${i#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}
-b=${a%-contigs.fasta}
-
-/usr/local/prokka/bin/prokka --cpus 5 --outdir $b --prefix $b-contigs --locustag $b $i 
-
-done
-
-for j in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/*Rht*_?.fasta; do
-c=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/}
-d=${c%.fasta}
-
-/usr/local/prokka/bin/prokka --cpus 5 --outdir $d --prefix $d-contigs --locustag $d $j
-
-done
-```
-### 1. PGAP
+### 1. Genome annotation - PGAP
 #### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
@@ -599,29 +575,11 @@ nohup genapi -p 5 -m *.gff &
 
 ### 3. Don't use clustering softwares
 #### Find genes lost in evolved strains 
-
-Bedtools Version: 2.19.1 <br>
-Work done info114
-
-**Using prokka annotation**
-```
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*bam; do
-j=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*-}
-ref=${j%.bam}
-k=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/}
-sample=${k%.bam}
-
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -v > "$sample".genes_lost
-done
-```
-
-**Using prokka annotation (using mapped reads extracted by samtools)**
-
 Samtools Version: 1.11 (using htslib 1.11) <br>
 Bedtools Version: 2.19.1 <br>
 Work done info114
 
+**Extract mapped reads**
 ```
 #!/bin/bash
 for i in *bam; do
@@ -630,22 +588,12 @@ sample=${i/.bam/.mapped.bam}
 samtools view -F 260 -o "$sample".mapped.bam "$i"
 done
 ```
-```
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*.mapped.bam; do
-j=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/*-}
-ref=${j%.mapped.bam.mapped.bam}
-k=${i#/home/xingyuan/rhizo_ee/call_snps/step1_bwa_mem/}
-sample=${k%.mapped.bam.mapped.bam}
 
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -v > "$sample".genes_absence
-done
-```
-
-**Using pgap annotation**
+**Find genomic regions where the most probable ancestor has but its evolved strains do not**
 ```
 bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b 14_2_2-Rht_056_N.bam -header -v > 14_2_2-Rht_056_N.genes_lost
 ```
+
 #### Find genes gained in evolved strains 
 Samtools Version: 1.11 (using htslib 1.11) <br>
 Seqkit Version: 2.5.1 <br>
@@ -670,7 +618,7 @@ sample=${i/.bam/.fasta}
 samtools fasta "$i" > "$sample"
 done
 ```
-**Rename fasta header for the 56 original strains and combine all fasta files into one**
+**Rename fasta header for the 56 original strains with sample name, and combine all genomes into one file**
 ```
 #!/bin/bash
 for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*fasta; do
@@ -684,25 +632,8 @@ done
 ```
 cat *.rename.fasta > 56_original.combine.fasta
 ```
-**Make 56_original.combine.fasta as blast database**
-```
-/usr/local/blast/2.13.0+/bin/makeblastdb -in 56_original.combine.fasta -title "original starins" -dbtype nucl
-```
-**Make 56 original strains as blast database (Creating files ``ndb``,``nhr``,``nin``,``njs``,``not``,``nsq``,``ntf``,``nto``)**
-```
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*fasta; do
-j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
-sample=${j%.fasta}
 
-/usr/local/blast/2.13.0+/bin/makeblastdb -in "$i" -title "$sample" -dbtype nucl
-done
-```
-**Blast unmapped reads to all 56 original strains**
-```
-/usr/local/blast/2.13.0+/bin/blastn -query 9_7_9-Rht_016_N.unmapped.fasta -db /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/56_original.combine.fasta -qcov_hsp_perc 95 -out 9_7_9-Rht_016_N.unmapped.blast.to.all
-```
--qcov_hsp_perc 100 
+
 
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
