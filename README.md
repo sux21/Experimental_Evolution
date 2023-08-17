@@ -483,6 +483,8 @@ sample=${j%.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+**Samples that do not have gff produced: Rht_773_N**
+
 #### Verify species taxonomy 
 https://github.com/ncbi/pgap/wiki/Taxonomy-Check
 
@@ -632,8 +634,6 @@ done
 ```
 cat *.rename.fasta > 56_original.combine.fasta
 ```
-
-
 
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
 https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
@@ -843,8 +843,8 @@ Work done on info2020
 
 **Download the latest release of vcftools at https://github.com/vcftools/vcftools. Follow instructions at https://vcftools.github.io/examples.html for installation.**
 
-#### Run vcftools (with --max-meanDP 230)
 https://vcftools.github.io/man_latest.html 
+
 ```
 #!/bin/bash
 for i in genotype*gz; do
@@ -853,34 +853,8 @@ out=${i%.vcf.gz}
 /home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
 done
 ```
-#### Run vcftools (with --max-meanDP 150)
-```
-#!/bin/bash
-for i in genotype*gz; do
-out=${i%.vcf.gz}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 150 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt2
-done
-```
-#### Run vcftools (with --max-meanDP 200)
-```
-#!/bin/bash
-for i in genotype*gz; do
-out=${i%.vcf.gz}
-
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 200 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt3
-done
-```
-#### Run vcftools (with --max-meanDP 250)
-```
-#!/bin/bash
-for i in genotype*gz; do
-out=${i%.vcf.gz}
-
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt4
-done
-```
-**After this steps, Rht_016_N, Rht_074_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C have no SNPs for analysis in all four options of max-meanDP (10 with no data)**
+**After this steps, Rht_016_N, Rht_074_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C have no SNPs (10 with no data)**
 
 ### 6. VariantsToTable
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
@@ -905,22 +879,16 @@ https://github.com/bedops/bedops
 Bedops Version: 2.4.41 <br>
 Work done on info2020
 
-**Prokka gff files**
+**Convert gff of original strains to bed**
 ```
 #!/bin/bash
-for i in /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*gff; do
-j=${i#/home/xingyuan/rhizo_ee/genes_presence_absence/prokka/}
-sample=${j%-contigs.gff}
+for i in Rht*gff; do
 
-gff2bed < "$i" > "$sample".bed
+/home/xingyuan/tools/bin/gff2bed < "$i" > "$i".bed
 done
 ```
 
-**Pgap gff files**
-```
-gff2bed < annot_with_genomic_fasta.gff > annot_with_genomic_fasta.bed
-```
-**Vcf files**
+**Convert vcf to bed**
 ```
 #!/bin/bash
 for i in /home/xingyuan/rhizo_ee/call_snps/*vcf; do
@@ -931,27 +899,20 @@ vcf2bed < "$i" > "$sample".bed
 done
 ```
 
-#### Run bedtools 
+#### Find genes at the positions of SNPs or indels  
 Bedtools Version: 2.19.1 <br>
 Work done on info114
 
-
-```
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b genotype_Rht_056_N.filt1.bed -header -wa >  genotype_Rht_056_N.filt1.genes.2
-```
-
-**Find genes based on prokka annotation**
 ```
 #!/bin/bash
-for i in /home/xingyuan/rhizo_ee/call_snps/*bed; do
-j=${i#/home/xingyuan/rhizo_ee/call_snps/genotype_}
-ref=${j%.filt?.bed}
-k=${i#/home/xingyuan/rhizo_ee/call_snps/}
-sample=${k%.bed}
+for i in genotype*.filt1.bed; do
+j=${i#genotype_}
+ref=${j%.filt1.bed}
 
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/"$ref".bed -b "$i" -header -wa > "$sample".prokka_genes
+/usr/local/bedtools/2.19.1/bin/bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
 done
 ```
+
 ### 8. Find alternate alleles that occur in more than 1 evolved strains 
 
 **Example: the alternate allele G occurs in more than one evolved strains. Convergent evolution?**
