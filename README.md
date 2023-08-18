@@ -576,10 +576,12 @@ nohup genapi -p 5 -m *.gff &
 ```
 ### 2. Glimmer-Interproscan
 #### 1. Glimmer (Do not assume sequence is circular for evolved strains, assume circular for original strains)
+http://ccb.jhu.edu/software/glimmer/index.shtml
+
 Version: glimmer3.02 <br>
 Work done on info114
 
-Change directory paths in ``g3-iterated.csh``
+**Change directory paths in ``g3-iterated.csh``**
 ```
 Before changes:
 set awkpath = /fs/szgenefinding/Glimmer3/scripts
@@ -591,6 +593,18 @@ set awkpath = /home/xingyuan/tools/glimmer3.02/scripts
 set glimmerpath = /home/xingyuan/tools/glimmer3.02/bin
 set elphbin = /home/xingyuan/tools/ELPH/bin/Linux-i386/elph
 ```
+**Evolved strains (Don't assume circular sequences because they are not completed genomes):** 
+
+**Copy ``g3-iterated.csh`` and create ``g3-iterated_evolved.csh``. In ``g3-iterated_evolved.csh``, change the glimmer options**
+```
+Before changes:
+# add/change glimmer options here
+set glimmeropts = "-o50 -g110 -t30"
+
+After changes:
+# add/change glimmer options here
+set glimmeropts = "--linear -o50 -g110 -t30"
+```
 
 ```
 #!/bin/bash
@@ -600,9 +614,11 @@ if [[ ! -d $i ]]; then
    mkdir $i
 fi
 
-/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta $i-contigs; mv `ls $i-contigs*` $i/
+/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated_evolved.csh /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta $i-contigs; mv `ls $i-contigs*` $i/
 done
-
+```
+**Original strains (Assume circular sequences because they are completed genomes)**
+```
 for j in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/*Rht*_?.fasta; do
 
 k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
