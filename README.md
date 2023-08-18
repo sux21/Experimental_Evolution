@@ -579,7 +579,7 @@ nohup genapi -p 5 -m *.gff &
 http://ccb.jhu.edu/software/glimmer/index.shtml
 
 Version: glimmer3.02 <br>
-Work done on info114
+Work done on cedar cluster
 
 **Change directory paths in ``g3-iterated.csh``**
 ```
@@ -589,13 +589,18 @@ set glimmerpath = /fs/szgenefinding/Glimmer3/bin
 set elphbin = /nfshomes/adelcher/bin/elph
 
 After changes:
-set awkpath = /home/xingyuan/tools/glimmer3.02/scripts
-set glimmerpath = /home/xingyuan/tools/glimmer3.02/bin
-set elphbin = /home/xingyuan/tools/ELPH/bin/Linux-i386/elph
+set awkpath = /project/6078724/sux21/tools/glimmer3.02/scripts
+set glimmerpath = /project/6078724/sux21/tools/glimmer3.02/bin
+set elphbin = /project/6078724/sux21/tools/ELPH/bin/Linux-i386
 ```
 **Evolved strains (Don't assume circular sequences because they are not completed genomes):** 
 
-**Copy ``g3-iterated.csh`` and create ``g3-iterated_evolved.csh``. In ``g3-iterated_evolved.csh``, change the glimmer options**
+**Copy ``g3-iterated.csh`` and create ``g3-iterated_evolved.csh``.**
+```
+cp g3-iterated.csh g3-iterated_evolved.csh
+```
+
+**In ``g3-iterated_evolved.csh``, change the glimmer options**
 ```
 Before changes:
 # add/change glimmer options here
@@ -608,13 +613,15 @@ set glimmeropts = "--linear -o50 -g110 -t30"
 
 ```
 #!/bin/bash
-for i in 10_1_8 10_1_9 10_7_6 11_4_2 11_4_4 11_5_6 13_4_1 14_4_6 14_5_3 15_4_4 15_4_6 16_1_6 16_1_7 16_1_8 16_4_2 16_4_3 16_6_6 17_2_1 17_2_8 17_2_9 18_1_4 18_1_5 19_1_1 19_5_8 2_2_5 2_5_2 2_6_4 3_1_5 3_2_1 3_2_3 3_2_6 3_2_7 3_3_5 3_3_7 3_3_9 4_1_2 4_1_4 4_2_1 6_4_5 6_4_7 6_7_5 7_1_2 7_1_5 7_6_3 7_6_9 7_7_2 7_7_3 8_4_10 8_4_4 9_3_7 9_7_6 9_7_9; do
+for i in /project/6078724/sux21/rhizo_ee/genomes/3_2_1-contigs.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%-contigs.fasta}
 
-if [[ ! -d $i ]]; then 
-   mkdir $i
+if [[ ! -d "$sample" ]]; then 
+   mkdir "$sample"
 fi
 
-/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated_evolved.csh /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta $i-contigs; mv `ls $i-contigs*` $i/
+/project/6078724/sux21/tools/glimmer3.02/scripts/g3-iterated_evolved.csh "$i" "$sample"-contigs; mv `ls "$sample"-contigs*` "$sample"/
 done
 ```
 **Original strains (Assume circular sequences because they are completed genomes)**
