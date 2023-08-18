@@ -591,7 +591,7 @@ set elphbin = /nfshomes/adelcher/bin/elph
 After changes:
 set awkpath = /project/6078724/sux21/tools/glimmer3.02/scripts
 set glimmerpath = /project/6078724/sux21/tools/glimmer3.02/bin
-set elphbin = /project/6078724/sux21/tools/ELPH/bin/Linux-i386
+set elphbin = /project/6078724/sux21/tools/ELPH/bin/Linux-i386/elph
 ```
 **Evolved strains (Don't assume circular sequences because they are not completed genomes):** 
 
@@ -600,15 +600,25 @@ set elphbin = /project/6078724/sux21/tools/ELPH/bin/Linux-i386
 cp g3-iterated.csh g3-iterated_evolved.csh
 ```
 
-**In ``g3-iterated_evolved.csh``, change the glimmer options**
+**In ``g3-iterated_evolved.csh``, Add linear options to glimmer and long-orfs**
 ```
 Before changes:
 # add/change glimmer options here
 set glimmeropts = "-o50 -g110 -t30"
+...
+step1:
+# Find long, non-overlapping orfs to use as a training set
+echo "Step 1 of ${numsteps}:  Finding long orfs for training"
+$glimmerpath/long-orfs -n -t 1.15 $genome $tag.longorfs
 
 After changes:
 # add/change glimmer options here
 set glimmeropts = "--linear -o50 -g110 -t30"
+...
+step1:
+# Find long, non-overlapping orfs to use as a training set
+echo "Step 1 of ${numsteps}:  Finding long orfs for training"
+$glimmerpath/long-orfs --linear -n -t 1.15 $genome $tag.longorfs
 ```
 
 ```
