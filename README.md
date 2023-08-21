@@ -620,11 +620,11 @@ step1:
 echo "Step 1 of ${numsteps}:  Finding long orfs for training"
 $glimmerpath/long-orfs --linear -n -t 1.15 $genome $tag.longorfs
 ```
-**Run glimmer**
+**Run glimmer for evolved strains**
 ```bash
 #!/bin/bash
-for i in /project/6078724/sux21/rhizo_ee/genomes/3_2_1-contigs.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/*-contigs.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
 sample=${j%-contigs.fasta}
 
 if [[ ! -d "$sample" ]]; then 
@@ -634,17 +634,18 @@ fi
 /home/xingyuan/tools/glimmer3.02/scripts/g3-iterated_evolved.csh "$i" "$sample"-contigs; mv `ls "$sample"-contigs*` "$sample"/
 done
 ```
-**Original strains (Assume circular sequences because they are completed genomes)**
+**Run glimmer for original strains (Assume circular sequences because they are completed genomes)**
 ```bash
-for j in /home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/*Rht*_?.fasta; do
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_?.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
+sample=${j%.fasta}
 
-k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
-
-if [[ ! -d ${k%.fasta} ]]; then 
-   mkdir ${k%.fasta}
+if [[ ! -d "$sample" ]]; then 
+   mkdir "$sample"
 fi
 
-/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh $j ${k%.fasta}; mv `ls ${k%.fasta}*` ${k%.fasta}/
+/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh "$i" "$sample"; mv `ls "$sample"` "$sample"/
 done
 ```
 **Re-format .predict file**
