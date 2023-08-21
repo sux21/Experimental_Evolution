@@ -153,7 +153,7 @@ do
 done
 ```
 
-# Step 2 - Data Analysis
+# Step 2 - Generating Data
 ## Analysis 1 - Find the most probable ancestor for each experimentally evolved strain 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
