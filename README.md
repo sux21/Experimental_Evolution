@@ -693,32 +693,6 @@ k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
 done
 ```
 
-#### 2. InterProScan
-https://interproscan-docs.readthedocs.io/en/latest/
-
-Version: 5.62-94.0 <br>
-Work done on info114
-
-```bash
-for i in 10_1_8; do
-
-if [[ ! -d "$i" ]]; then
-   mkdir "$i"
-fi
-
-interproscan.sh -cpu 5 -i glimmer_genes.fasta -b /path/to/$i
-
-done
-```
-
-#### 3. CD-HIT
-Version: version 4.6 (built on Jan 18 2017) <br>
-Work done on info114
-
-```bash
-cd-hit-est -i input in fasta format -o output -c 0.9 -G 1 -T 5 -n 10 -d 50 -aL 0.7 
-```
-
 ### 3. Don't use clustering softwares
 #### Find genes lost in evolved strains 
 Samtools Version: 1.11 (using htslib 1.11) <br>
