@@ -645,7 +645,7 @@ if [[ ! -d "$sample" ]]; then
    mkdir "$sample"
 fi
 
-/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh "$i" "$sample"; mv `ls "$sample"` "$sample"/
+/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh "$i" "$sample"; mv `ls "$sample"*` "$sample"/
 done
 ```
 #### Re-format ``.predict`` file
@@ -675,6 +675,15 @@ while read line; do
   fi
 done < $1
 
+done
+```
+```
+#!/bin/bash
+for i in */*-contigs.predict */Rht*_?.predict; do
+j=${i#*/}
+sample=${j%.predict}
+
+./re-format.sh "$i" > "$sample".re_formatted.predict
 done
 ```
 #### Run multi-extract to extract genes from ``.predict`` file
