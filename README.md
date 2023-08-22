@@ -648,7 +648,7 @@ fi
 /home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh "$i" "$sample"; mv `ls "$sample"` "$sample"/
 done
 ```
-**Re-format .predict file**
+#### Re-format ``.predict`` file
 ```bash
 #!/bin/bash
 # Format glimmer .predict file for the multi-extract program  
@@ -677,7 +677,7 @@ done < $1
 
 done
 ```
-**Run multi-extract to extract genes from .predict file**
+#### Run multi-extract to extract genes from ``.predict`` file
 ```bash
 #!/bin/bash
 
@@ -692,6 +692,9 @@ k=${j#/home/xingyuan/rhizo_ee/2008_2020_strains_comparison/ASSEMBLIES/}
 /home/xingyuan/tools/glimmer3.02/bin/multi-extract -d $j ${k%.fasta}-glimmer_genes > ${k%.fasta}-glimmer_genes.fasta 
 done
 ```
+#### Run interproscan
+**Install local lookup service using instructions at https://interproscan-docs.readthedocs.io/en/latest/LocalLookupService.html**
+
 
 ### 3. Don't use clustering softwares
 #### Find genes lost in evolved strains 
