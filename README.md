@@ -4,7 +4,7 @@ Bioinformatics project on *Rhizobium leguminosarum*
 Work done on **info server** (contact Brian Golding at golding@mcmaster.ca for an info account). **Compute canada server** will be used if the info server cannot run the program (register for an compute canada account at https://ccdb.alliancecan.ca/security/login). Results produced by compute canada server will be transferred to info server. 
 
 # Remaining work
-- Run roary on pgap's gff files (https://github.com/ncbi/pgap/issues/226)
+- Run roary on pgap's gff files (https://github.com/ncbi/pgap/issues/226, https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)
 - Run interproscan on glimmer's predicted genes
   
 # Key questions in this project
