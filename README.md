@@ -565,7 +565,12 @@ Version: 1.007001 <br>
 Work done on info115
 
 #### Re-format PGAP gff files for input to roary
-
+**Download the perl script for file format conversion and make it executable**
+```
+wget https://github.com/sux21/2020_Experimental_Evolution/blob/main/genbank2gff3.pl
+chmod +x genbank2gff3.pl
+```
+**
 #### Run roary
 ```bash
 nohup /usr/local/bin/roary -p 5 /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*.gff &
