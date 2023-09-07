@@ -564,6 +564,8 @@ https://sanger-pathogens.github.io/Roary/
 Version: 1.007001 <br>
 Work done on info115
 
+#### Re-format PGAP gff files for input to roary
+
 #### Run roary
 ```bash
 nohup /usr/local/bin/roary -p 5 /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*.gff &
