@@ -567,7 +567,7 @@ Work done on info115
 #### Re-format PGAP gff files for input to roary
 **Download the perl script for file format conversion and make it executable**
 ```
-wget https://github.com/sux21/2020_Experimental_Evolution/blob/main/genbank2gff3.pl
+wget https://raw.githubusercontent.com/sux21/2020_Experimental_Evolution/main/genbank2gff3.pl
 chmod +x genbank2gff3.pl
 ```
 **
