@@ -564,13 +564,16 @@ https://sanger-pathogens.github.io/Roary/
 Version: 1.007001 <br>
 Work done on info115
 
-#### Re-format PGAP gff files for input to roary
-**Download the perl script for file format conversion and make it executable**
+#### Convert PGAP's gbk file to gff file 
+**Download the perl script and make it executable**
 ```
 wget https://raw.githubusercontent.com/sux21/2020_Experimental_Evolution/main/genbank2gff3.pl
 chmod +x genbank2gff3.pl
 ```
-**
+**Convert gbk to gff**
+```
+perl /home/xingyuan/tools/genbank2gff3.pl  
+```
 #### Run roary
 ```bash
 nohup /usr/local/bin/roary -p 5 /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*.gff &
