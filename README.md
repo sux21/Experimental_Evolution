@@ -489,6 +489,20 @@ done
 ```
 **Samples that do not have gff produced: Rht_773_N**
 
+#### Convert PGAP's gbk files to gff files
+Perl script provied by David Vereau Gorbitz (davidv3@illinois.edu) 
+
+**Download the perl script and make it executable**
+```bash
+wget https://raw.githubusercontent.com/sux21/2020_Experimental_Evolution/main/genbank2gff3.pl
+chmod +x genbank2gff3.pl
+```
+
+**Convert gbk to gff**
+```bash
+
+```
+
 #### Verify species taxonomy 
 https://github.com/ncbi/pgap/wiki/Taxonomy-Check
 
@@ -561,20 +575,9 @@ done
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
 
-Version: 1.007001 <br>
-Work done on info115
+Version:  <br>
+Work done on 
 
-#### Convert PGAP's gbk file to gff file 
-**Download the perl script and make it executable**
-```
-wget https://raw.githubusercontent.com/sux21/2020_Experimental_Evolution/main/genbank2gff3.pl
-chmod +x genbank2gff3.pl
-```
-**Convert gbk to gff**
-```
-perl /home/xingyuan/tools/genbank2gff3.pl  
-```
-#### Run roary
 ```bash
 nohup /usr/local/bin/roary -p 5 /home/xingyuan/rhizo_ee/genes_presence_absence/prokka/*.gff &
 ```
