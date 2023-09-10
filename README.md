@@ -715,7 +715,11 @@ done
 ```
 
 #### Run interproscan
-**Install local lookup service using instructions at https://interproscan-docs.readthedocs.io/en/latest/LocalLookupService.html**
+Interproscan version: 5.63-95.0 <br>
+Work done on cedar cluster
+
+**Install local lookup service using instructions at https://interproscan-docs.readthedocs.io/en/latest/LocalLookupService.html (The lookup service is about 1.4T).**
+
 
 
 ### 3. Don't use clustering softwares
