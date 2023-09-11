@@ -487,10 +487,14 @@ sample=${j%.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**Samples that do not have gff produced: Rht_773_N**
 
+ Find directories that don't have annot.gbk: ``find . -type d \! -exec test -e '{}/annot.gbk' \; -print`` <br>
+**Samples that do not have gbk produced: 14_5_5, 11_4_4, 7_4_2, 2_3_4, 15_5_1, 6_3_2, 4_4_10, 2_5_9, 15_3_1, 1_1_3, 18_6_7, 2_6_3, 15_2_1, 2_4_11, 5_3_6, 3_1_3, 8_4_7, 4_1_4, 19_4_7, 19_1_9, 5_3_9, 3_3_5, 17_2_7, Rht_773_N (24 samples, 419-24=395 samples remain)**
+  
 #### Convert PGAP's gbk files to gff files
 Perl script provied by David Vereau Gorbitz (davidv3@illinois.edu) 
+
+Work done on graham cluster
 
 **Download the perl script and make it executable**
 ```bash
@@ -500,7 +504,21 @@ chmod +x genbank2gff3.pl
 
 **Convert gbk to gff**
 ```bash
+#!/bin/bash
+#SBATCH --time=01-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
 
+module load bioperl
+
+for i in */annot.gbk; do
+sample=${i%/annot.gbk}
+
+perl /project/6078724/sux21/tools/genbank2gff3.pl /project/6078724/sux21/rhizo_ee/pgap/"$i"/annot.gbk;
+
+mv annot.gbk.gff "sample"-contigs.gff;
+done
 ```
 
 #### Verify species taxonomy 
