@@ -519,6 +519,34 @@ perl /project/6078724/sux21/tools/genbank2gff3.pl /project/6078724/sux21/rhizo_e
 done
 ```
 
+**Remove the sequences at the end of gff files**
+```bash
+#!/bin/bash
+#SBATCH --time=01-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+i=0
+while read line; do
+if [[ $line =~ "FASTA" ]]; then
+  i=$i+1
+fi
+if [[ $i >= 1 ]]; then
+  continue
+fi
+echo $line
+done 
+```
+
+**Add contig sequences to the end of gff file**
+```bash
+#!/bin/bash
+
+for i in 
+cat /project/6078724/sux21/rhizo_ee/genomes/"$sample" >> 
+```
+
 #### Verify species taxonomy 
 https://github.com/ncbi/pgap/wiki/Taxonomy-Check
 
