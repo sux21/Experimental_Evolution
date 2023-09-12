@@ -536,10 +536,15 @@ done
 
 **Add contig sequences to the end of gff file**
 ```bash
+#!/bin/bash
 for i in *-contigs.seq_removed.gff; do
 sample=${i%-contigs.seq_removed.gff}
 
-echo "##FASTA" >> $i; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample"*filter.fasta >> $i
+if [[ $sample =~ "Rht" ]]; then
+  echo "##FASTA" >> $i; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample".fasta >> $i
+else
+  echo "##FASTA" >> $i; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample"-contigs.filter.fasta >> $i
+fi
 done
 ```
 
