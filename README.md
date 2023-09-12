@@ -536,10 +536,11 @@ done
 
 **Add contig sequences to the end of gff file**
 ```bash
-#!/bin/bash
+for i in *-contigs.seq_removed.gff; do
+sample=${i%-contigs.seq_removed.gff}
 
-for i in 
-cat "##FASTA" >> ; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample" >> 
+echo "##FASTA" >> $i; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample"*filter.fasta >> $i
+done
 ```
 
 #### Verify species taxonomy 
