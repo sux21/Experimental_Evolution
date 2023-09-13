@@ -519,19 +519,11 @@ perl /project/6078724/sux21/tools/genbank2gff3.pl /project/6078724/sux21/rhizo_e
 done
 ```
 
-**Use the following script to remove the sequences at the end of gff files (lines starting at and including ##FASTA are removed)**
+**Use the following script to remove the sequences at the end of gff files (lines after line with "##FASTA" are removed)**
 ```bash
-#!/bin/bash
-i=0
-while read line; do
-if [[ $line =~ "FASTA" ]]; then
-  i=$i+1
-fi
-if [[ $i -ge "1"  ]]; then
-  continue
-fi
-echo $line
-done 
+for i in *gff; do
+sed -i '1,/FASTA/!d' $i
+done
 ```
 
 **Add contig sequences to the end of gff file**
@@ -541,9 +533,9 @@ for i in *-contigs.seq_removed.gff; do
 sample=${i%-contigs.seq_removed.gff}
 
 if [[ $sample =~ "Rht" ]]; then
-  echo "##FASTA" >> $i; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample".fasta >> $i
+  cat /project/6078724/sux21/rhizo_ee/genomes/"$sample".fasta >> $i
 else
-  echo "##FASTA" >> $i; cat /project/6078724/sux21/rhizo_ee/genomes/"$sample"-contigs.filter.fasta >> $i
+  cat /project/6078724/sux21/rhizo_ee/genomes/"$sample"-contigs.filter.fasta >> $i
 fi
 done
 ```
