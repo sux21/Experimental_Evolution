@@ -529,8 +529,13 @@ done
 **Add contig sequences to the end of gff file**
 ```bash
 #!/bin/bash
-for i in *-contigs.seq_removed.gff; do
-sample=${i%-contigs.seq_removed.gff}
+#SBATCH --time=01-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+for i in *.gff; do
+sample=${i%-contigs.gff}
 
 if [[ $sample =~ "Rht" ]]; then
   cat /project/6078724/sux21/rhizo_ee/genomes/"$sample".fasta >> $i
