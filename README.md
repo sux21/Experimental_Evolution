@@ -519,10 +519,17 @@ perl /project/6078724/sux21/tools/genbank2gff3.pl --filter mRNA --filter exon --
 done
 ```
 
-**Use the following script to remove the sequences at the end of gff files (lines after line with "##FASTA" are removed)**
+**Edit the  gff files**
 ```bash
+#!/bin/bash
+#SBATCH --time=01-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
 for i in *gff; do
-sed -i '1,/FASTA/!d' $i
+  new_name=$(basename "$i" -contigs.gff)
+  sed -i "s/>unknown/>$new_name/g" "$i"
 done
 ```
 
