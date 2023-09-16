@@ -522,7 +522,8 @@ done
 **Edit the  gff files**
 ```bash
 #!/bin/bash
-#SBATCH --time=01-00:00
+#SBATCH --time=00-01:00
+#SBATCH --mem=10G
 #SBATCH --account=def-batstone
 #SBATCH --mail-user=sux21@mcmaster.ca
 #SBATCH --mail-type=ALL
