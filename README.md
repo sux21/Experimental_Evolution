@@ -515,7 +515,7 @@ module load bioperl
 for i in */annot.gbk; do
 sample=${i%/annot.gbk}
 
-perl /project/6078724/sux21/tools/genbank2gff3.pl /project/6078724/sux21/rhizo_ee/pgap/"$sample"/annot.gbk; mv annot.gbk.gff "$sample"-contigs.gff
+perl /project/6078724/sux21/tools/genbank2gff3.pl --filter mRNA --filter exon --filter tRNA --filter genes --filter pseudogenic_exon --filter pseudogene --filter ncRNA /project/6078724/sux21/rhizo_ee/pgap/"$sample"/annot.gbk; mv annot.gbk.gff "$sample"-contigs.gff
 done
 ```
 
