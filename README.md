@@ -342,6 +342,29 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Gene Presence Absence
+### 0. Prokka-Roary
+#### Prokka 
+https://github.com/tseemann/prokka
+
+Version: 1.12-beta <br>
+Work done on info114
+
+```
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/*-contigs.fasta; do
+  j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
+  sample=${j%-contigs.fasta}
+
+  /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
+done
+
+for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_?.fasta; do
+  j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
+  sample=${j%.fasta}
+
+  /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
+done
+```
 
 ### 1. Genome annotation - PGAP
 #### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
