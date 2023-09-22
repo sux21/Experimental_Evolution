@@ -365,6 +365,11 @@ for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_
   /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
 done
 ```
+### Roary 
+
+```
+nohup roary -p 5 *gff &
+```
 
 ### 1. Genome annotation - PGAP
 #### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
