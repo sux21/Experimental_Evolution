@@ -365,10 +365,27 @@ for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_
   /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
 done
 ```
-### Roary 
 
-```
-nohup roary -p 6 */*gff &
+#### Roary
+https://sanger-pathogens.github.io/Roary/
+
+Version: 3.13.0 <br>
+Work done on graham cluster
+
+```bash
+#!/bin/bash
+#SBATCH --time=05-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=10
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+module load StdEnv/2020  gcc/9.3.0
+
+module load roary/3.13.0
+
+roary -p 10 *gff
 ```
 
 ### 1. Genome annotation - PGAP
