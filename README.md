@@ -368,7 +368,7 @@ done
 ### Roary 
 
 ```
-nohup roary -p 5 *gff &
+nohup roary -p 6 */*gff &
 ```
 
 ### 1. Genome annotation - PGAP
