@@ -385,7 +385,7 @@ module load StdEnv/2020  gcc/9.3.0
 
 module load roary/3.13.0
 
-roary -p 10 *gff
+roary -p 10 */*gff
 ```
 
 ### 1. Genome annotation - PGAP
