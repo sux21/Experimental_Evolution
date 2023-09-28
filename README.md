@@ -351,9 +351,9 @@ Work done on info114
 
 ```
 #!/bin/bash
-for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/*-contigs.fasta; do
-  j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
-  sample=${j%-contigs.fasta}
+for i in /home/xingyuan/rhizo_ee/spades_assembly/*/scaffolds.fasta; do
+  j=${i#/home/xingyuan/rhizo_ee/spades_assembly/}
+  sample=${j%/scaffolds.fasta}
 
   /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
 done
@@ -369,23 +369,16 @@ done
 #### Roary
 https://sanger-pathogens.github.io/Roary/
 
-Version: 3.13.0 <br>
-Work done on graham cluster
+Version: 1.007001 <br>
+Work done on info114
+
+**Remove these samples: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
 
 ```bash
-#!/bin/bash
-#SBATCH --time=05-00:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=10
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
+# Run roary for each 8 treatment separately
 
-module load StdEnv/2020  gcc/9.3.0
+roary -p 6 -f N-adapted-plant+-lowN *gff
 
-module load roary/3.13.0
-
-roary -p 10 */*gff
 ```
 
 ### 1. Genome annotation - PGAP
