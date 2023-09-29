@@ -372,13 +372,10 @@ https://sanger-pathogens.github.io/Roary/
 Version: 1.007001 <br>
 Work done on info114
 
-**Remove these samples: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
+**Exclude this sample: as5_2_4 (maybe Paenibacillus)**
 
 ```bash
-# Run roary for each 8 treatment separately
-
-roary -p 6 -f N-adapted-plant+-lowN *gff
-
+roary -p 6 */*gff
 ```
 
 ### 1. Genome annotation - PGAP
