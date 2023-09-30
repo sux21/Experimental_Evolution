@@ -375,7 +375,7 @@ Work done on info114
 **Exclude this sample: as5_2_4 (maybe Paenibacillus)**
 
 ```bash
-roary -p 6 */*gff
+nohup roary -p 6 -y */*gff &
 ```
 
 ### 1. Genome annotation - PGAP
