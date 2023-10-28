@@ -660,8 +660,8 @@ done
 ### 2. Roary
 https://sanger-pathogens.github.io/Roary/
 
-Version: 3.13.0 <br>
-Work done on graham cluster
+Version: 1.007001 <br>
+Work done on info1XX series
 
 ```bash
 #!/bin/bash
