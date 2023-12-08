@@ -524,67 +524,21 @@ done
 
  Find directories that don't have annot.gbk: ``find . -type d \! -exec test -e '{}/annot.gbk' \; -print`` <br>
 **Samples that do not have gbk produced: 14_5_5, 11_4_4, 7_4_2, 2_3_4, 15_5_1, 6_3_2, 4_4_10, 2_5_9, 15_3_1, 1_1_3, 18_6_7, 2_6_3, 15_2_1, 2_4_11, 5_3_6, 3_1_3, 8_4_7, 4_1_4, 19_4_7, 19_1_9, 5_3_9, 3_3_5, 17_2_7, Rht_773_N (24 samples, 419-24=395 samples remain)**
-  
-#### Convert PGAP's gbk files to gff files
-Perl script provied by David Vereau Gorbitz (davidv3@illinois.edu) 
 
-Work done on graham cluster
+#### Convert PGAP's gff files for roary
 
-**Download the perl script and make it executable**
+**Rename each annot_with_genomic_fasta.gff with sample names**
 ```bash
-wget https://raw.githubusercontent.com/sux21/2020_Experimental_Evolution/main/genbank2gff3.pl
-chmod +x genbank2gff3.pl
-```
+for i in */annot_with_genomic_fasta.gff; do
+sample=${i%/annot_with_genomic_fasta.gff}
 
-**Convert gbk to gff**
-```bash
-#!/bin/bash
-#SBATCH --time=01-00:00
-#SBATCH --account=def-batstone
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-module load bioperl
-
-for i in */annot.gbk; do
-sample=${i%/annot.gbk}
-
-perl /project/6078724/sux21/tools/genbank2gff3.pl --filter mRNA --filter exon --filter tRNA --filter genes --filter pseudogenic_exon --filter pseudogene --filter ncRNA /project/6078724/sux21/rhizo_ee/pgap/"$sample"/annot.gbk; mv annot.gbk.gff "$sample"-contigs.gff
+cp $i "$sample"_annot_with_genomic_fasta.gff
 done
 ```
 
-**Edit the  gff files**
-```bash
-#!/bin/bash
-#SBATCH --time=00-01:00
-#SBATCH --mem=10G
-#SBATCH --account=def-batstone
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-for i in *gff; do
-  new_name=$(basename "$i" -contigs.gff)
-  sed -i "s/>unknown/>$new_name/g" "$i"
-done
+**Reformat PGAP's annot_with_genomic_fasta.gff**
 ```
 
-**Add contig sequences to the end of gff file**
-```bash
-#!/bin/bash
-#SBATCH --time=01-00:00
-#SBATCH --account=def-batstone
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-for i in *.gff; do
-sample=${i%-contigs.gff}
-
-if [[ $sample =~ "Rht" ]]; then
-  cat /project/6078724/sux21/rhizo_ee/genomes/"$sample".fasta >> $i
-else
-  cat /project/6078724/sux21/rhizo_ee/genomes/"$sample"-contigs.filter.fasta >> $i
-fi
-done
 ```
 
 #### Verify species taxonomy 
@@ -599,7 +553,7 @@ Original command: /project/6078724/sux21/tools/pgap.py -D apptainer --container-
 
 Docker command: /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer exec --bind /home/sux21/.pgap/input-2023-05-17.build6771:/pgap/input:ro --bind /project/6078724/sux21/rhizo_ee/taxcheck:/pgap/user_input --bind /project/6078724/sux21/rhizo_ee/taxcheck/pgap_input_39ew9cbl.yaml:/pgap/user_input/pgap_input.yaml:ro --bind /tmp:/tmp:rw --bind /project/6078724/sux21/rhizo_ee/taxcheck/10_5_8:/pgap/output:rw --pwd /pgap /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif /bin/taskset -c 0-39 cwltool --timestamps --debug --disable-color --preserve-entire-environment --outdir /pgap/output pgap/taxcheck.cwl /pgap/user_input/pgap_input.yaml
 
---- Start YAML Input ---
+--- Start YAML Input --- 
 fasta:
     class: File
     location: /project/6078724/sux21/rhizo_ee/genomes/Rht_061_N.fasta
@@ -678,15 +632,7 @@ module load roary/3.13.0
 roary -p 10 *gff
 ```
 
-### 2. GenAPI
-https://github.com/MigleSur/GenAPI
 
-Version: 1.0 <br>
-Work done on info2020
-
-```bash
-nohup genapi -p 5 -m *.gff &
-```
 ### 2. Glimmer-Interproscan
 #### 1. Glimmer (Do not assume sequence is circular for evolved strains, assume circular for original strains)
 http://ccb.jhu.edu/software/glimmer/index.shtml
