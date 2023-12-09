@@ -538,7 +538,10 @@ done
 
 **Reformat PGAP's annot_with_genomic_fasta.gff**
 ```
-
+for i in 10_1_*; do
+sample=${i%_annot_with_genomic_fasta.gff}
+sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' $i > "$sample"_annot_with_genomic_fasta_Reformatted.gff
+done
 ```
 
 #### Verify species taxonomy 
