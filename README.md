@@ -537,7 +537,41 @@ done
 ```
 
 **Reformat PGAP's annot_with_genomic_fasta.gff**
+```bash
+#!/bin/bash
+### Step 1: Extract all lines with "NODE_1_length_970887_cov_33.311050  1 970887"
+while IFS=$'\t' read -r a b; do
+if [[ "$a" =~ ^"NODE" ]]; then
+  echo $a >> "$1".int1
+fi
+done < $1
+
+### Step 2: Remove redundant lines but keep the order of the lines
+#### Command from https://unix.stackexchange.com/questions/194780/remove-duplicate-lines-while-keeping-the-order-of-the-lines
+cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
+
+### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
+#### Reference: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line
+
+i=0
+while IFS=' ' read -r a b c; do
+
+if [[ $a =~ "sequence-region" ]]; then
+  let i=$i+1
+  A=$a
+  B=$b" "$c
+  node=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
+  new_line=$A" "$C" "$B
+fi
+
+if [[ $a =~ "sequence-region" ]] && [ $i -eq 1 ]; then
+echo $A" "$C" "$B
+fi
+
+done < $1
 ```
+
+```bash
 for i in 10_1_*; do
 sample=${i%_annot_with_genomic_fasta.gff}
 sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' $i > "$sample"_annot_with_genomic_fasta_Reformatted.gff
