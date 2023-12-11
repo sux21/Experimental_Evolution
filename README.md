@@ -554,23 +554,23 @@ cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int
 #### References: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter
 
 while read -r line || [ -n "$line" ]; do
-  [[ $line =~ ^"##sequence-region" ]] || continue
+  [[ $line =~ ^"##sequence-region" ]] || echo $line
   if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
-    new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
   fi
+  new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
   sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
   ((n++))
 done < test.gff > test.output
 
+while read -r line || [ -n "$line" ]; do
   if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
-    new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
-    sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
-    ((n++))
   else
     continue
   fi
+new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
+sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
 done < test.gff > test.output
 
 while read -r line || [ -n "$line" ]; do   [[ $line =~ ^"##sequence-region" ]] || continue;   sed "s/##sequence-region/& new_info/g" <<< "$line";   ((n++)) ; done < test.gff > test.output
