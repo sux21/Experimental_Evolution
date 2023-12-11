@@ -536,7 +536,7 @@ cp $i "$sample"_annot_with_genomic_fasta.gff
 done
 ```
 
-**Reformat PGAP's annot_with_genomic_fasta.gff**
+**Reformat PGAP's annot_with_genomic_fasta.gff for AGAT**
 ```bash
 #!/bin/bash
 # Step 1: Extract all lines starting with "NODE" 
@@ -575,9 +575,19 @@ rm -f "$1".int*
 AGAT Version: 1.2.1 <br>
 Work done on info19
 
-```
+```bash
 for i in 10_1_1_annot_with_genomic_fasta.gff 10_1_5_annot_with_genomic_fasta.gff 10_1_8_annot_with_genomic_fasta.gff 10_1_9_annot_with_genomic_fasta.gff
 /2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl -g $i -o ${i%_annot_with_genomic_fasta.gff}.pgap.gff 
+```
+
+#### Run roary
+https://sanger-pathogens.github.io/Roary/
+
+Roary version: 1.007001 <br>
+Work done on info114
+
+```
+roary -p 6 *gff
 ```
 
 #### Verify species taxonomy 
@@ -648,28 +658,6 @@ sample=${j%.fasta}
 done
 ```
 **Samples with INCONCLUSIVE status: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
-
-### 2. Roary
-https://sanger-pathogens.github.io/Roary/
-
-Version: 1.007001 <br>
-Work done on info1XX series
-
-```bash
-#!/bin/bash
-#SBATCH --time=05-00:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=10
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-module load StdEnv/2020  gcc/9.3.0
-
-module load roary/3.13.0
-
-roary -p 10 *gff
-```
 
 
 ### 2. Glimmer-Interproscan
