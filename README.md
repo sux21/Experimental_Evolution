@@ -576,8 +576,9 @@ AGAT Version: 1.2.1 <br>
 Work done on info19
 
 ```bash
-for i in 10_1_1_annot_with_genomic_fasta.gff 10_1_5_annot_with_genomic_fasta.gff 10_1_8_annot_with_genomic_fasta.gff 10_1_9_annot_with_genomic_fasta.gff
-/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl -g $i -o ${i%_annot_with_genomic_fasta.gff}.pgap.gff 
+for i in *fixed; do
+/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl -g $i -o ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
+done
 ```
 
 #### Run roary
