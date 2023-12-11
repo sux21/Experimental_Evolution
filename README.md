@@ -539,49 +539,45 @@ done
 **Reformat PGAP's annot_with_genomic_fasta.gff**
 ```bash
 #!/bin/bash
-### Step 1: Extract all lines with "NODE_1_length_970887_cov_33.311050  1 970887"
+# Step 1: Extract all lines starting with "NODE" 
 while IFS=$'\t' read -r a b; do
 if [[ "$a" =~ ^"NODE" ]]; then
   echo $a >> "$1".int1
 fi
 done < $1
 
-### Step 2: Remove redundant lines but keep the order of the lines
-#### Command from https://unix.stackexchange.com/questions/194780/remove-duplicate-lines-while-keeping-the-order-of-the-lines
+### Step 2: Remove redundant lines
 cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
 
 ### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
-#### References: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter, https://stackoverflow.com/questions/50971418/using-sed-to-replace-single-line-in-while-read-loop
-
 i=0; while read -r line; do
   if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
-    new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
+    new_info=`sed -n "$i,$i p" "$1".int2`
     echo "$line" | sed "s/##sequence-region/& "$new_info"/g"
   else
     echo "$line"
   fi
-done < test.gff > test.out
+done < $1 > "$1".int3
 
----working-----------------
-i=0; while read -r line || [ -n "$line" ]; do
-  [[ $line =~ ^"##sequence-region" ]] || continue
-  if [[ $line =~ ^"##sequence-region" ]]; then
-    let i=$i+1
-  fi
-  new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
-  sed "s/##sequence-region/& "$new_info"/g" test.gff <<< "$line"
-  ((n++))
-done < test.gff 
-----------------------------
-while read -r line || [ -n "$line" ]; do   [[ $line =~ ^"##sequence-region" ]] || continue;   sed "s/##sequence-region/& new_info/g" <<< "$line";   ((n++)) ; done < test.gff > test.output
+### Step 4: Reformat fasta header 
+sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' "$1".int3 > "$1".fixed
+
+### Step 5: Remove intermediate files
+rm -f "$1".int*
+
+#References:
+#Step 2 command was taken from https://unix.stackexchange.com/questions/194780/remove-duplicate-lines-while-keeping-the-order-of-the-lines. Step 3 commands were taken from  https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter, https://stackoverflow.com/questions/50971418/using-sed-to-replace-single-line-in-while-read-loop
 ```
 
-```bash
-for i in 10_1_*; do
-sample=${i%_annot_with_genomic_fasta.gff}
-sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' $i > "$sample"_annot_with_genomic_fasta_Reformatted.gff
-done
+**Standardise gff file using AGAT**
+
+AGAT Version: 1.2.1 <br>
+Work done on info19
+
+```
+for i in 10_1_1_annot_with_genomic_fasta.gff 10_1_5_annot_with_genomic_fasta.gff 10_1_8_annot_with_genomic_fasta.gff 10_1_9_annot_with_genomic_fasta.gff
+/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl -g $i -o ${i%_annot_with_genomic_fasta.gff}.pgap.gff 
 ```
 
 #### Verify species taxonomy 
