@@ -551,28 +551,29 @@ done < $1
 cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
 
 ### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
-#### References: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter
+#### References: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter, https://stackoverflow.com/questions/50971418/using-sed-to-replace-single-line-in-while-read-loop
 
-while read -r line || [ -n "$line" ]; do
-  [[ $line =~ ^"##sequence-region" ]] || echo $line
+i=0; while read -r line; do
+  if [[ $line =~ ^"##sequence-region" ]]; then
+    let i=$i+1
+    new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
+    echo "$line" | sed "s/##sequence-region/& "$new_info"/g"
+  else
+    echo "$line"
+  fi
+done < test.gff > test.out
+
+---working-----------------
+i=0; while read -r line || [ -n "$line" ]; do
+  [[ $line =~ ^"##sequence-region" ]] || continue
   if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
   fi
   new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
-  sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
+  sed "s/##sequence-region/& "$new_info"/g" test.gff <<< "$line"
   ((n++))
-done < test.gff > test.output
-
-while read -r line || [ -n "$line" ]; do
-  if [[ $line =~ ^"##sequence-region" ]]; then
-    let i=$i+1
-  else
-    continue
-  fi
-new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
-sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
-done < test.gff > test.output
-
+done < test.gff 
+----------------------------
 while read -r line || [ -n "$line" ]; do   [[ $line =~ ^"##sequence-region" ]] || continue;   sed "s/##sequence-region/& new_info/g" <<< "$line";   ((n++)) ; done < test.gff > test.output
 ```
 
