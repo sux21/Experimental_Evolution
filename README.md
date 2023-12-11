@@ -551,24 +551,17 @@ done < $1
 cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
 
 ### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
-#### Reference: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line
+#### References: https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter
 
-i=0
-while IFS=' ' read -r a b c; do
-
-if [[ $a =~ "sequence-region" ]]; then
-  let i=$i+1
-  A=$a
-  B=$b" "$c
-  node=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
-  new_line=$A" "$C" "$B
-fi
-
-if [[ $a =~ "sequence-region" ]] && [ $i -eq 1 ]; then
-echo $A" "$C" "$B
-fi
-
-done < $1
+while read -r line || [ -n "$line" ]; do
+  [[ $line =~ ^"##sequence-region" ]] || continue
+  if [[ $line =~ "##sequence-region" ]]; then
+    let i=$i+1
+    new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
+  fi
+  sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
+  ((n++)) 
+done < test.gff > test.output
 ```
 
 ```bash
