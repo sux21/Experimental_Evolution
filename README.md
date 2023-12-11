@@ -555,13 +555,25 @@ cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int
 
 while read -r line || [ -n "$line" ]; do
   [[ $line =~ ^"##sequence-region" ]] || continue
-  if [[ $line =~ "##sequence-region" ]]; then
+  if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
     new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
   fi
   sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
-  ((n++)) 
+  ((n++))
 done < test.gff > test.output
+
+  if [[ $line =~ ^"##sequence-region" ]]; then
+    let i=$i+1
+    new_info=`sed -n "$i,$i p" 10_1_1_annot_with_genomic_fasta.gff.int2`
+    sed "s/##sequence-region/& "$new_info"/g" <<< "$line"
+    ((n++))
+  else
+    continue
+  fi
+done < test.gff > test.output
+
+while read -r line || [ -n "$line" ]; do   [[ $line =~ ^"##sequence-region" ]] || continue;   sed "s/##sequence-region/& new_info/g" <<< "$line";   ((n++)) ; done < test.gff > test.output
 ```
 
 ```bash
