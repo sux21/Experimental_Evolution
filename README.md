@@ -341,7 +341,7 @@ iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
 ```
 
 ## Analysis 3: Gene Presence Absence
-### 0. Prokka-Roary
+### 1. Genome annotation - Prokka
 #### Prokka 
 https://github.com/tseemann/prokka
 
@@ -365,7 +365,7 @@ for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_
 done
 ```
 
-#### Roary
+#### Gene presence absence - Roary
 https://sanger-pathogens.github.io/Roary/
 
 Version: 1.007001 <br>
@@ -377,7 +377,7 @@ Work done on info114
 nohup roary -p 6 -y */*gff &
 ```
 
-### 1. Genome annotation - PGAP
+### 2. Genome annotation - PGAP
 #### Transfer scaffolds file from info to graham
 ```
 # Re-name each scaffolds.fasta file with its sample name
@@ -411,7 +411,7 @@ Work done on graham cluster
 
 ```bash
 #!/bin/bash
-#SBATCH --time=00-00:05
+#SBATCH --time=00-00:10
 #SBATCH --account=def-batstone
 
 module load seqkit/2.3.1
@@ -435,6 +435,75 @@ wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
 chmod +x pgap.py
 ./pgap.py -D apptainer 
 ```
+
+#### Verify species taxonomy 
+https://github.com/ncbi/pgap/wiki/Taxonomy-Check
+
+Version: 2023-05-17.build6771 <br>
+Work done on cedar cluster
+
+**Run one script at a time. When it finishes, then run the next one. This is because pgap creates yaml file when it is running. When two pgap jobs run at the same time, one of the jobs may use the yaml produced from the other job. Creating  an error like the following:**
+```bash
+Original command: /project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o 10_5_8 -g /project/6078724/sux21/rhizo_ee/genomes/10_5_8-contigs.filter.fasta -s Rhizobium leguminosarum -c 40 --taxcheck-only
+
+Docker command: /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer exec --bind /home/sux21/.pgap/input-2023-05-17.build6771:/pgap/input:ro --bind /project/6078724/sux21/rhizo_ee/taxcheck:/pgap/user_input --bind /project/6078724/sux21/rhizo_ee/taxcheck/pgap_input_39ew9cbl.yaml:/pgap/user_input/pgap_input.yaml:ro --bind /tmp:/tmp:rw --bind /project/6078724/sux21/rhizo_ee/taxcheck/10_5_8:/pgap/output:rw --pwd /pgap /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif /bin/taskset -c 0-39 cwltool --timestamps --debug --disable-color --preserve-entire-environment --outdir /pgap/output pgap/taxcheck.cwl /pgap/user_input/pgap_input.yaml
+
+--- Start YAML Input --- 
+fasta:
+    class: File
+    location: /project/6078724/sux21/rhizo_ee/genomes/Rht_061_N.fasta
+submol:
+    class: File
+    location: pgap_submol_bdp39o2k.yaml
+supplemental_data: { class: Directory, location: /pgap/input }
+report_usage: true
+--- End YAML Input ---
+```
+
+**Script 1: Evolved strains**
+```bash
+#!/bin/bash
+#SBATCH --time=00-20:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=40
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+module load apptainer
+
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%-contigs.filter.fasta}
+
+/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
+done
+```
+
+**Script 2: Original Strains**
+```bash
+#!/bin/bash
+#SBATCH --time=00-13:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=40
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+
+module load apptainer
+
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/Rht*fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+sample=${j%.fasta}
+
+/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
+done
+```
+**Samples with INCONCLUSIVE status: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
 
 #### Run pgap (Prepare 5 scripts and run each script in a different directory)
 
@@ -615,76 +684,6 @@ Work done on info114
 ```
 roary -p 6 *gff
 ```
-
-#### Verify species taxonomy 
-https://github.com/ncbi/pgap/wiki/Taxonomy-Check
-
-Version: 2023-05-17.build6771 <br>
-Work done on cedar cluster
-
-**Run one script at a time. When it finishes, then run the next one. This is because pgap creates yaml file when it is running. When two pgap jobs run at the same time, one of the jobs may use the yaml produced from the other job. Creating  an error like the following:**
-```bash
-Original command: /project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o 10_5_8 -g /project/6078724/sux21/rhizo_ee/genomes/10_5_8-contigs.filter.fasta -s Rhizobium leguminosarum -c 40 --taxcheck-only
-
-Docker command: /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer exec --bind /home/sux21/.pgap/input-2023-05-17.build6771:/pgap/input:ro --bind /project/6078724/sux21/rhizo_ee/taxcheck:/pgap/user_input --bind /project/6078724/sux21/rhizo_ee/taxcheck/pgap_input_39ew9cbl.yaml:/pgap/user_input/pgap_input.yaml:ro --bind /tmp:/tmp:rw --bind /project/6078724/sux21/rhizo_ee/taxcheck/10_5_8:/pgap/output:rw --pwd /pgap /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif /bin/taskset -c 0-39 cwltool --timestamps --debug --disable-color --preserve-entire-environment --outdir /pgap/output pgap/taxcheck.cwl /pgap/user_input/pgap_input.yaml
-
---- Start YAML Input --- 
-fasta:
-    class: File
-    location: /project/6078724/sux21/rhizo_ee/genomes/Rht_061_N.fasta
-submol:
-    class: File
-    location: pgap_submol_bdp39o2k.yaml
-supplemental_data: { class: Directory, location: /pgap/input }
-report_usage: true
---- End YAML Input ---
-```
-
-**Script 1: Evolved strains**
-```bash
-#!/bin/bash
-#SBATCH --time=00-20:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%-contigs.filter.fasta}
-
-/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
-done
-```
-
-**Script 2: Original Strains**
-```bash
-#!/bin/bash
-#SBATCH --time=00-13:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/Rht*fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%.fasta}
-
-/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
-done
-```
-**Samples with INCONCLUSIVE status: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
-
 
 ### 2. Glimmer-Interproscan
 #### 1. Glimmer (Do not assume sequence is circular for evolved strains, assume circular for original strains)
