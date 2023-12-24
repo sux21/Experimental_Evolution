@@ -378,6 +378,31 @@ nohup roary -p 6 -y */*gff &
 ```
 
 ### 1. Genome annotation - PGAP
+#### Transfer scaffolds file from info to graham
+```
+# Re-name each scaffolds.fasta file with its sample name
+for i in */scaffolds.fasta; do
+sample_name=${i%/scaffolds.fasta}
+cp $i "$sample_name"-scaffolds.fasta
+done
+
+# Put all renamed files into a new directory and compress the directory (Also create a checksum for the compressed directory to check file integrity before and after transfer)
+mkdir rhizo_ee.scaffolds
+mv *scaffolds.fasta rhizo_ee.scaffolds
+tar -zcvf rhizo_ee.scaffolds.tar.gz /home/xingyuan/rhizo_ee/spades_assembly/rhizo_ee.scaffolds
+md5sum rhizo_ee.scaffolds.tar.gz > md5sums.txt
+
+# Transfer rhizo_ee.scaffolds.tar.gz and md5sums.txt from info computers to graham computers
+(base) [xingyuan@infoserv spades_assembly]$ scp rhizo_ee.scaffolds.tar.gz sux21@graham.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
+(base) [xingyuan@infoserv spades_assembly]$ scp md5sums.txt sux21@graham.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
+
+# Verify the checksum
+[sux21@gra-login1 genomes]$ md5sum -c md5sums.txt
+
+# Extract rhizo_ee.scaffolds.tar.gz
+[sux21@gra-login1 genomes]$ tar -xf rhizo_ee.scaffolds.tar.gz
+```
+
 #### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
@@ -391,10 +416,10 @@ Work done on graham cluster
 
 module load seqkit/2.3.1
 
-for i in *contigs.fasta; do
-sample=${i%-contigs.fasta}
+for i in *scaffolds.fasta; do
+sample=${i%-scaffolds.fasta}
 
-seqkit seq -m 200 "$sample"-contigs.fasta > "$sample"-contigs.filter.fasta
+seqkit seq -m 200 "$sample"-scaffolds.fasta > "$sample"-scaffolds.filter.fasta
 done
 ```
 
