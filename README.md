@@ -609,8 +609,8 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/Rht*fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
+for i in /home/sux21/2023_summer_coop/rhizo_ee/genomes/original_strains/Rht*fasta; do
+j=${i#/home/sux21/2023_summer_coop/rhizo_ee/genomes/original_strains/}
 sample=${j%.fasta}
 
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
@@ -621,7 +621,6 @@ done
 **Samples that do not have gbk produced: 14_5_5, 11_4_4, 7_4_2, 2_3_4, 15_5_1, 6_3_2, 4_4_10, 2_5_9, 15_3_1, 1_1_3, 18_6_7, 2_6_3, 15_2_1, 2_4_11, 5_3_6, 3_1_3, 8_4_7, 4_1_4, 19_4_7, 19_1_9, 5_3_9, 3_3_5, 17_2_7, Rht_773_N (24 samples, 419-24=395 samples remain)**
 
 #### Convert PGAP's gff files for roary
-
 **Rename each annot_with_genomic_fasta.gff with sample names**
 ```bash
 for i in */annot_with_genomic_fasta.gff; do
