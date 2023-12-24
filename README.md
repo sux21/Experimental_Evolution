@@ -378,7 +378,7 @@ nohup roary -p 6 -y */*gff &
 ```
 
 ### 2. Genome annotation - PGAP
-#### Transfer scaffolds file from info to graham
+#### Transfer scaffolds file from info to graham and cedar
 ```
 # Re-name each scaffolds.fasta file with its sample name
 for i in */scaffolds.fasta; do
@@ -395,6 +395,10 @@ md5sum rhizo_ee.scaffolds.tar.gz > md5sums.txt
 # Transfer rhizo_ee.scaffolds.tar.gz and md5sums.txt from info computers to graham computers
 (base) [xingyuan@infoserv spades_assembly]$ scp rhizo_ee.scaffolds.tar.gz sux21@graham.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
 (base) [xingyuan@infoserv spades_assembly]$ scp md5sums.txt sux21@graham.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
+
+# Transfer rhizo_ee.scaffolds.tar.gz and md5sums.txt from info computers to graham computers
+(base) [xingyuan@infoserv spades_assembly]$ scp rhizo_ee.scaffolds.tar.gz sux21@cedar.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
+(base) [xingyuan@infoserv spades_assembly]$ scp md5sums.txt sux21@cedar.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
 
 # Verify the checksum
 [sux21@gra-login1 genomes]$ md5sum -c md5sums.txt
