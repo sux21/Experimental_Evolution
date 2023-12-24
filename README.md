@@ -412,9 +412,10 @@ Work done on graham cluster
 ```bash
 #!/bin/bash
 #SBATCH --time=00-00:10
+#SBATCH --mem-per-cpu=1024M
 #SBATCH --account=def-batstone
 
-module load seqkit/2.3.1
+module load seqkit/2.5.1
 
 for i in *scaffolds.fasta; do
 sample=${i%-scaffolds.fasta}
@@ -524,9 +525,9 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/{1..5}_*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%-contigs.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/{1..5}_*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
+sample=${j%-scaffolds.filter.fasta}
 
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
@@ -545,9 +546,9 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/{6..9}_*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%-contigs.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/{6..9}_*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
+sample=${j%-scaffolds.filter.fasta}
 
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
@@ -566,9 +567,9 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/1{0..5}_*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%-contigs.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/1{0..5}_*filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
+sample=${j%-scaffolds.filter.fasta}
 
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
@@ -587,9 +588,9 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/1{6..9}_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/20_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/as5_2_4-contigs.filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%-contigs.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/1{6..9}_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/20_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/as5_2_4-scaffolds.filter.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
+sample=${j%-scaffolds.filter.fasta}
 
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
