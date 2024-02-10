@@ -10,11 +10,10 @@ Work done on **info server** (contact Brian Golding at golding@mcmaster.ca for a
 
 # Samples used in this project
 - **Original strains**: starting populations at the start of this experimental evolution experiment. Number of strains is 56. I receive complete genomes for these strains.
-- **Experimentally evolved strains**: derived populations at the end of this experimental evolution experiment. Number of strains is 363. I receive Illumina paired-end reads for these strains.
+- **Derived strains**: derived populations at the end of this experimental evolution experiment. Number of strains is 363. I receive Illumina paired-end reads for these strains.
 
-# Step 1 - Genome Assembly of experimentally evolved strains
-## Before Assembly
-### 1. Run FastQC for raw data
+# Step 1 - Trim reads for derived strains
+## 1. Run FastQC to check quality of raw reads 
 https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
 Versions: FastQC v0.11.5 <br>
@@ -25,7 +24,7 @@ Work done on info114
 nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads *gz &
 ```
 
-### 2. Run MultiQC for raw data
+## 2. Run MultiQC to combine all FastQC reports to a single file
 https://multiqc.info/
 
 Version: MultiQC v1.9 <br>
@@ -35,7 +34,7 @@ Work done on info114
 multiqc . 
 ```
 
-### 3. Run fastp to trim the reads for all 363 derived strains
+## 3. Run fastp to trim the reads for all 363 derived strains
 https://github.com/OpenGene/fastp
 
 Version: 0.23.4 <br>
@@ -81,8 +80,8 @@ Work done on info114
 multiqc . 
 ```
 
-## During Assembly 
-### 1. Run SPAdes 
+# Step 2 - Genome assembly
+### 1. Run SPAdes to assemble the trimmed reads into genomes for derived strains
 https://github.com/ablab/spades
 
 Version: 3.15.2 <br>
@@ -160,8 +159,7 @@ do
 done
 ```
 
-# Step 2 - Generating Data
-## Analysis 1 - Find the most probable ancestor for each experimentally evolved strain 
+# Step 3 - Find the most probable ancestor for each derived strain 
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
 
