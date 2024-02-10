@@ -3,9 +3,6 @@ Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on **info server** (contact Brian Golding at golding@mcmaster.ca for an info account). **Compute canada server** will be used if the info server cannot run the program (register for an compute canada account at https://ccdb.alliancecan.ca/security/login). Results produced by compute canada server will be transferred to info server. 
 
-#
-Try this to convert pgap's gff files to gtf files (https://agat.readthedocs.io/en/latest/gxf.html)
-  
 # Key questions in this project
 1. How did standing genetic variation change according to EE selective treatments (high-N, no plant; low-N, no-plant; high-N, plus plant; low-N, plus plant)
 2. What genetic changes occurred throughout EE to each isolate (de novo mutation, small sequence variants (indels)
@@ -38,26 +35,33 @@ Work done on info114
 multiqc . 
 ```
 
-### 3. Run Trimmomatic 
-http://www.usadellab.org/cms/?page=trimmomatic
+### 3. Run fastp to trim the reads for all 363 derived strains
+https://github.com/OpenGene/fastp
 
-Version: 0.39 <br>
+Version: 0.23.4 <br>
 Work done on info114
 
-**All 363 samples (726 files)**
 ```bash
-#!/bin/bash 
-for R1 in *R1* 
-do 
+#!/bin/bash
+#Usage: nohup ./ThisScript &
+for i in /home/xingyuan/rhizo_ee/raw_reads/*R1*; do 
+R1=${i#/home/xingyuan/rhizo_ee/raw_reads/}
 R2=${R1//R1_001.fastq.gz/R2_001.fastq.gz} 
 R1_P=${R1//001.fastq.gz/P_001.fastq.gz} 
 R1_UP=${R1//001.fastq.gz/UP_001.fastq.gz} 
 R2_P=${R2//001.fastq.gz/P_001.fastq.gz} 
-R2_UP=${R2//001.fastq.gz/UP_001.fastq.gz} 
+R2_UP=${R2//001.fastq.gz/UP_001.fastq.gz}
+MERGE=${R1//R1_001.fastq.gz/merged_001.fastq.gz} 
+sample=${R1%_*_L002_*gz}
 
-java -jar /usr/local/trimmomatic/Trimmomatic-0.39/trimmomatic-0.39.jar PE /home/xingyuan/rhizo_ee/raw_reads/$R1 /home/xingyuan/rhizo_ee/raw_reads/$R2 /home/xingyuan/rhizo_ee/trimmomatic_reads/$R1_P /home/xingyuan/rhizo_ee/trimmomatic_reads/$R1_UP /home/xingyuan/rhizo_ee/trimmomatic_reads/$R2_P /home/xingyuan/rhizo_ee/trimmomatic_reads/$R2_UP ILLUMINACLIP:/usr/local/trimmomatic/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10:2:TRUE HEADCROP:15 CROP:130 LEADING:3 TRAILING:3 MINLEN:36
+/2/scratch/batstonelab/bin/fastp --in1 /home/xingyuan/rhizo_ee/raw_reads/"$R1" --out1 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R1_P" --unpaired1 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R1_UP" --in2 /home/xingyuan/rhizo_ee/raw_reads/"$R2" --out2 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R2_P" --unpaired2 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R2_UP" --merge --merged_out /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$MERGE" --failed_out /home/xingyuan/rhizo_ee/fastp_results/fastp_failed_reads/rhizo_ee.failed.fastq.gz --dont_overwrite --qualified_quality_phred 15 --unqualified_percent_limit 40 --low_complexity_filter --detect_adapter_for_pe --cut_front --cut_front_window_size 1 --cut_front_mean_quality 20 --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 --correction --trim_poly_g --poly_g_min_len 10 --trim_poly_x --poly_x_min_len 10 --overrepresentation_analysis --html /home/xingyuan/rhizo_ee/fastp_results/fastp_logs/"$sample".html --json /home/xingyuan/rhizo_ee/fastp_results/fastp_logs/"$sample".json --report_title "$sample" --thread 5 --verbose
+
 done
 ```
+
+Shifu Chen. 2023. Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp. iMeta 2: e107. https://doi.org/10.1002/imt2.107
+
+Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884–i890, https://doi.org/10.1093/bioinformatics/bty560
 
 ### 4. Run FastQC for trimmed reads 
 Versions: FastQC v0.11.5 <br>
@@ -161,36 +165,7 @@ done
 
 **Samples: 363 experimentally evolved strains + 56 original strains**
 
-### (Optional) 1. Run Spine: find core genomes 
-https://github.com/Alan-Collins/Spine-Nucmer-SNPs
-
-Version: 0.3.2 <br>
-Work done on info114. 
-
-```bash
-#!/bin/bash
-# Copy contigs.fasta from ``rhizo_ee/spades_assembly`` to ``rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY``:
-
-for i in *; do
-
-if [[ $i =~ ".sh" ]] || [[ $i =~ "fasta" ]] || [[ $i =~ "quast" ]]; then
-   continue
-fi
-
-cp /home/xingyuan/rhizo_ee/spades_assembly/$i/contigs.fasta /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$i-contigs.fasta"
-done
-```
-
-```bash
-# Create a config.txt file for Spine
-ls | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../SPINE/config.txt
-```
-```
-# Run Spine
-nohup spine.pl -f /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/SPINE/config.txt &
-```
-
-### 2. Run FastANI
+### 1. Run FastANI
 https://github.com/ParBLiSS/FastANI
 
 Version: 1.32  <br>
@@ -295,89 +270,9 @@ Work done on info2020
 /usr/local/bin/fastANI -q 16_3_4-contigs.fasta -r Rht_706_C.fasta --visualize -o 16_3_4-Rht_706_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_3_4-contigs.fasta Rht_706_C.fasta 16_3_4-Rht_706_C.fastani.out.visual 
 ```
 
-## Analysis 2 - Phylogeny for the original strains 
+## Analysis 2: Gene Presence Absence
 
-**Samples: 56 original strains**
-
-### 1. Run Spine-Nucmer-SNPs
-https://github.com/Alan-Collins/Spine-Nucmer-SNPs
-
-Version: 0.3.2 <br>
-Work done on info113
-
-**(1)**
-```bash
-ls Rht* | awk 'BEGIN { FS="\t"; OFS="\t" } { print "/home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/"$1, $1, "fasta" }' > ../phylogeny_2008/config.txt
-```
-```bash
-nohup spine.pl -f config.txt -t 5 &
-```
-
-**(2)**
-```bash
-ls ../spine/*.core.fasta | while read i; do acc=${i%.core*}; acc=${acc#../spine/output.}; nucmer --prefix=${acc}_core ../spine/output.backbone.fasta $i; delta-filter -r -q ${acc}_core.delta > ${acc}_core.filter; show-snps -Clr ${acc}_core.filter > ${acc}_core.snps; done
-```
-
-**(3)**
-```bash
-python3 ~/tools/Spine-0.3.2/snps2fasta.py -r ../spine/output.backbone.fasta -f variant_core.fasta -whole -m snp_matrix.csv -d '\t' -p '(.*)_core\.snps' ../nucmer/*.snps
-```
-
-### 2. IQ-Tree
-http://www.iqtree.org/doc/Tutorial
-
-Version: 2.2.0 <br>
-Work done on info114
-
-```bash
-# For C_only population (28 samples)
-nohup iqtree2 -T 5 -s C_only.fasta -bb 1000 -wbt --seqtype DNA &
-
-# For N_only population (28 samples)
-nohup iqtree2 -T 5 -s N_only.fasta -bb 1000 -wbt --seqtype DNA &
-
-# For mixed population (28 samples)
-iqtree2 -T 5 -s mix.fasta -bb 1000 -wbt --seqtype DNA
-```
-
-## Analysis 3: Gene Presence Absence
-### 1. Genome annotation - Prokka
-#### Prokka 
-https://github.com/tseemann/prokka
-
-Version: 1.12-beta <br>
-Work done on info114
-
-```
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/spades_assembly/*/scaffolds.fasta; do
-  j=${i#/home/xingyuan/rhizo_ee/spades_assembly/}
-  sample=${j%/scaffolds.fasta}
-
-  /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
-done
-
-for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_?.fasta; do
-  j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
-  sample=${j%.fasta}
-
-  /usr/local/prokka/bin/prokka "$i" --outdir "$sample" --prefix "$sample" --locustag "$sample" --cpus 6
-done
-```
-
-#### Gene presence absence - Roary
-https://sanger-pathogens.github.io/Roary/
-
-Version: 1.007001 <br>
-Work done on info114
-
-**Exclude this sample: as5_2_4 (maybe Paenibacillus)**
-
-```bash
-nohup roary -p 6 -y */*gff &
-```
-
-### 2. Genome annotation - PGAP
+### 1. Genome annotation - PGAP
 #### Transfer scaffolds file from info to graham and cedar
 ```
 # Re-name each scaffolds.fasta file with its sample name
@@ -687,190 +582,6 @@ Work done on info114
 
 ```
 roary -p 6 *gff
-```
-
-### 2. Glimmer-Interproscan
-#### 1. Glimmer (Do not assume sequence is circular for evolved strains, assume circular for original strains)
-http://ccb.jhu.edu/software/glimmer/index.shtml
-
-Version: glimmer3.02 <br>
-Work done on info2020
-
-**Change directory paths in ``g3-iterated.csh``**
-```bash
-Before changes:
-set awkpath = /fs/szgenefinding/Glimmer3/scripts
-set glimmerpath = /fs/szgenefinding/Glimmer3/bin
-set elphbin = /nfshomes/adelcher/bin/elph
-
-After changes:
-set awkpath = /home/xingyuan/tools/glimmer3.02/scripts
-set glimmerpath = /home/xingyuan/tools/glimmer3.02/bin
-set elphbin = /home/xingyuan/tools/ELPH/bin/Linux-i386/elph
-```
-**Evolved strains (Don't assume circular sequences because they are not completed genomes):** 
-
-**Copy ``g3-iterated.csh`` and create ``g3-iterated_evolved.csh``.**
-```bash
-cp g3-iterated.csh g3-iterated_evolved.csh
-```
-
-**In ``g3-iterated_evolved.csh``, Add linear options to glimmer and long-orfs**
-```bash
-Before changes:
-# add/change glimmer options here
-set glimmeropts = "-o50 -g110 -t30"
-...
-step1:
-# Find long, non-overlapping orfs to use as a training set
-echo "Step 1 of ${numsteps}:  Finding long orfs for training"
-$glimmerpath/long-orfs -n -t 1.15 $genome $tag.longorfs
-
-After changes:
-# add/change glimmer options here
-set glimmeropts = "--linear -o50 -g110 -t30"
-...
-step1:
-# Find long, non-overlapping orfs to use as a training set
-echo "Step 1 of ${numsteps}:  Finding long orfs for training"
-$glimmerpath/long-orfs --linear -n -t 1.15 $genome $tag.longorfs
-```
-**Run glimmer for evolved strains**
-```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/*-contigs.fasta; do
-j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
-sample=${j%-contigs.fasta}
-
-if [[ ! -d "$sample" ]]; then 
-   mkdir "$sample"
-fi
-
-/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated_evolved.csh "$i" "$sample"-contigs; mv `ls "$sample"-contigs*` "$sample"/
-done
-```
-**Run glimmer for original strains (Assume circular sequences because they are completed genomes)**
-```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*_?.fasta; do
-j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
-sample=${j%.fasta}
-
-if [[ ! -d "$sample" ]]; then 
-   mkdir "$sample"
-fi
-
-/home/xingyuan/tools/glimmer3.02/scripts/g3-iterated.csh "$i" "$sample"; mv `ls "$sample"*` "$sample"/
-done
-```
-#### Re-format ``.predict`` file
-```bash
-#!/bin/bash
-# Format glimmer .predict file for the multi-extract program  
-# Usage: ./ThisScript .predict
-
-for (( c=1; c<=`grep -c ">" $1`; c++ )); do
-
-i=0
-let y=$c+1
-while read line; do
-  if [[ $line =~ ">" ]]; then
-    let i=$i+1
-  fi
-  if [ $i -eq $c ] && [[ $line =~ ">" ]]; then
-    tag=${line#>}
-  fi
-  if [ $i -eq $c ] && [[ $line =~ "orf" ]]; then
-    id=${line:0:8}
-    string=${line:8} 
-    echo "$tag"_"$id" "$tag" "$string"
-  fi
-  if [ $i -eq $y ]; then
-    break 
-  fi
-done < $1
-
-done
-```
-```
-#!/bin/bash
-for i in */*-contigs.predict */Rht*_?.predict; do
-j=${i#*/}
-sample=${j%.predict}
-
-./re-format.sh "$i" > "$sample".re_formatted.predict
-done
-```
-#### Run multi-extract to extract genes from ``.predict`` file
-```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/genes_presence_absence/glimmer/*.re_formatted.predict; do
-j=${i#/home/xingyuan/rhizo_ee/genes_presence_absence/glimmer/}
-sample=${j%.re_formatted.predict}
-
-/home/xingyuan/tools/glimmer3.02/bin/multi-extract /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$sample".fasta "$i" > "$sample".glimmer_genes.fasta 
-done
-```
-
-#### Run interproscan
-Interproscan version: 5.63-95.0 <br>
-Work done on cedar cluster
-
-**Install local lookup service using instructions at https://interproscan-docs.readthedocs.io/en/latest/LocalLookupService.html (The lookup service is about 1.4T).**
-
-
-
-### 3. Don't use clustering softwares
-#### Find genes lost in evolved strains 
-Samtools Version: 1.11 (using htslib 1.11) <br>
-Bedtools Version: 2.19.1 <br>
-Work done info114
-
-**Extract mapped reads**
-```bash
-#!/bin/bash
-for i in *bam; do
-sample=${i/.bam/.mapped.bam}
-
-samtools view -F 260 -o "$sample" "$i"
-done
-```
-
-**Find genomic regions where the most probable ancestor has but its evolved strains do not**
-```bash
-bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/Rht_056_N/annot_with_genomic_fasta.bed -b 14_2_2-Rht_056_N.bam -header -v > 14_2_2-Rht_056_N.genes_lost
-```
-
-#### Find genes gained in evolved strains 
-Samtools Version: 1.11 (using htslib 1.11) <br>
-Seqkit Version: 2.5.1 <br>
-Blast Version: 2.13.0, build Sep 13 2022 22:19:14 <br>
-Work done info114
-
-**Extract unmapped reads**
-```bash
-#!/bin/bash
-for i in *_?.bam; do
-r1=${i/.bam/.unmapped.r1.fastq}
-r2=${i/.bam/.unmapped.r2.fastq}
-
-samtools fastq -f 4 -1 "$r1" -2 "$r2" "$i"
-done
-```
-
-**Rename fasta header for the 56 original strains with sample name, and combine all genomes into one file**
-```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/Rht*fasta; do
-j=${i#/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/}
-sample=${j/.fasta/_}
-out=${j/.fasta/.rename.fasta}
-
-/home/xingyuan/tools/seqkit replace -p ^ -r "$sample" "$i" > "$out"
-done
-```
-```bash
-cat *.rename.fasta > 56_original.combine.fasta
 ```
 
 ## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
