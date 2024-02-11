@@ -16,12 +16,12 @@ Work done on **info server** (contact Brian Golding at golding@mcmaster.ca for a
 ## 1. Run FastQC to check quality of raw reads 
 https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
-Versions: FastQC v0.11.5 <br>
+Versions: FastQC v0.12.1 <br>
 Work done on info114
 
 **All 363 samples (726 files)**
 ```bash
-nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_raw_reads *gz &
+nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_raw_reads --threads 5 /home/xingyuan/rhizo_ee/raw_reads/*gz &
 ```
 
 ## 2. Run MultiQC to combine all FastQC reports to a single file
