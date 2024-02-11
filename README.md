@@ -19,7 +19,6 @@ https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 Versions: FastQC v0.12.1 <br>
 Work done on info114
 
-**All 363 samples (726 files)**
 ```bash
 nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_raw_reads --threads 5 /home/xingyuan/rhizo_ee/raw_reads/*gz &
 ```
@@ -27,11 +26,11 @@ nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/
 ## 2. Run MultiQC to combine all FastQC reports to a single file
 https://multiqc.info/
 
-Version: MultiQC v1.9 <br>
-Work done on info114
+Version: 1.20.dev0 <br>
+Work done on info2020
 
 ```bash
-multiqc . 
+/2/scratch/batstonelab/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_raw_reads --outdir multiqc_raw_reads --verbose
 ```
 
 ## 3. Run fastp to trim the reads for all 363 derived strains
@@ -62,30 +61,30 @@ Shifu Chen. 2023. Ultrafast one-pass FASTQ data preprocessing, quality control, 
 
 Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884–i890, https://doi.org/10.1093/bioinformatics/bty560
 
-### 4. Run FastQC for trimmed reads 
-Versions: FastQC v0.11.5 <br>
+## 4. Run FastQC to check quality of trimmed reads 
+https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+
+Versions: FastQC v0.12.1 <br>
 Work done on info114
 
-**All 363 samples (726 files)**
 ```bash
-nohup fastqc -o /home/xingyuan/rhizo_ee/fastQC_trimmomatic_reads *_P_* &
+nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_trimmed_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/10_1_1* &
 ```
 
-### 5. Run MultiQC for trimmed reads
-Version: MultiQC v1.9 <br>
-Work done on info114
+### 5. Run MultiQC to combine all FastQC reports to a single file
+Version: 1.20.dev0 <br>
+Work done on info2020
 
-**All 363 samples (726 files)**
 ```bash
-multiqc . 
+/2/scratch/batstonelab/bin/multiqc /home/xingyuan/rhizo_ee/fastp_results/fastp_logs --module fastp --outdir multiqc_trimmed_reads --verbose
 ```
 
 # Step 2 - Genome assembly
 ### 1. Run SPAdes to assemble the trimmed reads into genomes for derived strains
 https://github.com/ablab/spades
 
-Version: 3.15.2 <br>
-Work done on info114
+Version: v3.15.5 <br>
+Work done on info2020
 
 **52 samples**
 ```bash
@@ -94,17 +93,23 @@ for R1 in 10_1_8_*R1_P_* 10_1_9_*R1_P_* 10_7_6_*R1_P_* 11_4_2_*R1_P_* 11_4_4_*R1
 do
 R2=${R1//R1_P_001.fastq.gz/R2_P_001.fastq.gz}
 
-spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}
+spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${merged%_*_L002_*gz}
 done
 ```
 
 **Remaining 311 samples**
 ```bash
 #!/bin/bash
-for R1 in *R1*; do
-R2=${R1//R1_P_001.fastq.gz/R2_P_001.fastq.gz}
+#Usage: nohup ./ThisScript &
+for i in /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*merged*gz; do
+merged=${i#/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/}
+R1_P=${merged//merged_001.fastq.gz/R1_P_001.fastq.gz}
+R1_UP=${merged//merged_001.fastq.gz/R1_UP_001.fastq.gz}
+R2_P=${merged//merged_001.fastq.gz/R2_P_001.fastq.gz}
+R2_UP=${merged//merged_001.fastq.gz/R2_UP_001.fastq.gz}
+sample=${merged%_*_L002_*gz}
 
-spades.py --careful -1 $R1 -2 $R2 -o /home/xingyuan/rhizo_ee/spades_assembly/${R1%_*_L002_*gz}
+/2/scratch/batstonelab/bin/SPAdes-3.15.5-Linux/bin/spades.py -1 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R1_P" -2 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R2_P" --merged /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$merged" -s /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R1_UP" -s /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$R2_UP" --isolate --threads 5 -o /home/xingyuan/rhizo_ee/spades_genomes/"$sample"
 done
 ```
 
