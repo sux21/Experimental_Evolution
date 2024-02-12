@@ -84,7 +84,7 @@ Work done on info2020
 Philip Ewels, Måns Magnusson, Sverker Lundin, Max Käller, MultiQC: summarize analysis results for multiple tools and samples in a single report, *Bioinformatics*, Volume 32, Issue 19, October 2016, Pages 3047–3048, https://doi.org/10.1093/bioinformatics/btw354
 
 # Step 2 - Genome assembly
-### 1. Run SPAdes to assemble the trimmed reads into genomes for derived strains
+## 1. Run SPAdes to assemble the trimmed reads into genomes for derived strains
 https://github.com/ablab/spades
 
 Version: v3.15.5 <br>
