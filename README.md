@@ -73,7 +73,7 @@ Work done on info114
 nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_trimmed_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*gz &
 ```
 
-### 5. Run MultiQC to combine all FastQC reports to a single file
+## 5. Run MultiQC to combine all FastQC reports to a single file
 Version: 1.20.dev0 <br>
 Work done on info2020
 
