@@ -127,7 +127,7 @@ done
 ```
 
 # Step 3 - Find the most probable ancestor for each derived strain 
-## 1. Run FastANI to calculate pairwise whole-genome average nucleotide identity
+## 1. Run FastANI to calculate pairwise whole-genome average nucleotide identity between derived strains and original strains
 https://github.com/ParBLiSS/FastANI
 
 Version: 1.32 <br>
