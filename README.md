@@ -133,72 +133,22 @@ https://github.com/ParBLiSS/FastANI
 Version: 1.32 <br>
 Work done on info2020
 
-Query = 363 experimentally evolved strains <br>
+Query = 363 derived strains <br>
 Reference = 56 original strains 
 
-**Query to reference (default)**
 ```bash
-ls Rht* > reference_list
-ls *contigs.fasta > contigs_query_list
-
-nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -o fastani.contigs.out &
-```
-**Query to reference (--fragLen 4000)**
-```bash
-ls Rht* > reference_list
-ls *contigs.fasta > contigs_query_list
-
-nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 4000 -o fastani.contigs4000.out &
-```
-**Query to reference (--fragLen 3500)**
-```bash
-ls Rht* > reference_list
-ls *contigs.fasta > contigs_query_list
-
-nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 3500 -o fastani.contigs3500.out &
-```
-**Query to reference (--fragLen 2500)**
-```bash
-ls Rht* > reference_list
-ls *contigs.fasta > contigs_query_list
-
-nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 2500 -o fastani.contigs2500.out &
-```
-**Query to reference (--fragLen 2000)**
-```bash
-ls Rht* > reference_list
-ls *contigs.fasta > contigs_query_list
-
-nohup /usr/local/bin/fastANI --ql contigs_query_list --rl reference_list -t 5 --fragLen 2000 -o fastani.contigs2000.out &
-```
-**Query (core genome) to reference (core genome)**
-```bash
-ls *contigs.fasta.core.fasta > core_query_list
-ls *_?.fasta.core.fasta > core_reference_list
-
-nohup /usr/local/bin/fastANI --ql core_query_list --rl core_reference_list -t 5 -k 5 --fragLen 10 -o fastani.que_core_to_ref_core.out 
+nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --matrix -o most_prob_ancestors.txt &
 ```
 
-**Reference to reference**
-```bash
-ls Rht* > reference_list
 
-nohup /usr/local/bin/fastANI --ql reference_list --rl reference_list -o fastani.ref_to_ref.out &
-```
 
-**Query to query**
-```bash
-ls *contigs.fasta > contigs_query_list
 
-nohup /usr/local/bin/fastANI --ql contigs_query_list --rl contigs_query_list -o fastani.que_to_que.out &
-```
 
-**Query+reference to query+reference (exclude as5_2_4)**
-```bash
-ls *.fasta > all_samples_no_as5_2_4 (remove as_5_2_4 from the list)
 
-nohup /usr/local/bin/fastANI --ql all_samples_no_as5_2_4 --rl all_samples_no_as5_2_4 -t 5 -o fastani.all_to_all.out &
-```
+
+
+
+
 
 **Get mapping diagram for these comparisons: 20_6_10 vs 511_N, 20_6_10 vs 415_C; 20_2_6 vs 596_N, 20_2_6 vs 116_N; 16_1_6 vs 173_C, 16_1_6 vs 016_N; 16_3_4 vs 003_C, 16_3_4 vs 706_C**
 
