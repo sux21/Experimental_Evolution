@@ -140,49 +140,7 @@ Reference = 56 original strains
 nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --matrix -o most_prob_ancestors.txt &
 ```
 
-
-
-
-
-
-
-
-
-
-
-**Get mapping diagram for these comparisons: 20_6_10 vs 511_N, 20_6_10 vs 415_C; 20_2_6 vs 596_N, 20_2_6 vs 116_N; 16_1_6 vs 173_C, 16_1_6 vs 016_N; 16_3_4 vs 003_C, 16_3_4 vs 706_C**
-
-Rscript Version: 3.6.3 (2020-02-29) <br>
-Work done on info2020
-
-**Open R and install genoplotr using ``install.packages("genoPlotR")`` before running the following lines**
-
-```bash
-/usr/local/bin/fastANI -q 20_6_10-contigs.fasta -r Rht_511_N.fasta --visualize -o 20_6_10-Rht_511_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 20_6_10-contigs.fasta Rht_511_N.fasta 20_6_10-Rht_511_N.fastani.out.visual 
-```
-```bash
-/usr/local/bin/fastANI -q 20_6_10-contigs.fasta -r Rht_415_C.fasta --visualize -o 20_6_10-Rht_415_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 20_6_10-contigs.fasta Rht_415_C.fasta 20_6_10-Rht_415_C.fastani.out.visual 
-```
-```bash
-/usr/local/bin/fastANI -q 20_2_6-contigs.fasta -r Rht_596_N.fasta --visualize -o 20_2_6-Rht_596_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 20_2_6-contigs.fasta Rht_596_N.fasta 20_2_6-Rht_596_N.fastani.out.visual 
-```
-```bash
-/usr/local/bin/fastANI -q 20_2_6-contigs.fasta -r Rht_116_N.fasta --visualize -o 20_2_6-Rht_116_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 20_2_6-contigs.fasta Rht_116_N.fasta 20_2_6-Rht_116_N.fastani.out.visual 
-```
-```
-/usr/local/bin/fastANI -q 16_1_6-contigs.fasta -r Rht_173_C.fasta --visualize -o 16_1_6-Rht_173_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_1_6-contigs.fasta Rht_173_C.fasta 16_1_6-Rht_173_C.fastani.out.visual 
-```
-```bash
-/usr/local/bin/fastANI -q 16_1_6-contigs.fasta -r Rht_061_N.fasta --visualize -o 16_1_6-Rht_061_N.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_1_6-contigs.fasta Rht_061_N.fasta 16_1_6-Rht_061_N.fastani.out.visual 
-```
-```bash
-/usr/local/bin/fastANI -q 16_3_4-contigs.fasta -r Rht_003_C.fasta --visualize -o 16_3_4-Rht_003_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_3_4-contigs.fasta Rht_003_C.fasta 16_3_4-Rht_003_C.fastani.out.visual 
-```
-```bash
-/usr/local/bin/fastANI -q 16_3_4-contigs.fasta -r Rht_706_C.fasta --visualize -o 16_3_4-Rht_706_C.fastani.out && ~/tools/R/bin/Rscript visualize.R 16_3_4-contigs.fasta Rht_706_C.fasta 16_3_4-Rht_706_C.fastani.out.visual 
-```
-
-## Analysis 2: Gene Presence Absence
+# Step 3 - Find gene presence absence variations
 
 ### 1. Genome annotation - PGAP
 #### Transfer scaffolds file from info to graham and cedar
