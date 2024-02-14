@@ -1,4 +1,4 @@
-# 2020 Experimental Evolution 
+# Experimental Evolution 
 Bioinformatics project on *Rhizobium leguminosarum*
 
 Work done on **info server** (contact Brian Golding at golding@mcmaster.ca for an info account). **Compute canada server** will be used if the info server cannot run the program (register for an compute canada account at https://ccdb.alliancecan.ca/security/login). Results produced by compute canada server will be transferred to info server. 
