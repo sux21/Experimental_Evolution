@@ -108,8 +108,7 @@ done
 Prjibelski, A., Antipov, D., Meleshko, D., Lapidus, A., & Korobeynikov, A. (2020). Using SPAdes de novo assembler. Current Protocols in Bioinformatics, 70, e102. doi: 10.1002/cpbi.102
 
 
-## After Assembly 
-### 1.1 Run Quast for 363 experimentally evolved strains (Contigs)
+## Run Quast to check the quality of scaffolds 
 https://github.com/ablab/quast
 
 Version: 5.2.0, 3d87c606 <br>
