@@ -108,64 +108,29 @@ done
 Prjibelski, A., Antipov, D., Meleshko, D., Lapidus, A., & Korobeynikov, A. (2020). Using SPAdes de novo assembler. Current Protocols in Bioinformatics, 70, e102. doi: 10.1002/cpbi.102
 
 
-## Run Quast to check the quality of scaffolds 
+## 2. Run Quast to check the quality of scaffolds 
 https://github.com/ablab/quast
 
 Version: 5.2.0, 3d87c606 <br>
-Work done on info114 
+Work done on info2020
 
 ```bash
 #!/bin/bash
-for i in *; do
+#Usage: nohup ./ThisScript &
+for i in /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/*scaffolds.fasta; do
+file=${i#/2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/}
+sample=${file%-scaffolds.fasta}
 
-if [[ $i =~ ".sh" ]] || [[ $i =~ "out" ]]; then
-   continue
-fi
-
-/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/${i%.fasta}
-
-done
-```
-
-### 1.2 Run Quast for 363 experimentally evolved strains (Scaffolds)
-Version: 5.2.0, 3d87c606 <br>
-Work done on info114 
-
-```bash
-#!/bin/bash
-for i in *; do
-
-if [[ $i =~ ".sh" ]] || [[ $i =~ "out" ]]; then
-   continue
-fi
-
-/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/spades_assembly/quast_2020_short_reads/${i%.fasta}
-
-done
-```
-
-### 1.3 Run Quast for 56 original strains 
-Version: v5.2.0, 3d87c606 <br>
-Work done on info113
-
-```bash
-#!/bin/bash 
-for i in Rht*
-do
-
-/home/xingyuan/tools/quast-5.2.0/quast.py $i -m 0 -t 5 -o /home/xingyuan/rhizo_ee/2008_2020_strains_comparison_All/ASSEMBLY/quast_2008_long_reads/${i%.fasta}
+/2/scratch/batstonelab/bin/quast-5.2.0/quast.py $i --min-contig 0 --threads 5 --output-dir /home/xingyuan/rhizo_ee/quast_genomes_quality_check/"$sample"
 
 done
 ```
 
 # Step 3 - Find the most probable ancestor for each derived strain 
-
-**Samples: 363 experimentally evolved strains + 56 original strains**
-
-### 1. Run FastANI
+## 1. Run FastANI
 https://github.com/ParBLiSS/FastANI
 
-Version: 1.32  <br>
+Version: 1.32 <br>
 Work done on info2020
 
 Query = 363 experimentally evolved strains <br>
