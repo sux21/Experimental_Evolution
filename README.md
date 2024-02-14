@@ -140,7 +140,7 @@ Reference = 56 original strains
 nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --matrix -o most_prob_ancestors.txt &
 ```
 
-# Step 3 - Find gene presence absence variations
+# Step 4 - Find gene presence absence variations
 
 ### 1. Genome annotation - PGAP
 #### Transfer scaffolds file from info to graham and cedar
