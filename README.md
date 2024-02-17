@@ -141,7 +141,7 @@ nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --mat
 ```
 
 # Step 4 - Find gene presence absence variations
-## Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
+## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
 Seqkit Version: v2.7.0 <br>
