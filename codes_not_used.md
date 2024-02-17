@@ -373,3 +373,18 @@ md5sum rhizo_ee.scaffolds.tar.gz > md5sums.txt
 ```
 
 
+#### Download pgap.py
+https://github.com/ncbi/pgap/tree/1126_Test
+
+Version:  <br>
+Work done on 
+
+```bash
+module load apptainer 
+wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
+chmod +x pgap.py
+./pgap.py -D apptainer 
+```
+
+
+
