@@ -141,70 +141,23 @@ nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --mat
 ```
 
 # Step 4 - Find gene presence absence variations
-
-### 1. Genome annotation - PGAP
-#### Transfer scaffolds file from info to graham and cedar
-```
-# Re-name each scaffolds.fasta file with its sample name
-for i in */scaffolds.fasta; do
-sample_name=${i%/scaffolds.fasta}
-cp $i "$sample_name"-scaffolds.fasta
-done
-
-# Put all renamed files into a new directory and compress the directory (Also create a checksum for the compressed directory to check file integrity before and after transfer)
-mkdir rhizo_ee.scaffolds
-mv *scaffolds.fasta rhizo_ee.scaffolds
-tar -zcvf rhizo_ee.scaffolds.tar.gz /home/xingyuan/rhizo_ee/spades_assembly/rhizo_ee.scaffolds
-md5sum rhizo_ee.scaffolds.tar.gz > md5sums.txt
-
-# Transfer rhizo_ee.scaffolds.tar.gz and md5sums.txt from info computers to graham computers
-(base) [xingyuan@infoserv spades_assembly]$ scp rhizo_ee.scaffolds.tar.gz sux21@graham.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
-(base) [xingyuan@infoserv spades_assembly]$ scp md5sums.txt sux21@graham.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
-
-# Transfer rhizo_ee.scaffolds.tar.gz and md5sums.txt from info computers to graham computers
-(base) [xingyuan@infoserv spades_assembly]$ scp rhizo_ee.scaffolds.tar.gz sux21@cedar.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
-(base) [xingyuan@infoserv spades_assembly]$ scp md5sums.txt sux21@cedar.computecanada.ca:/home/sux21/2023_summer_coop/rhizo_ee/genomes
-
-# Verify the checksum
-[sux21@gra-login1 genomes]$ md5sum -c md5sums.txt
-
-# Extract rhizo_ee.scaffolds.tar.gz
-[sux21@gra-login1 genomes]$ tar -xf rhizo_ee.scaffolds.tar.gz
-```
-
-#### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
+## Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
-Seqkit Version: 2.3.0 <br>
-Work done on graham cluster
+Seqkit Version: v2.7.0 <br>
+Work done on info2020
 
 ```bash
 #!/bin/bash
-#SBATCH --time=00-00:10
-#SBATCH --mem-per-cpu=1024M
-#SBATCH --account=def-batstone
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
+file_in=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
+file_out=${file_in//.fasta/.filtered.fasta}
 
-module load seqkit/2.5.1
-
-for i in *scaffolds.fasta; do
-sample=${i%-scaffolds.fasta}
-
-seqkit seq -m 200 "$sample"-scaffolds.fasta > "$sample"-scaffolds.filter.fasta
+/2/scratch/batstonelab/bin/seqkit seq --min-len 200 --threads 5 /home/xingyuan/rhizo_ee/derived+original_genomes/"$file_in" > /home/xingyuan/rhizo_ee/genes_presence_absence_variation/"$file_out"
 done
 ```
 
-#### Download pgap.py
-https://github.com/ncbi/pgap/tree/1126_Test
-
-Version: 2023-05-17.build6771 <br>
-Work done on graham cluster 
-
-```bash
-module load apptainer 
-wget -O pgap.py https://github.com/ncbi/pgap/raw/prod/scripts/pgap.py
-chmod +x pgap.py
-./pgap.py -D apptainer 
-```
+**W Shen**, S Le, Y Li*, F Hu*. SeqKit: a cross-platform and ultrafast toolkit for FASTA/Q file manipulation. ***PLOS ONE***. doi:10.1371/journal.pone.0163962.
 
 #### Verify species taxonomy 
 https://github.com/ncbi/pgap/wiki/Taxonomy-Check
