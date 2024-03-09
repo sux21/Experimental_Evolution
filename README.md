@@ -141,21 +141,7 @@ nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --mat
 ```
 
 # Step 4 - Find gene presence absence variations (Method 1)
-## 1. Pre-train Prodigal using all 62 original strains which have completed genomes
-https://github.com/hyattpd/Prodigal
-
-Version: 2.6.3 <br>
-Work done on info2020
-
-```bash
-#Combine all 62 completed genomes into one file
-cat /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta > 62_original_strains_genomes.fasta
-
-#Create the training file
-/home/xingyuan/tools/miniconda3/bin/prodigal -c -i 62_original_strains_genomes.fasta -t 62_original_strains_genomes.trn 
-```
-
-## 2. Genome annotation using prokka
+## 1. Genome annotation using prokka
 https://github.com/tseemann/prokka
 
 Prokka Version: 1.14.6
@@ -163,11 +149,11 @@ Work done on info2020
 
 ```bash
 #!/bin/bash
-for i in /home/xingyuan/rhizo_ee/derived+original_genomes/10_1_1*fasta; do
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
 j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
 sample=${j%.fasta}
 
-/home/xingyuan/tools/miniconda3/bin/prokka --outdir "$sample"_1 --prefix "$sample" --addgenes --locustag "$sample" --kingdom Bacteria --gcode 11 --rfam --cpus 5 "$i"
+/home/xingyuan/tools/miniconda3/bin/prokka --outdir "$sample" --prefix "$sample" --addgenes --locustag "$sample" --kingdom Bacteria --gcode 11 --proteins GCF_011604505.1_Strain23B_protein.gbk --evalue 1e-9 --rfam --cpus 5 "$i"
 done
 ```
 
