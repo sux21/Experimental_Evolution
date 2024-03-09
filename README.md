@@ -144,7 +144,7 @@ nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --mat
 ## 1. Genome annotation using prokka
 https://github.com/tseemann/prokka
 
-Prokka Version: 1.14.6
+Prokka Version: 1.14.6 <br>
 Work done on info2020
 
 ```bash
