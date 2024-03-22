@@ -157,6 +157,17 @@ sample=${j%.fasta}
 done
 ```
 
+## 2. Create Pangenome uusing roary
+https://github.com/sanger-pathogens/Roary/blob/master/README.md
+
+**Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
+
+Roary Version: 
+
+```bash
+/2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary 
+```
+
 # Step 4 - Find gene presence absence variations (Method 2)
 ## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
