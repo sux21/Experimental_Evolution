@@ -157,15 +157,15 @@ sample=${j%.fasta}
 done
 ```
 
-## 2. Create Pangenome uusing roary
+## 2. Create Pangenome using roary
 https://github.com/sanger-pathogens/Roary/blob/master/README.md
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
 
-Roary Version: 
+Roary Version: 3.12.0
 
 ```bash
-/2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary 
+nohup /2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary -p 5 -f roary_results -y *gff &
 ```
 
 # Step 4 - Find gene presence absence variations (Method 2)
