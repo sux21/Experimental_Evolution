@@ -141,7 +141,7 @@ nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --mat
 ```
 
 # Step 4 - Find gene presence absence variations (Method 1)
-## 1. Genome annotation using prokka
+## 1. Annotate genome using prokka
 https://github.com/tseemann/prokka
 
 Prokka Version: 1.14.6 <br>
@@ -157,7 +157,7 @@ sample=${j%.fasta}
 done
 ```
 
-## 2. Create Pangenome using roary
+## 2. Create pangenome using roary
 https://github.com/sanger-pathogens/Roary/blob/master/README.md
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
@@ -190,9 +190,6 @@ done
 ## 2. Genome anntation using pgap
 
 ```bash
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-
-
 /2/scratch/batstonelab/bin/pgap/pgap.py --docker /2/scratch/batstonelab/bin/apptainer/bin/apptainer --container-path /2/scratch/batstonelab/bin/pgap/pgap_2023-10-03.build7061.sif --output 10_1_1 --genome 10_1_1-scaffolds.filtered.fasta --organism 'Rhizobium leguminosarum' --cpus 5 --verbose --report-usage-true
 ```
 
