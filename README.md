@@ -187,87 +187,12 @@ done
 
 **W Shen**, S Le, Y Li*, F Hu*. SeqKit: a cross-platform and ultrafast toolkit for FASTA/Q file manipulation. ***PLOS ONE***. doi:10.1371/journal.pone.0163962.
 
-## 2. Genome anntation using pgap
-
-```bash
-/2/scratch/batstonelab/bin/pgap/pgap.py --docker /2/scratch/batstonelab/bin/apptainer/bin/apptainer --container-path /2/scratch/batstonelab/bin/pgap/pgap_2023-10-03.build7061.sif --output 10_1_1 --genome 10_1_1-scaffolds.filtered.fasta --organism 'Rhizobium leguminosarum' --cpus 5 --verbose --report-usage-true
-```
-
-#### Verify species taxonomy 
-https://github.com/ncbi/pgap/wiki/Taxonomy-Check
-
-Version: 2023-05-17.build6771 <br>
-Work done on cedar cluster
-
-**Run one script at a time. When it finishes, then run the next one. This is because pgap creates yaml file when it is running. When two pgap jobs run at the same time, one of the jobs may use the yaml produced from the other job. Creating  an error like the following:**
-```bash
-Original command: /project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o 10_5_8 -g /project/6078724/sux21/rhizo_ee/genomes/10_5_8-contigs.filter.fasta -s Rhizobium leguminosarum -c 40 --taxcheck-only
-
-Docker command: /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer exec --bind /home/sux21/.pgap/input-2023-05-17.build6771:/pgap/input:ro --bind /project/6078724/sux21/rhizo_ee/taxcheck:/pgap/user_input --bind /project/6078724/sux21/rhizo_ee/taxcheck/pgap_input_39ew9cbl.yaml:/pgap/user_input/pgap_input.yaml:ro --bind /tmp:/tmp:rw --bind /project/6078724/sux21/rhizo_ee/taxcheck/10_5_8:/pgap/output:rw --pwd /pgap /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif /bin/taskset -c 0-39 cwltool --timestamps --debug --disable-color --preserve-entire-environment --outdir /pgap/output pgap/taxcheck.cwl /pgap/user_input/pgap_input.yaml
-
---- Start YAML Input --- 
-fasta:
-    class: File
-    location: /project/6078724/sux21/rhizo_ee/genomes/Rht_061_N.fasta
-submol:
-    class: File
-    location: pgap_submol_bdp39o2k.yaml
-supplemental_data: { class: Directory, location: /pgap/input }
-report_usage: true
---- End YAML Input ---
-```
-
-**Script 1: Evolved strains**
-```bash
-#!/bin/bash
-#SBATCH --time=00-20:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%-contigs.filter.fasta}
-
-/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
-done
-```
-
-**Script 2: Original Strains**
-```bash
-#!/bin/bash
-#SBATCH --time=00-13:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/Rht*fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/}
-sample=${j%.fasta}
-
-/project/6078724/sux21/tools/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap_2023-05-17.build6771.sif -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40 --taxcheck-only
-done
-```
-**Samples with INCONCLUSIVE status: 16_1_6, 4_4_10, as5_2_4, Rht_061_N, Rht_173_C, Rht_209_N, Rht_231_N, Rht_717_N, Rht_773_N**
-
-#### Run pgap (Prepare 5 scripts and run each script in a different directory)
+## 2. Annotate genome using pgap (use 6 scripts because pgap is slow, and run each script in a different directory)
 
 Version: 2023-05-17.build6771 <br>
 Work done on graham cluster 
 
-**script 1 (94 samples)**
+**script 1**
 ```bash
 #!/bin/bash
 #SBATCH --time=04-30:00
@@ -281,17 +206,17 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/{1..5}_*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
-sample=${j%-scaffolds.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/{1..5}_*filtered.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%-scaffolds.filtered.fasta}
 
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 2 (70 samples)**
+**script 2**
 ```bash
 #!/bin/bash
-#SBATCH --time=03-12:00
+#SBATCH --time=04-30:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=40
@@ -302,17 +227,17 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/{6..9}_*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
-sample=${j%-scaffolds.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/{6..9}_*filtered.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%-scaffolds.filtered.fasta}
 
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 3 (109 samples)**
+**script 3**
 ```bash
 #!/bin/bash
-#SBATCH --time=05-00:00
+#SBATCH --time=04-30:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=40
@@ -323,17 +248,17 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/1{0..5}_*filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
-sample=${j%-scaffolds.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/1{0..5}_*filtered.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%-scaffolds.filtered.fasta}
 
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 4 (90 samples)**
+**script 4**
 ```bash
 #!/bin/bash
-#SBATCH --time=04-12:00
+#SBATCH --time=04-30:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=40
@@ -344,17 +269,17 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/1{6..9}_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/20_*filter.fasta /project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/as5_2_4-scaffolds.filter.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/rhizo_ee.scaffolds/}
-sample=${j%-scaffolds.filter.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/1{6..9}_*filtered.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%-scaffolds.filtered.fasta}
 
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
-**script 5 (56 samples)**
+**script 5**
 ```bash
 #!/bin/bash
-#SBATCH --time=03-00:00
+#SBATCH --time=04-30:00
 #SBATCH --account=def-batstone
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=40
@@ -365,18 +290,39 @@ module load apptainer
 
 export APPTAINER_BIND=/project
 
-for i in /home/sux21/2023_summer_coop/rhizo_ee/genomes/original_strains/Rht*fasta; do
-j=${i#/home/sux21/2023_summer_coop/rhizo_ee/genomes/original_strains/}
-sample=${j%.fasta}
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/Rht*fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%.filtered.fasta}
 
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-05-17.build6771.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+done
+```
+**script 6**
+```bash
+#!/bin/bash
+#SBATCH --time=02-30:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=10
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+ 
+module load apptainer
+
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/20_*filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/as5_2_4*filtered.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%-scaffolds.filtered.fasta}
+
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
 
- Find directories that don't have annot.gbk: ``find . -type d \! -exec test -e '{}/annot.gbk' \; -print`` <br>
+Find directories that don't have annot.gbk: ``find . -type d \! -exec test -e '{}/annot.gbk' \; -print`` <br>
 **Samples that do not have gbk produced: 14_5_5, 11_4_4, 7_4_2, 2_3_4, 15_5_1, 6_3_2, 4_4_10, 2_5_9, 15_3_1, 1_1_3, 18_6_7, 2_6_3, 15_2_1, 2_4_11, 5_3_6, 3_1_3, 8_4_7, 4_1_4, 19_4_7, 19_1_9, 5_3_9, 3_3_5, 17_2_7, Rht_773_N (24 samples, 419-24=395 samples remain)**
 
-#### Convert PGAP's gff files for roary
+## 3. Convert PGAP's gff files for roary
 **Rename each annot_with_genomic_fasta.gff with sample names**
 ```bash
 for i in */annot_with_genomic_fasta.gff; do
@@ -431,7 +377,7 @@ for i in *fixed; do
 done
 ```
 
-#### Run roary
+## 4. Run roary
 https://sanger-pathogens.github.io/Roary/
 
 Roary version: 1.007001 <br>
