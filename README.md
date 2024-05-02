@@ -444,43 +444,44 @@ ref=/home/xingyuan/rhizo_ee/SNPS/"$b".fasta
 done < $1
 ```
 
-## 2. Use picard to manipulate the SAM files
+## 2. Run picard to manipulate the SAM files
 Picard Version: 3.0.0 <br>
-Samtools Version: 1.13 <br>
 Work done one info2020
 
-#### (1) Reorder reads in the BAM file to match the contig ordering in reference file
+### (1) Reorder reads in the BAM file to match the contig ordering in reference file
 https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
 
-##### Create sequence dictionary file (.dict) for reference 
+### Create sequence dictionary file (.dict) for the 56 original strains (Required for ReorderSam)
 https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard-
+
 ```bash
 #!/bin/bash
 for i in Rht*fasta; do
 ref=${i%.fasta}
-java -jar /home/xingyuan/tools/picard.jar CreateSequenceDictionary -R "$ref".fasta -O "$ref".dict
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar CreateSequenceDictionary -R "$ref".fasta -O "$ref".dict
 done
 ```
 
-##### Run ReorderSam
+### Run ReorderSam
 ```bash
 #!/bin/bash
 for i in *bam; do
 sample=${i%.bam}
 ref=${sample#*-}
 
-java -jar /home/xingyuan/tools/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".dict
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R "$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD "$ref".dict
 done
 ```
 
 #### (2) Assign all the reads in a file to a single new read-group
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
+
 ```bash
 #!/bin/bash
 for i in *.reordered.bam; do
 sample=${i%.reordered.bam}
 
-java -jar /home/xingyuan/tools/picard.jar AddOrReplaceReadGroups -I "$sample".reordered.bam -O "$sample".new_rg.bam -ID "$sample" -LB rhizo_ee -PL Illumina -PU 1 -SM "$sample" 
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I "$sample".reordered.bam -O "$sample".new_rg.bam -ID "$sample" -LB rhizo_ee -PL Illumina -PU 1 -SM "$sample" 
 done
 ```
 
