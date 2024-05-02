@@ -387,7 +387,7 @@ Work done on info114
 roary -p 6 *gff
 ```
 
-# Step 5: Call SNPS between each evolved strain and its most probable ancestor
+# Step 5: Call SNPS between each derived strain and its most probable ancestor
 https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 **Install the latest version of picard at https://github.com/broadinstitute/picard** 
