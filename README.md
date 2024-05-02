@@ -388,12 +388,7 @@ roary -p 6 *gff
 ```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
-https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
-
-**Install the latest version of picard at https://github.com/broadinstitute/picard** 
-```bash
-wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar
-```
+This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 ## 1. Run BWA 
 https://bio-bwa.sourceforge.net/
