@@ -319,11 +319,14 @@ sample=${j%-scaffolds.filtered.fasta}
 done
 ```
 
-Find directories that don't have annot.gbk: ``find . -type d \! -exec test -e '{}/annot.gbk' \; -print`` <br>
-**Samples that do not have gbk produced: 14_5_5, 11_4_4, 7_4_2, 2_3_4, 15_5_1, 6_3_2, 4_4_10, 2_5_9, 15_3_1, 1_1_3, 18_6_7, 2_6_3, 15_2_1, 2_4_11, 5_3_6, 3_1_3, 8_4_7, 4_1_4, 19_4_7, 19_1_9, 5_3_9, 3_3_5, 17_2_7, Rht_773_N (24 samples, 419-24=395 samples remain)**
+### Find samples that don't have annot.gbk: 
+```bash
+find . -type d \! -exec test -e '{}/annot_with_genomic_fasta.gff' \; -print
+#Output: 4_4_10, 2_4_11, 19_4_7, 19_1_9, Rht_773_N
+```
 
-## 3. Convert PGAP's gff files for roary
-**Rename each annot_with_genomic_fasta.gff with sample names**
+## 3. Reformat PGAP's gff files for roary
+### Rename each annot_with_genomic_fasta.gff with sample names
 ```bash
 for i in */annot_with_genomic_fasta.gff; do
 sample=${i%/annot_with_genomic_fasta.gff}
@@ -332,7 +335,7 @@ cp $i "$sample"_annot_with_genomic_fasta.gff
 done
 ```
 
-**Reformat PGAP's annot_with_genomic_fasta.gff for AGAT**
+### Reformat PGAP's annot_with_genomic_fasta.gff for AGAT 
 ```bash
 #!/bin/bash
 # Step 1: Extract all lines starting with "NODE" 
@@ -366,7 +369,7 @@ rm -f "$1".int*
 #Step 2 command was taken from https://unix.stackexchange.com/questions/194780/remove-duplicate-lines-while-keeping-the-order-of-the-lines. Step 3 commands were taken from  https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter, https://stackoverflow.com/questions/50971418/using-sed-to-replace-single-line-in-while-read-loop
 ```
 
-**Standardise gff file using AGAT**
+### Reformat gff file using AGAT
 
 AGAT Version: 1.2.1 <br>
 Work done on info19
