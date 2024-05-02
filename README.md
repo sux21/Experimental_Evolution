@@ -387,62 +387,69 @@ Work done on info114
 roary -p 6 *gff
 ```
 
-## Analysis 4: Call SNPS between each evolved strain and its most probable ancestor
-https://github.com/rtbatstone/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
+# Step 5: Call SNPS between each evolved strain and its most probable ancestor
+https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 **Install the latest version of picard at https://github.com/broadinstitute/picard** 
 ```bash
 wget https://github.com/broadinstitute/picard/releases/download/3.0.0/picard.jar
 ```
 
-### 1. BWA
+## 1. Run BWA 
 https://bio-bwa.sourceforge.net/
 
 **Useful tools: decoding SAM flags: https://broadinstitute.github.io/picard/explain-flags.html**
 
 BWA Version: 0.7.17-r1188 <br>
-Samtools Version: 1.11 (using htslib 1.11) <br>
-Work done on info114
+Samtools Version: 1.13 (using htslib 1.13) <br>
+Work done on info2020
 
-#### Prepare a csv file as the following
-Since the csv file is saved by excel, it may say ``dos`` when opening using vi text editor. If so, unix can not read the file correctly. Opne the csv file using vi, and type ``:set ff=unix``. The ``dos`` should be gone. 
+### Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor
 
 ```bash
-#Format: evolved strain,the most probable ancestor (samples are separated by comma)
-20_6_10,Rht_511_N
-10_3_2,Rht_511_N
-19_6_10,Rht_511_N
-20_2_6,Rht_596_N
+10_1_1,Rht_460_C
+10_1_5,Rht_462_C
+10_1_8,Rht_460_C
 .
 .
 .
-(362 lines)
 ```
 
-#### Index 56 genomes of original strains for bwa
+### Index 56 genomes of original strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
 ```bash
 #!/bin/bash
 for i in Rht*fasta; do
-bwa index $i
+/usr/bin/bwa index $i
 done
 ```
 
-#### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS), and produce alignment statistics (samtools stats)
+### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS), and produce alignment statistics (samtools stats)
 Samtools stats: http://www.htslib.org/doc/samtools-stats.html
+
 ```bash
 #!/bin/bash
 # Usage: ./ThisScript file.csv
-while IFS=',' read -r a b; do
-r1=/home/xingyuan/rhizo_ee/trimmomatic_reads/"$a"_*R1_P*
-r2=/home/xingyuan/rhizo_ee/trimmomatic_reads/"$a"_*R2_P*
-ref=/home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$b".fasta
+#csv file has the following format:
+#-----------------------------------------
+#Derived_Strains,Most_Probable_Ancestor
+#10_1_1,Rht_460_C
+#10_1_5,Rht_462_C
+#10_1_8,Rht_460_C
+#.
+#.
+#.
+#-----------------------------------------
+while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
+r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R1_P*
+r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R2_P*
+ref=/home/xingyuan/rhizo_ee/SNPS/"$b".fasta
 
-bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | samtools view -huS -o $a-"$b".bam - && samtools stats $a-"$b".bam > $a-"$b".stats
+/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - && /usr/local/bin/samtools stats $a-"$b".bam > $a-"$b".stats
 
 done < $1
 ```
 
-### 2. Use picard to manipulate the SAM files
+## 2. Use picard to manipulate the SAM files
 Picard Version: 3.0.0 <br>
 Samtools Version: 1.13 <br>
 Work done one info2020
