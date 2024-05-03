@@ -358,7 +358,7 @@ done
 for i in */annot_with_genomic_fasta.gff; do
 sample=${i%/annot_with_genomic_fasta.gff}
 
-cp $i "$sample"_annot_with_genomic_fasta.gff
+ln -s $i "$sample"_annot_with_genomic_fasta.gff
 done
 ```
 
@@ -411,23 +411,23 @@ rm -f "$1".int*
 
 ### Reformat gff file using AGAT
 
-AGAT Version: 1.2.1 <br>
+AGAT Version: v1.4.0 <br>
 Work done on info19
 
 ```bash
 for i in *fixed; do
-/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl -g $i -o ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
+/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
 done
 ```
 
 ## 4. Run roary
 https://sanger-pathogens.github.io/Roary/
 
-Roary version: 1.007001 <br>
-Work done on info114
+Roary version: <br>
+Work done on info2020
 
 ```
-roary -p 6 *gff
+nohup /2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary -p 5 -f roary_results -y *gff &
 ```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
