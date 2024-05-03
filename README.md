@@ -476,7 +476,7 @@ ref=${sample#*-}
 done
 ```
 
-#### (2) Assign all the reads in a file to a single new read-group
+### (2) Assign all the reads in a file to a single new read-group
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
 
 ```bash
@@ -488,7 +488,7 @@ sample=${i%.reordered.bam}
 done
 ```
 
-#### (3) Sort the input BAM file by coordinate
+### (3) Sort the input BAM file by coordinate
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
 
 ```bash
@@ -500,7 +500,7 @@ sample=${i%.new_rg.bam}
 done
 ```
 
-#### (4) Identify duplicate reads and index the BAM files
+### (4) Identify duplicate reads and index the BAM files
 https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard- <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
 
@@ -518,13 +518,7 @@ Samtools Version: 1.13 (using htslib 1.13) <br>
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
 
-**Download the latest release of gatk at https://github.com/broadinstitute/gatk/releases**
-```bash
-wget https://github.com/broadinstitute/gatk/releases/download/4.4.0.0/gatk-4.4.0.0.zip
-unzip gatk-4.4.0.0.zip
-```
-
-#### Create index file (``.fai``) of reference for GATK
+### Create index file (``.fai``) of reference for GATK
 http://www.htslib.org/doc/samtools-faidx.html
 ```bash
 #!/bin/bash
@@ -533,7 +527,7 @@ samtools faidx $i
 done
 ```
 
-#### HaplotypeCaller
+### HaplotypeCaller
 https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
 ```bash
 #!/bin/bash
@@ -580,7 +574,7 @@ Rht_837_C
 Rht_861_C
 Rht_901_C
 ```
-**Run CombineGVCFs and GenotypeGVCFs**
+### Run CombineGVCFs and GenotypeGVCFs
 ```bash
 #!/bin/bash
 while read line; do
