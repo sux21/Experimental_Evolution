@@ -325,6 +325,33 @@ find . -type d \! -exec test -e '{}/annot_with_genomic_fasta.gff' \; -print
 #Output: 4_4_10, 2_4_11, 19_4_7, 19_1_9, Rht_773_N
 ```
 
+### Run PGAP for the failed samples (4_4_10, 2_4_11, 19_4_7, 19_1_9, Rht_773_N) using the option `--ignore-all-errors`)
+```bash
+#!/bin/bash
+#SBATCH --time=01-30:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=10
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+ 
+module load apptainer
+
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/4_4_10-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/2_4_11-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/19_4_7-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/19_1_9-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/Rht_773_N.filtered.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+
+if [[ "$j" =~ "Rht_773_N" ]]; then
+ sample=${j%.filtered.fasta}
+else
+ sample=${j%-scaffolds.filtered.fasta}
+fi
+
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample"_draft -g "$i" -s 'Rhizobium leguminosarum' -c 40 --ignore-all-errors
+done
+```
+
 ## 3. Reformat PGAP's gff files for roary
 ### Rename each annot_with_genomic_fasta.gff with sample names
 ```bash
