@@ -365,6 +365,19 @@ done
 ### Reformat PGAP's annot_with_genomic_fasta.gff for AGAT 
 ```bash
 #!/bin/bash
+#There are two things needed to be fixed:
+#----------------First Thing: This is done by steps 1 to 3--------------------------
+##sequence-region  1 1046175
+
+needs to be changed into:
+
+##sequence-region NODE_1_length_1046175_cov_26.396254  1 1046175
+#-----------------------------------------------------------------------------------
+#----------------Second Thing-------------------------------------------------------
+
+## FASTA
+------------------
+#Run this script as ./ThisScript INPUT.gff
 # Step 1: Extract all lines starting with "NODE" 
 while IFS=$'\t' read -r a b; do
 if [[ "$a" =~ ^"NODE" ]]; then
