@@ -490,24 +490,26 @@ done
 
 #### (3) Sort the input BAM file by coordinate
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
+
 ```bash
 #!/bin/bash
 for i in *.new_rg.bam; do
 sample=${i%.new_rg.bam}
 
-java -jar /home/xingyuan/tools/picard.jar SortSam -I "$sample".new_rg.bam -O "$sample".coordinate_sorted.bam -SO coordinate
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar SortSam -I "$sample".new_rg.bam -O "$sample".coordinate_sorted.bam -SO coordinate
 done
 ```
 
 #### (4) Identify duplicate reads and index the BAM files
 https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard- <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
+
 ```bash
 #!/bin/bash
 for i in *.coordinate_sorted.bam; do
 sample=${i%.coordinate_sorted.bam}
 
-java -jar /home/xingyuan/tools/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt && java -jar /home/xingyuan/tools/picard.jar BuildBamIndex -I "$sample".marked_duplicates.bam
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I "$sample".marked_duplicates.bam
 done
 ```
 
