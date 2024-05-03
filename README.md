@@ -558,24 +558,26 @@ Samtools Version: 1.13 (using htslib 1.13) <br>
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
 
-### Create index file (``.fai``) of reference for GATK
+### Create index file (.fai) for the 56 original strains for GATK
 http://www.htslib.org/doc/samtools-faidx.html
+
 ```bash
 #!/bin/bash
 for i in Rht*fasta; do
-samtools faidx $i
+/usr/local/bin/samtools faidx $i
 done
 ```
 
 ### HaplotypeCaller
 https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
+
 ```bash
 #!/bin/bash
 for i in *.marked_duplicates.bam; do
 sample=${i%.marked_duplicates.bam}
 ref=${sample#*-}
 
-/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" HaplotypeCaller -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O "$sample".g.vcf.gz -ERC GVCF
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar HaplotypeCaller -R "$ref".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O "$sample".g.vcf -ERC GVCF
 done
 ```
 
