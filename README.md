@@ -513,7 +513,7 @@ sample=${i%.coordinate_sorted.bam}
 done
 ```
 
-### 3. Run HaplotypeCaller
+## 3. Run HaplotypeCaller
 Samtools Version: 1.13 (using htslib 1.13) <br>
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
@@ -539,7 +539,7 @@ ref=${sample#*-}
 done
 ```
 
-### 4. CombineGVCFs, GenotypeGVCFs
+## 4. CombineGVCFs, GenotypeGVCFs
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
@@ -591,7 +591,7 @@ find *"$line"*.gz > MPA-"$line".list &&
 done < MPA.list
 ```
 
-### 5. Filter SNPs
+## 5. Filter SNPs
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
 
@@ -610,7 +610,7 @@ done
 
 **After this steps, Rht_016_N, Rht_074_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C have no SNPs (10 with no data)**
 
-### 6. VariantsToTable
+## 6. VariantsToTable
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
 
 GATK Version: 4.4.0.0 <br>
@@ -626,7 +626,7 @@ ref=${j#genotype_}
 done
 ```
 
-### 7. Find genes at the positions of SNPs
+## 7. Find genes at the positions of SNPs
 https://github.com/bedops/bedops
 
 #### Covert gff and vcf to bed format
@@ -667,7 +667,7 @@ ref=${j%.filt1.bed}
 done
 ```
 
-### 8. Find alternate alleles that occur in more than 1 evolved strains 
+## 8. Find alternate alleles that occur in more than 1 evolved strains 
 
 **Example: the alternate allele G occurs in more than one evolved strains. Convergent evolution?**
 ```bash
