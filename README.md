@@ -588,7 +588,7 @@ GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
 
-**Create a list, named ``MPA.list``,  for the most probable ancestors (25 most probable ancestors, 25 lines)**
+### Create a list, named ``MPA_list.txt``,  for the most probable ancestors (26 most probable ancestors)
 ```bash
 Rht_016_N
 Rht_056_N
@@ -596,6 +596,7 @@ Rht_074_C
 Rht_097_N
 Rht_108_C
 Rht_113_C
+Rht_116_N
 Rht_156_N
 Rht_173_C
 Rht_325_C
@@ -619,18 +620,18 @@ Rht_901_C
 ### Run CombineGVCFs and GenotypeGVCFs
 ```bash
 #!/bin/bash
-while read line; do
+while read Rht; do
 
-# Group evolved strains with the same most probable ancestors to a list. This should create 25 lists.
-find *"$line"*.gz > MPA-"$line".list &&
+# Group evolved strains with the same most probable ancestors to a list. This should create 26 lists.
+find *"$Rht"*.vcf > MPA-"$Rht"_list.txt &&
 
-# Run CombineGVCFs to combine the vcf files in each list to one vcf files. This should create 25 cohort.g.vcf.gz files.
-/home/xingyuan/tools/gatk-4.4.0.0/gatk CombineGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta --variant MPA-"$line".list -O "$line".cohort.g.vcf.gz &&
+# Run CombineGVCFs to combine the vcf files in each list to one vcf files. This should create 26 cohort.g.vcf files.
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R "$Rht".fasta --variant MPA-"$Rht"_list.txt -O "$Rht".cohort.g.vcf &&
 
-# Run GenotypeGVCFs on each 25 cohort.g.vcf.gz files
-/home/xingyuan/tools/gatk-4.4.0.0/gatk --java-options "-Xmx4g" GenotypeGVCFs -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$line".fasta -V "$line".cohort.g.vcf.gz -ploidy 1 -O genotype_"$line".vcf.gz -stand-call-conf 30
+# Run GenotypeGVCFs on each 26 cohort.g.vcf.gz files
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R "$Rht".fasta -V "$Rht".cohort.g.vcf.gz -ploidy 1 -O genotype_"$Rht".vcf.gz -stand-call-conf 30
 
-done < MPA.list
+done < MPA_list.txt
 ```
 
 ## 5. Filter SNPs
