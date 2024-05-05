@@ -658,27 +658,7 @@ done
 ### Check which samples have no data left for analysis
 ```
 grep "No data left for analysis" *log
-genotype_Rht_016_N.filt1.log:No data left for analysis!
-genotype_Rht_016_N.filt2.log:No data left for analysis!
-genotype_Rht_016_N.filt3.log:No data left for analysis!
-genotype_Rht_113_C.filt1.log:No data left for analysis!
-genotype_Rht_113_C.filt2.log:No data left for analysis!
-genotype_Rht_113_C.filt3.log:No data left for analysis!
-genotype_Rht_325_C.filt1.log:No data left for analysis!
-genotype_Rht_325_C.filt2.log:No data left for analysis!
-genotype_Rht_325_C.filt3.log:No data left for analysis!
-genotype_Rht_462_C.filt1.log:No data left for analysis!
-genotype_Rht_462_C.filt2.log:No data left for analysis!
-genotype_Rht_462_C.filt3.log:No data left for analysis!
-genotype_Rht_527_N.filt1.log:No data left for analysis!
-genotype_Rht_527_N.filt2.log:No data left for analysis!
-genotype_Rht_527_N.filt3.log:No data left for analysis!
-genotype_Rht_559_C.filt1.log:No data left for analysis!
-genotype_Rht_559_C.filt2.log:No data left for analysis!
-genotype_Rht_559_C.filt3.log:No data left for analysis!
-genotype_Rht_861_C.filt1.log:No data left for analysis!
-genotype_Rht_861_C.filt2.log:No data left for analysis!
-genotype_Rht_861_C.filt3.log:No data left for analysis!
+#Files with no data: Rht_016_N, Rht_074_C, Rht_113_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C
 ```
 
 ## 6. VariantsToTable
@@ -700,14 +680,14 @@ done
 ## 7. Find genes at the positions of SNPs
 https://github.com/bedops/bedops
 
-#### Covert gff and vcf to bed format
+### Covert gff and vcf to bed format
 Bedops Version: 2.4.41 <br>
 Work done on info2020
 
-**Convert gff of original strains to bed**
+**Convert gff of original strains to bed format**
 ```bash
 #!/bin/bash
-for i in Rht*gff; do
+for i in /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/Rht*gff; do
 
 /home/xingyuan/tools/bin/gff2bed < "$i" > "$i".bed
 done
@@ -716,25 +696,25 @@ done
 **Convert vcf to bed**
 ```bash
 #!/bin/bash
-for i in /home/xingyuan/rhizo_ee/call_snps/*vcf; do
-j=${i#/home/xingyuan/rhizo_ee/call_snps/}
+for i in /home/xingyuan/rhizo_ee/SNPS/*recode.vcf; do
+j=${i#/home/xingyuan/rhizo_ee/SNPS/}
 sample=${j%.recode.vcf}
 
-vcf2bed < "$i" > "$sample".bed
+/home/xingyuan/tools/bin/vcf2bed < "$i" > "$sample".bed
 done
 ```
 
-#### Find genes at the positions of SNPs or indels  
-Bedtools Version: 2.19.1 <br>
-Work done on info114
+### Find genes at the positions of SNPs or indels  
+Bedtools Version: v2.31.1 <br>
+Work done on info2020
 
 ```bash
 #!/bin/bash
-for i in genotype*.filt1.bed; do
+for i in *.bed; do
 j=${i#genotype_}
-ref=${j%.filt1.bed}
+ref=${j%.filt?.bed}
 
-/usr/local/bedtools/2.19.1/bin/bedtools intersect -a /home/xingyuan/rhizo_ee/genes_presence_absence/pgap/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
+/home/xingyuan/tools/miniconda3/bin/bedtools intersect -a /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
 done
 ```
 
