@@ -637,23 +637,49 @@ done < MPA_list.txt
 ```
 
 ## 5. Filter SNPs
+https://vcftools.github.io/man_latest.html 
+
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
-
-**Download the latest release of vcftools at https://github.com/vcftools/vcftools. Follow instructions at https://vcftools.github.io/examples.html for installation.**
-
-https://vcftools.github.io/man_latest.html 
 
 ```bash
 #!/bin/bash
 for i in genotype*gz; do
 out=${i%.vcf.gz}
 
-/home/xingyuan/tools/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 150 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
+
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 200 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt2
+
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt3
 done
 ```
 
-**After this steps, Rht_016_N, Rht_074_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C have no SNPs (10 with no data)**
+### Check which samples have no data left for analysis
+```
+grep "No data left for analysis" *log
+genotype_Rht_016_N.filt1.log:No data left for analysis!
+genotype_Rht_016_N.filt2.log:No data left for analysis!
+genotype_Rht_016_N.filt3.log:No data left for analysis!
+genotype_Rht_113_C.filt1.log:No data left for analysis!
+genotype_Rht_113_C.filt2.log:No data left for analysis!
+genotype_Rht_113_C.filt3.log:No data left for analysis!
+genotype_Rht_325_C.filt1.log:No data left for analysis!
+genotype_Rht_325_C.filt2.log:No data left for analysis!
+genotype_Rht_325_C.filt3.log:No data left for analysis!
+genotype_Rht_462_C.filt1.log:No data left for analysis!
+genotype_Rht_462_C.filt2.log:No data left for analysis!
+genotype_Rht_462_C.filt3.log:No data left for analysis!
+genotype_Rht_527_N.filt1.log:No data left for analysis!
+genotype_Rht_527_N.filt2.log:No data left for analysis!
+genotype_Rht_527_N.filt3.log:No data left for analysis!
+genotype_Rht_559_C.filt1.log:No data left for analysis!
+genotype_Rht_559_C.filt2.log:No data left for analysis!
+genotype_Rht_559_C.filt3.log:No data left for analysis!
+genotype_Rht_861_C.filt1.log:No data left for analysis!
+genotype_Rht_861_C.filt2.log:No data left for analysis!
+genotype_Rht_861_C.filt3.log:No data left for analysis!
+```
 
 ## 6. VariantsToTable
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
@@ -663,11 +689,11 @@ Work done on info2020
 
 ```bash
 #!/bin/bash
-for i in genotype_Rht_*vcf*; do
+for i in genotype_Rht_*.recode.vcf; do
 j=${i%.filt*vcf}
 ref=${j#genotype_}
 
-/home/xingyuan/tools/gatk-4.4.0.0/gatk VariantsToTable -V "$i" -R /home/xingyuan/rhizo_ee/find_most_probable_ancestors_all/ASSEMBLY/"$ref".fasta -F CHROM -F POS -F REF -F ALT -F QUAL -F AF -F ANN -F DP -GF GT -O "$i".table
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar VariantsToTable -V "$i" -R "$ref".fasta -F CHROM -F POS -F REF -F ALT -F QUAL -F AF -F ANN -F DP -GF GT -O "$i".table
 done
 ```
 
