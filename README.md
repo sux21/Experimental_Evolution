@@ -423,11 +423,13 @@ done
 ## 4. Run roary
 https://sanger-pathogens.github.io/Roary/
 
-Roary version: <br>
+Roary version: 3.12.0 <br>
 Work done on info2020
 
+**Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
+
 ```
-nohup /2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary -p 5 -f roary_results -y *gff &
+/2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary -p 5 -f roary_results -y *pgap.gff &
 ```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
