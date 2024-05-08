@@ -414,6 +414,7 @@ AGAT Version: v1.4.0 <br>
 Work done on info19
 
 ```bash
+#!/bin/bash
 for i in *fixed; do
 /2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
 done
