@@ -365,19 +365,17 @@ done
 ### Reformat PGAP's annot_with_genomic_fasta.gff for AGAT 
 ```bash
 #!/bin/bash
-#There are two things needed to be fixed:
-#----------------First Thing: This is done by steps 1 to 3--------------------------
+#Run this script as ./ThisScript INPUT.gff
+
+#This script will make the following change:
+#------------------------------------------------------------------
 ##sequence-region  1 1046175
 
-needs to be changed into:
+#will change into
 
 ##sequence-region NODE_1_length_1046175_cov_26.396254  1 1046175
-#-----------------------------------------------------------------------------------
-#----------------Second Thing-------------------------------------------------------
+#------------------------------------------------------------------
 
-## FASTA
-------------------
-#Run this script as ./ThisScript INPUT.gff
 # Step 1: Extract all lines starting with "NODE" 
 while IFS=$'\t' read -r a b; do
 if [[ "$a" =~ ^"NODE" ]]; then
@@ -388,7 +386,8 @@ done < $1
 ### Step 2: Remove redundant lines
 cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
 
-### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
+### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_le
+ngth_970887_cov_33.311050  1 970887"
 i=0; while read -r line; do
   if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
@@ -397,12 +396,12 @@ i=0; while read -r line; do
   else
     echo "$line"
   fi
-done < $1 > "$1".int3
+done < $1 > "$1".fixed
 
-### Step 4: Reformat fasta header 
-sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' "$1".int3 > "$1".fixed
+### Step 4: Reformat fasta header (currently not needed)
+#sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' "$1".int3 > "$1".fixed
 
-### Step 5: Remove intermediate files
+### Step 4: Remove intermediate files
 rm -f "$1".int*
 
 #References:
