@@ -378,7 +378,7 @@ done
 
 # Step 1: Extract all lines starting with "NODE" 
 while IFS=$'\t' read -r a b; do
-if [[ "$a" =~ ^"NODE" ]]; then
+if [[ "$a" =~ ^"Rht_" ]]; then #Change "NODE" to "cluster" for Rht* samples, and change to "Rht_" for Rht_262_N, Rht_643_N
   echo $a >> "$1".int1
 fi
 done < $1
@@ -386,8 +386,7 @@ done < $1
 ### Step 2: Remove redundant lines
 cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
 
-### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_le
-ngth_970887_cov_33.311050  1 970887"
+### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
 i=0; while read -r line; do
   if [[ $line =~ ^"##sequence-region" ]]; then
     let i=$i+1
@@ -415,8 +414,8 @@ Work done on info19
 
 ```bash
 #!/bin/bash
-for i in *fixed; do
-/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
+for i in *gff; do
+/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff}.pgap.gff
 done
 ```
 
