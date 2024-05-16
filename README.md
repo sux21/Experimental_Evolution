@@ -409,7 +409,7 @@ rm -f "$1".int*
 
 ### Reformat gff file using AGAT
 
-AGAT Version: v1.4.0 <br>
+AGAT Version: v1.2.1 <br>
 Work done on info19
 
 ```bash
