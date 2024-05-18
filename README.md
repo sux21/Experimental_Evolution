@@ -427,6 +427,11 @@ for i in *fixed; do
 done
 ```
 
+```bash
+#Check the files are fixed by AGAT properly
+ls -hlS *pgap.gff #files with smaller sizes will appear at the bottom of the output. Some sizes are 0 or smaller than the common size. These files may have no output or no DNA sequences at the bottom. Re-run AGAT for these files
+```
+
 ## 4. Run roary
 https://sanger-pathogens.github.io/Roary/
 
