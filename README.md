@@ -431,7 +431,9 @@ done
 #Check the files are fixed by AGAT properly
 ls -hlS *pgap.gff #files with smaller sizes will appear at the bottom of the output. Some sizes are 0 or smaller than the common size. These files may have no output or no DNA sequences at the bottom. Re-run AGAT for these files.
 #To check whether the number of sequences in the gff match with the number of sequences in the *filtered.fasta
-comm -3 <(sort gff_seq_number.txt) <(sort fasta_seq_number.txt)
+grep -c ^">" *pgap.gff > gff_seq_number.txt #Count and output the number of DNA sequences in the gff files fixed by AGAT. Use vi to edit each line to "Sample_name:number_of_sequences" to make the files comparable
+grep -c ">" *filtered.fasta > fasta_seq_number.txt #Count and output the number of DNA sequences in the fasta files which are used as input files for PGAP. Use vi to edit each line to "Sample_name:number_of_sequences" to make the files comparable
+comm -3 <(sort gff_seq_number.txt) <(sort fasta_seq_number.txt) #It is expected no output if the number of sequeneces match
 ```
 
 ## 4. Run roary
