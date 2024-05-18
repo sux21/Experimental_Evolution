@@ -414,8 +414,8 @@ Work done on info19
 
 ```bash
 #!/bin/bash
-for i in *gff; do
-/2/scratch/batstonelab/bin/AGAT/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff}.pgap.gff
+for i in *fixed; do
+/2/scratch/batstonelab/bin/AGAT-1.4.0/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff}.pgap.gff
 done
 ```
 
