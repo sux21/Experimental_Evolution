@@ -430,6 +430,8 @@ done
 ```bash
 #Check the files are fixed by AGAT properly
 ls -hlS *pgap.gff #files with smaller sizes will appear at the bottom of the output. Some sizes are 0 or smaller than the common size. These files may have no output or no DNA sequences at the bottom. Re-run AGAT for these files.
+#To check whether the number of sequences in the gff match with the number of sequences in the *filtered.fasta
+comm -3 <(sort gff_seq_number.txt) <(sort fasta_seq_number.txt)
 ```
 
 ## 4. Run roary
