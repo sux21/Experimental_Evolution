@@ -413,9 +413,17 @@ AGAT Version: v1.2.1 <br>
 Work done on info19
 
 ```bash
+#riboswitch is not taken into account, add this feature for AGAT
+#follow instructions from https://agat.readthedocs.io/en/latest/troubleshooting.html
+#steps
+agat levels --expose # a file called feature_levels.yaml will appear in your current directory
+vi feature_levels.yaml # open the file with text editor for editing, Add "riboswitch: 1" to level 1
+```
+
+```bash
 #!/bin/bash
 for i in *fixed; do
-/2/scratch/batstonelab/bin/AGAT-1.4.0/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff}.pgap.gff
+/2/scratch/batstonelab/bin/AGAT-1.4.0/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
 done
 ```
 
