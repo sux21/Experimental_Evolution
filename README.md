@@ -446,7 +446,7 @@ Work done on info114
 **Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
 
 ```
-/usr/local/bin/roary -p 5 -f roary_results -y *pgap.gff &
+nohup /usr/local/bin/roary -p 5 -f roary_results -y *pgap.gff &
 ```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
