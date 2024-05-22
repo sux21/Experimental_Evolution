@@ -162,11 +162,11 @@ https://github.com/sanger-pathogens/Roary/blob/master/README.md
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
 
-Roary Version: 1.7.8 <br>
+Roary Version: 3.12.0 <br>
 Work done on info2020
 
 ```bash
-nohup /2/scratch/batstonelab/bin/Roary-3.13.0/bin/roary -p 5 -f roary_results -y *gff &
+nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *gff &
 ```
 
 # Step 4 - Find gene presence absence variations (Method 2)
