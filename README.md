@@ -440,13 +440,13 @@ comm -3 <(sort gff_seq_number.txt) <(sort fasta_seq_number.txt) #It is expected 
 ## 4. Run roary
 https://sanger-pathogens.github.io/Roary/
 
-Roary version: 1.007001 <br>
-Work done on info114
+Roary version: 3.12.0 <br>
+Work done on info2020
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
 
 ```
-nohup /usr/local/bin/roary -p 5 -f roary_results -y *pgap.gff &
+nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *pgap.gff &
 ```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
