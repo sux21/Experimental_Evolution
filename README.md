@@ -169,6 +169,11 @@ Work done on info2020
 nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *gff &
 ```
 
+```bash
+#Create graphs using instructions from https://github.com/microgenomics/tutorials/blob/master/pangenome.md
+python roary_plots.py accessory_binary_genes.fa.newick gene_presence_absence.csv
+```
+
 # Step 4 - Find gene presence absence variations (Method 2)
 ## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
@@ -447,6 +452,11 @@ Work done on info2020
 
 ```
 nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *pgap.gff &
+```
+
+```bash
+#Create graphs using instructions from https://github.com/microgenomics/tutorials/blob/master/pangenome.md
+python roary_plots.py accessory_binary_genes.fa.newick gene_presence_absence.csv
 ```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
