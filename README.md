@@ -511,7 +511,7 @@ r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R1_P*
 r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R2_P*
 ref=/home/xingyuan/rhizo_ee/SNPS/"$b".fasta
 
-/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - && /usr/local/bin/samtools stats $a-"$b".bam > $a-"$b".stats
+/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - 
 
 done < $1
 ```
@@ -579,6 +579,29 @@ for i in *.coordinate_sorted.bam; do
 sample=${i%.coordinate_sorted.bam}
 
 /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I "$sample".marked_duplicates.bam
+done
+```
+
+**Create alignment statistics**
+Samtools Version: 1.9 (using htslib 1.9) <br>
+
+```br
+#!/bin/bash
+for i in *.marked_duplicates.bam; do
+sample=${i%.marked_duplicates.bam}
+
+/home/xingyuan/tools/miniconda3/envs/samtools/bin/samtools stats $i > "$sample".stats
+done
+```
+
+**Plot the results**
+
+```br
+#!/bin/bash
+for i in *stats; do
+sample=${i%.stats}
+
+/home/xingyuan/tools/miniconda3/envs/samtools/bin/plot-bamstats -p "$sample".output "$i"
 done
 ```
 
