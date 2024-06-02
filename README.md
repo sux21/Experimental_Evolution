@@ -160,7 +160,7 @@ done
 ## 2. Create pangenome using roary
 https://github.com/sanger-pathogens/Roary/blob/master/README.md
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
+**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
 
 Roary Version: 3.12.0 <br>
 Work done on info2020
@@ -448,7 +448,7 @@ https://sanger-pathogens.github.io/Roary/
 Roary version: 3.12.0 <br>
 Work done on info2020
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as_5_2_4 since they have low ANI (below 90)**
+**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
 
 ```
 nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *pgap.gff &
