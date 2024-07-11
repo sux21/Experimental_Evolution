@@ -767,3 +767,9 @@ ref=${j%.filt?.bed}
 /home/xingyuan/tools/miniconda3/bin/bedtools intersect -a /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
 done
 ```
+
+# Other work
+## Identify plamids sequences in the draft genome assembly
+Try method in https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8208688/
+
+### 
