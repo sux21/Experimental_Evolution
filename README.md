@@ -769,7 +769,7 @@ done
 ```
 
 # Other work
-## Identify plamids sequences in the draft genome assembly
+## Identify plamid sequences in the draft genome assembly
 Try method in https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8208688/
 
 ### Download *Rhizobium leguminosarum* chromosome and plasmid sequences
@@ -791,5 +791,5 @@ gunzip GCF_011604505.1_ASM1160450v1_genomic.fna.gz
 /scratch/batstonelab/bin/kraken2-2.1.3/kraken2-build --build --db R.leguminosarum_db --threads 5
 
 #Classify sequences
-/scratch/batstonelab/bin/kraken2-2.1.3/kraken2 --preload --db $DBNAME seqs.fa
+/scratch/batstonelab/bin/kraken2-2.1.3/kraken2 --preload --db R.leguminosarum_db /home/xingyuan/rhizo_ee/spades_genomes_old/10_1_1/scaffolds.fasta > 10_1_1-scaffolds_output.txt
 ```
