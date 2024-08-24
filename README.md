@@ -770,26 +770,8 @@ done
 
 # Other work
 ## Identify plamid sequences in the draft genome assembly
-Try method in https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8208688/
-
-### Download *Rhizobium leguminosarum* chromosome and plasmid sequences
+https://github.com/HubertTang/PLASMe?tab=readme-ov-file
 
 ```bash
-wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/011/604/505/GCF_011604505.1_ASM1160450v1/GCF_011604505.1_ASM1160450v1_genomic.fna.gz
-gunzip GCF_011604505.1_ASM1160450v1_genomic.fna.gz
-```
-
-### Kraken: build custom database (genome sequences in a directory called ncbi_R.leguminosarum_genomes_fasta) and classify sequences
-```
-#Install a taxonomy
-/scratch/batstonelab/bin/kraken2-2.1.3/kraken2-build --download-taxonomy --db R.leguminosarum_db
-
-#Install a genomic library
-/scratch/batstonelab/bin/kraken2-2.1.3/kraken2-build --add-to-library /home/xingyuan/rhizo_ee/kraken/R.leguminosarum_db/GCF_011604505.1_ASM1160450v1_genomic.fna -db R.leguminosarum_db
-
-#Build the database
-/scratch/batstonelab/bin/kraken2-2.1.3/kraken2-build --build --db R.leguminosarum_db --threads 5
-
-#Classify sequences
-/scratch/batstonelab/bin/kraken2-2.1.3/kraken2 --preload --db R.leguminosarum_db /home/xingyuan/rhizo_ee/spades_genomes_old/10_1_1/scaffolds.fasta > 10_1_1-scaffolds_output.txt
+python ~/tools/PLASMe/PLASMe.py -d ~/tools/PLASMe -t 5 --taxonomy Hyphomicrobiales ../../derived+original_genomes/Rht_016_N.fasta test.plasme.fna
 ```
