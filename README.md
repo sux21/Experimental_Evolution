@@ -787,7 +787,7 @@ conda activate plasme
 for x in *.fasta; do
 dir=${x%.fasta}
 
-python /home/xingyuan/tools/PLASMe/PLASMe.py --database /home/xingyuan/tools/PLASMe/DB --coverage 0.9 --identity 0.9 --probability 0.5 --thread 5 --taxonomy Hyphomicrobiales "$x" "$x".plasme.fna;
+python /home/xingyuan/tools/PLASMe/PLASMe.py --database /home/xingyuan/tools/PLASMe/DB --coverage 0.9 --identity 0.9 --probability 0.5 --thread 5 "$x" "$x".plasme.fna;
 
 mkdir "$dir";
 
