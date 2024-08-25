@@ -775,7 +775,7 @@ https://github.com/HubertTang/PLASMe?tab=readme-ov-file
 Note the program will move your genome file to its directory. Create a symbolic link of all the genome files for the program specifically
 
 ```bash
-ln -s /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht*fasta /home/xingyuan/rhizo_ee/testing/plasmid_identification
+ln -s /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta /home/xingyuan/rhizo_ee/testing/plasmid_identification
 ```
 
 ```bash
