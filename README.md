@@ -768,29 +768,4 @@ ref=${j%.filt?.bed}
 done
 ```
 
-# Other work
-## Identify plamid sequences in the draft genome assembly
-https://github.com/HubertTang/PLASMe?tab=readme-ov-file
 
-Note the program will move your genome file to its directory. Create a symbolic link of all the genome files for the program specifically
-
-```bash
-ln -s /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta /home/xingyuan/rhizo_ee/testing/plasmid_identification
-```
-
-```bash
-conda activate plasme
-```
-
-```bash
-#!/bin/bash
-for x in *.fasta; do
-dir=${x%.fasta}
-
-python /home/xingyuan/tools/PLASMe/PLASMe.py --database /home/xingyuan/tools/PLASMe/DB --coverage 0.9 --identity 0.9 --probability 0.5 --thread 5 "$x" "$x".plasme.fna;
-
-mkdir "$dir";
-
-mv temp/ "$x"* "$dir"
-done
-```
