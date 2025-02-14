@@ -1,3 +1,26 @@
+# SNP calling using ref_name
+
+info114
+
+Prepare a csv file as the following: que_name, ref_name
+```bash
+10_3_2,Rht_415_C
+10_5_1,Rht_415_C
+12_7_4,Rht_415_C
+16_3_4,Rht_003_C
+19_6_10,Rht_415_C
+19_6_2,Rht_415_C
+19_6_8,Rht_415_C
+20_6_10,Rht_415_C
+5_6_1,Rht_415_C
+8_1_6,Rht_415_C
+8_1_9,Rht_415_C
+8_2_5,Rht_511_N
+8_2_9,Rht_511_N
+```
+
+
+
 # GC content across genomes 
 
 info2020
