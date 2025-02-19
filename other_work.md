@@ -3,6 +3,8 @@
 info2020
 
 Align 56 reference strains to 56 reference strains
+
+fastANI version 1.32
 ```bash
 nohup /usr/local/bin/fastANI --ql reference.txt --rl reference.txt --threads 5 --matrix -o ref_to_ref.txt &
 ```
