@@ -1,6 +1,11 @@
-# SNP calling using ref_name
+# SNP calling using alternative reference strains
 
-info114
+info2020
+
+Align 56 reference strains to 56 reference strains
+```bash
+nohup /usr/local/bin/fastANI --ql reference.txt --rl reference.txt --threads 5 --matrix -o ref_to_ref.txt &
+```
 
 Prepare a csv file as the following: que_name, ref_name
 ```bash
