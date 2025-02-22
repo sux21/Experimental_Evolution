@@ -65,7 +65,7 @@ for i in *bam; do
 sample=${i%.bam}
 ref=${sample#*-}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R "$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD "$ref".dict
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD "$ref".dict
 done
 ```
 
@@ -105,11 +105,12 @@ done
 
 Run HaplotypeCaller
 ```bash
+#!/bin/bash
 for i in *.marked_duplicates.bam; do
 sample=${i%.marked_duplicates.bam}
 ref=${sample#*-}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar HaplotypeCaller -R "$ref".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O "$sample".g.vcf.gz -ERC GVCF
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar HaplotypeCaller -R /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$ref".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O "$sample".g.vcf.gz -ERC GVCF
 done
 ```
 
@@ -131,10 +132,10 @@ while read Rht; do
 find *"$Rht"*.vcf.gz > MPA-"$Rht".list &&
 
 # Run CombineGVCFs to combine the vcf.gz files in each list to one vcf.gz file. This should create 26 cohort.g.vcf.gz files.
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R "$Rht".fasta --variant MPA-"$Rht".list -O "$Rht".cohort.g.vcf.gz &&
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$Rht".fasta --variant MPA-"$Rht".list -O "$Rht".cohort.g.vcf.gz &&
 
 # Run GenotypeGVCFs on each 26 cohort.g.vcf files
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R "$Rht".fasta -V "$Rht".cohort.g.vcf.gz -ploidy 1 -O genotype_"$Rht".vcf.gz -stand-call-conf 30
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$Rht".fasta -V "$Rht".cohort.g.vcf.gz -ploidy 1 -O genotype_"$Rht".vcf.gz -stand-call-conf 30
 
 done < AltMPA_list.txt
 ```
