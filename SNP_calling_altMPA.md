@@ -2,31 +2,48 @@
 
 info2020
 
-Align 56 reference strains to 56 reference strains
+## Align 56 reference strains to 56 reference strains
 
 fastANI version 1.32
 ```bash
 nohup /usr/local/bin/fastANI --ql reference.txt --rl reference.txt --threads 5 --matrix -o ref_to_ref.txt &
 ```
 
-Prepare a csv file as the following: que_name, ref_name
+## SNP calling
+BWA version: 0.7.17-r1188 <br>
+Samtools version: 1.13 (using htslib 1.13)
+ 
+Index 6 reference genomes for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
 ```bash
-10_3_2,Rht_415_C
-10_5_1,Rht_415_C
-12_7_4,Rht_415_C
-16_3_4,Rht_003_C
-19_6_10,Rht_415_C
-19_6_2,Rht_415_C
-19_6_8,Rht_415_C
-20_6_10,Rht_415_C
-5_6_1,Rht_415_C
-8_1_6,Rht_415_C
-8_1_9,Rht_415_C
-8_2_5,Rht_511_N
-8_2_9,Rht_511_N
+for i in Rht*fasta; do
+/usr/bin/bwa index $i
+done
 ```
 
+Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS), and produce alignment statistics (samtools stats)
+```bash
+#!/bin/bash
+# Usage: ./ThisScript Derived-AltMPA.csv
+#First 5 lines of the Derived-AltMPA.csv looks like the following:
+#-----------------------------------------
+#10_3_2,Rht_415_C
+#10_5_1,Rht_415_C
+#10_5_8,Rht_415_C
+#12_7_1,Rht_415_C
+#12_7_4,Rht_415_C
+#.
+#.
+#.
+#-----------------------------------------
+while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
+r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R1_P*
+r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R2_P*
+ref=/home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$b".fasta
 
+/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - 
+
+done < $1
+```
 
 # GC content across genomes 
 
