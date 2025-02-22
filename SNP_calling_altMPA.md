@@ -65,7 +65,7 @@ for i in *bam; do
 sample=${i%.bam}
 ref=${sample#*-}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD "$ref".dict
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD /home/xingyuan/rhizo_ee/snps_with_different_MPAs/references/"$ref".dict
 done
 ```
 
