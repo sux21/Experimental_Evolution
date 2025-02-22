@@ -14,7 +14,8 @@ BWA version: 0.7.17-r1188 <br>
 Samtools version: 1.13 (using htslib 1.13) <br>
 Picard version: 3.0.0 <br>
 The Genome Analysis Toolkit (GATK) version: 4.4.0.0 <br>
-HTSJDK version: 3.0.5
+HTSJDK version: 3.0.5 <br>
+VCFtools version: 0.1.16
  
 Index 6 reference genomes for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
 ```bash
@@ -140,8 +141,38 @@ done < AltMPA_list.txt
 
 Filter SNPs
 ```bash
+#!/bin/bash
+for i in genotype*gz; do
+out=${i%.vcf.gz}
 
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 150 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
+
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 200 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt2
+
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt3
+done
 ```
+
+VariantsToTable
+```bash
+#!/bin/bash
+for i in genotype_Rht_*.recode.vcf; do
+j=${i%.filt*vcf}
+ref=${j#genotype_}
+
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar VariantsToTable -V "$i" -R "$ref".fasta -F CHROM -F POS -F REF -F ALT -F QUAL -F AF -F ANN -F DP -GF GT -O "$i".table
+done
+```
+
+
+
+
+
+
+
+
+
+
 
 # GC content across genomes 
 
