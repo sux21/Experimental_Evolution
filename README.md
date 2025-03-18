@@ -760,11 +760,11 @@ Work done on info2020
 
 ```bash
 #!/bin/bash
-for i in *.bed; do
+for i in /home/xingyuan/rhizo_ee/SNPS/final_vcf/; do
 j=${i#genotype_}
 ref=${j%.filt?.bed}
 
-/home/xingyuan/tools/miniconda3/bin/bedtools intersect -a /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
+/2/scratch/batstonelab/bin/bedtools2/bin/bedtools closest -a /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
 done
 ```
 
