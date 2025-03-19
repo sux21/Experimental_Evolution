@@ -734,6 +734,8 @@ https://github.com/bedops/bedops
 Bedops Version: 2.4.41 <br>
 Work done on info2020
 
+*Note: Add the bin containing the gff2bed and vcf2bed to .bashrc file. Without this step, this error may appear "convert2bed: command not found".*
+
 **Convert gff of original strains to bed format**
 ```bash
 #!/bin/bash
@@ -745,9 +747,8 @@ done
 
 **Convert vcf to bed**
 ```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/SNPS/*recode.vcf; do
-j=${i#/home/xingyuan/rhizo_ee/SNPS/}
+for i in /home/xingyuan/rhizo_ee/SNPS/final_vcf/*recode.vcf; do
+j=${i#/home/xingyuan/rhizo_ee/SNPS/final_vcf/}
 sample=${j%.recode.vcf}
 
 /home/xingyuan/tools/bin/vcf2bed < "$i" > "$sample".bed
@@ -759,12 +760,12 @@ Bedtools Version: v2.31.1 <br>
 Work done on info2020
 
 ```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/SNPS/final_vcf/; do
-j=${i#genotype_}
-ref=${j%.filt?.bed}
+for i in /home/xingyuan/rhizo_ee/SNPS/final_vcf/*recode.vcf; do
+j=${i#/home/xingyuan/rhizo_ee/SNPS/final_vcf/genotype_}
+ref=${j%.filt?.recode.vcf}
+out=${j%.recode.vcf}
 
-/2/scratch/batstonelab/bin/bedtools2/bin/bedtools closest -a /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/"$ref".gff.bed -b "$i" -header -wa > "$i".genes
+/2/scratch/batstonelab/bin/bedtools2/bin/bedtools closest -a "$i" -b /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/"$ref".gff.bed > "$out".genes
 done
 ```
 
