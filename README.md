@@ -769,4 +769,18 @@ out=${j%.recode.vcf}
 done
 ```
 
+# Do the following steps in R
+
+## Load these libraries
+```r
+library(utils)
+library(stringr)
+library(tibble)
+library(tidyverse)
+library(ggplot2)
+library(viridis)
+```
+
+
+
 
