@@ -772,7 +772,7 @@ done
 # Do the following steps in R
 
 ## Load these libraries
-```r
+```R
 library(utils)
 library(stringr)
 library(tibble)
