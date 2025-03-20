@@ -788,7 +788,7 @@ library(viridis)
 setwd("/Users/xingyuansu/Desktop/rhizo_ee/SNPS")
 ```
 
-Load data
+**Load data**
 ```r
 #Load metadata
 treatments <- read.csv("/Users/xingyuansu/Desktop/rhizo_ee/metadata_363EE2008isolates.csv") %>%
@@ -824,7 +824,7 @@ empty_files[!is.na(empty_files)]
 genotypes_filt1_list2 <- genotypes_filt1_list[!names(genotypes_filt1_list) %in% empty_files[!is.na(empty_files)]]
 ```
 
-Format the data
+**Format the data**
 ```r
 #Reformat the vcf tables: the row name is name of the derived isolate, each column is a SNP
 ReformatFunction <- function(df) { #write a function for formatting one data frame
@@ -866,7 +866,7 @@ genotypes_filt1_df2 <- genotypes_filt1_df %>%
                             isolate_count > 1 ~ "Shared")) 
 ```
 
-Create final data set with only shared SNPs
+**Create final data set with only shared SNPs**
 ```r
 #Keep shared SNPs which are found in more than 1 derived isolates
 genotypes_filt1_df3 <- genotypes_filt1_df2 %>%
