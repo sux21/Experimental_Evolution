@@ -772,13 +772,14 @@ done
 # Do the following steps in R
 
 ## Load these libraries
-```{r}
+```r
 library(utils)
 library(stringr)
 library(tibble)
 library(tidyverse)
 library(ggplot2)
 library(viridis)
+install.packages("rmarkdown")
 ```
 
 
