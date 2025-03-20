@@ -779,7 +779,6 @@ library(tibble)
 library(tidyverse)
 library(ggplot2)
 library(viridis)
-install.packages("rmarkdown")
 ```
 
 
