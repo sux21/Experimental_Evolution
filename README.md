@@ -169,6 +169,9 @@ Work done on info2020
 nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *gff &
 ```
 
+**Download the gene_presence_absence.csv and gene_presence_absence.Rtab for results**
+
+**Optional**
 ```bash
 #Create graphs using instructions from https://github.com/microgenomics/tutorials/blob/master/pangenome.md
 python roary_plots.py accessory_binary_genes.fa.newick gene_presence_absence.csv
