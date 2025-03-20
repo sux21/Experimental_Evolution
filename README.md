@@ -658,6 +658,6 @@ genes_filt1_df <- genes_filt1_list2 %>%
 SNPs_results <- genotypes_filt1_df3 %>%
   left_join(genes_filt1_df, by=c("SNP" = "SNP"))
 
-#Import this data set
+#Export this data set
 write.csv(SNPs_results, "~/Desktop/rhizo_EE_SNPs.csv", row.names = FALSE)
 ```
