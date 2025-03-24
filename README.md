@@ -473,7 +473,7 @@ sample=${j%.recode.vcf}
 done
 ```
 
-### Find genes at the positions of SNPs or indels  
+### Find nearby genes of SNPs or indels  
 Bedtools Version: v2.31.1 <br>
 Work done on info2020
 
