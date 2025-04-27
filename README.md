@@ -172,25 +172,16 @@ nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_resu
 ## 2. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
+**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
+
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
 
-Do quality check with panaroo-qc 
-
-Run panaroo 
 ```bash
 mkdir panaroo_results
-/home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict
+nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict &
 ```
 
-
-**Download the gene_presence_absence.csv and gene_presence_absence.Rtab for results**
-
-**Optional**
-```bash
-#Create graphs using instructions from https://github.com/microgenomics/tutorials/blob/master/pangenome.md
-python roary_plots.py accessory_binary_genes.fa.newick gene_presence_absence.csv
-```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
