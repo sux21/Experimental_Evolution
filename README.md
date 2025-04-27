@@ -157,30 +157,25 @@ sample=${j%.fasta}
 done
 ```
 
-## 2. Create pangenome using roary (This will be replaced by panaroo)
-https://github.com/sanger-pathogens/Roary/blob/master/README.md
-
-**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
-
-Roary Version: 3.12.0 <br>
-Work done on info2020
-
-```bash
-nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *gff &
-```
-
 ## 2. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
+**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90) - 416 total strains**
 
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
 
 ```bash
+#create a new directory for the results
 mkdir panaroo_results
+
+#run panaroo 
 nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict &
+
+#filter potential pseudo genes, genes with unusual lengths, and fragmented genes
+#/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
 ```
+
 
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
