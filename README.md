@@ -157,7 +157,7 @@ sample=${j%.fasta}
 done
 ```
 
-## 2. Create pangenome using roary
+## 2. Create pangenome using roary (This will be replaced by panaroo)
 https://github.com/sanger-pathogens/Roary/blob/master/README.md
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
@@ -168,6 +168,21 @@ Work done on info2020
 ```bash
 nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *gff &
 ```
+
+## 2. Gene presence absence analysis using Panaroo
+https://gthlab.au/panaroo/#/
+
+Panaroo Version: 1.5.2 <br>
+Work done on info2020
+
+Do quality check with panaroo-qc 
+
+Run panaroo 
+```bash
+mkdir panaroo_results
+/home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict
+```
+
 
 **Download the gene_presence_absence.csv and gene_presence_absence.Rtab for results**
 
