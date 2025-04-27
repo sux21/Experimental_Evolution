@@ -182,103 +182,31 @@ fi
 done
 ```
 
-## 3. Reformat PGAP's gff files for roary
-### Rename each annot_with_genomic_fasta.gff with sample names
+rename each annot.gbk with sample names
 ```bash
-for i in */annot_with_genomic_fasta.gff; do
-sample=${i%/annot_with_genomic_fasta.gff}
+for i in */annot.gbk; do
+sample=${i%/annot.gbk}
 
-ln -s $i "$sample"_annot_with_genomic_fasta.gff
+ln -s $i "$sample"_annot.gbk
 done
 ```
 
-### Reformat PGAP's annot_with_genomic_fasta.gff for AGAT 
-```bash
-#!/bin/bash
-#Run this script as ./ThisScript INPUT.gff
+## 2. Gene presence absence analysis using Panaroo
+https://gthlab.au/panaroo/#/
 
-#This script will make the following change:
-#------------------------------------------------------------------
-##sequence-region  1 1046175
+**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90) - 416 total strains**
 
-#will change into
-
-##sequence-region NODE_1_length_1046175_cov_26.396254  1 1046175
-#------------------------------------------------------------------
-
-# Step 1: Extract all lines starting with "NODE" 
-while IFS=$'\t' read -r a b; do
-if [[ "$a" =~ ^"Rht_" ]]; then #Change "NODE" to "cluster" for Rht* samples, and change to "Rht_" for Rht_262_N, Rht_643_N
-  echo $a >> "$1".int1
-fi
-done < $1
-
-### Step 2: Remove redundant lines
-cat -n "$1".int1 | sort -k2 -k1n  | uniq -f1 | sort -nk1,1 | cut -f2- > "$1".int2
-
-### Step 3: Reformat "##sequence-region  1 970887" into "##sequence-region NODE_1_length_970887_cov_33.311050  1 970887"
-i=0; while read -r line; do
-  if [[ $line =~ ^"##sequence-region" ]]; then
-    let i=$i+1
-    new_info=`sed -n "$i,$i p" "$1".int2`
-    echo "$line" | sed "s/##sequence-region/& "$new_info"/g"
-  else
-    echo "$line"
-  fi
-done < $1 > "$1".fixed
-
-### Step 4: Reformat fasta header (currently not needed)
-#sed -e 's/lcl|//' -e 's/Rhizobium leguminosarum chromosome, whole genome shotgun sequence//' "$1".int3 > "$1".fixed
-
-### Step 4: Remove intermediate files
-rm -f "$1".int*
-
-#References:
-#Step 2 command was taken from https://unix.stackexchange.com/questions/194780/remove-duplicate-lines-while-keeping-the-order-of-the-lines. Step 3 commands were taken from  https://stackoverflow.com/questions/72293847/using-sed-in-order-to-change-a-specific-character-in-a-specific-line, https://stackoverflow.com/questions/67396536/sed-insert-whitespace-at-the-nth-position-after-a-delimiter, https://stackoverflow.com/questions/50971418/using-sed-to-replace-single-line-in-while-read-loop
-```
-
-### Reformat gff file using AGAT
-
-AGAT Version: v1.2.1 <br>
-Work done on info19
-
-```bash
-#riboswitch is not taken into account, add this feature for AGAT
-#follow instructions from https://agat.readthedocs.io/en/latest/troubleshooting.html
-#steps
-agat levels --expose # a file called feature_levels.yaml will appear in your current directory
-vi feature_levels.yaml # open the file with text editor for editing, Add "riboswitch: 1" to level 1
-```
-
-```bash
-#!/bin/bash
-for i in *fixed; do
-/2/scratch/batstonelab/bin/AGAT-1.4.0/bin/agat_convert_sp_gxf2gxf.pl --gff $i --output ${i%_annot_with_genomic_fasta.gff.fixed}.pgap.gff
-done
-```
-
-```bash
-#Check the files are fixed by AGAT properly
-ls -hlS *pgap.gff #files with smaller sizes will appear at the bottom of the output. Some sizes are 0 or smaller than the common size. These files may have no output or no DNA sequences at the bottom. Re-run AGAT for these files.
-#To check whether the number of sequences in the gff match with the number of sequences in the *filtered.fasta
-grep -c ^">" *pgap.gff > gff_seq_number.txt #Count and output the number of DNA sequences in the gff files fixed by AGAT. Use vi to edit each line to "Sample_name:number_of_sequences" to make the files comparable
-grep -c ">" *filtered.fasta > fasta_seq_number.txt #Count and output the number of DNA sequences in the fasta files which are used as input files for PGAP. Use vi to edit each line to "Sample_name:number_of_sequences" to make the files comparable
-comm -3 <(sort gff_seq_number.txt) <(sort fasta_seq_number.txt) #It is expected no output if the number of sequeneces match
-```
-
-## 4. Run roary
-https://sanger-pathogens.github.io/Roary/
-
-Roary version: 3.12.0 <br>
+Panaroo Version: 1.5.2 <br>
 Work done on info2020
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90)**
-
-```
-nohup /home/xingyuan/tools/miniconda3/envs/roary/bin/roary -v -p 5 -f roary_results -y *pgap.gff &
-```
-
 ```bash
-#Create graphs using instructions from https://github.com/microgenomics/tutorials/blob/master/pangenome.md
-python roary_plots.py accessory_binary_genes.fa.newick gene_presence_absence.csv
+#create a new directory for the results
+mkdir panaroo_results
+
+#run panaroo 
+nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gbk -o panaroo_results --clean-mode strict &
+
+#filter potential pseudo genes, genes with unusual lengths, and fragmented genes
+#/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
 ```
+
