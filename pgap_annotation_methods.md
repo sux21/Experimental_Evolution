@@ -1,4 +1,4 @@
-# Alternative PAV method: gene presence absence variations (Annotation by PGAP and gene presence absence analysis by Panaroo)
+# Alternative method of finding gene presence absence variations (Annotation by PGAP and gene presence absence analysis by Panaroo)
 ## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
