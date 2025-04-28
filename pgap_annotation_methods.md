@@ -182,7 +182,25 @@ fi
 done
 ```
 
-rename each annot.gbk with sample names
+## 2. Send results back to info cluster
+```bash
+#compress results
+tar -czvf pgap-scaffolds.tar.gz pgap-scaffolds
+
+#verify data integrity with MD5
+md5sum pgap-scaffolds.tar.gz > pgap-scaffolds.md5
+
+#files transfer
+scp pgap-scaffolds.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
+scp pgap-scaffolds.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
+```
+
+
+
+## 3. Gene presence absence analysis using Panaroo
+https://gthlab.au/panaroo/#/
+
+**Rename each annot.gbk with sample names**
 ```bash
 for i in */annot.gbk; do
 sample=${i%/annot.gbk}
@@ -190,9 +208,6 @@ sample=${i%/annot.gbk}
 ln -s $i "$sample"_annot.gbk
 done
 ```
-
-## 2. Gene presence absence analysis using Panaroo
-https://gthlab.au/panaroo/#/
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90) - 416 total strains**
 
@@ -203,10 +218,10 @@ Work done on info2020
 #create a new directory for the results
 mkdir panaroo_results
 
-#run panaroo 
-nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gbk -o panaroo_results --clean-mode strict &
+#create a list with eack gbk file on one line
+for i in *gbk; do  echo $i ; done > input_files.txt
 
-#filter potential pseudo genes, genes with unusual lengths, and fragmented genes
-#/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
+#run panaroo 
+nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes &
 ```
 
