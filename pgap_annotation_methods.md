@@ -184,30 +184,25 @@ done
 
 ## 2. Send results back to info cluster
 ```bash
+#copy and rename each annot.gbk with sample names
+for i in */annot.gbk; do
+sample=${i%/annot.gbk}
+cp $i "$sample"_annot.gbk
+done
+
 #compress results
-tar -czvf pgap-scaffolds.tar.gz pgap-scaffolds
+tar -czvf pgap_annot.tar.gz *gbk
 
 #verify data integrity with MD5
-md5sum pgap-scaffolds.tar.gz > pgap-scaffolds.md5
+md5sum pgap_annot.tar.gz > pgap_annot.md5
 
 #files transfer
 scp pgap-scaffolds.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
 scp pgap-scaffolds.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
 ```
 
-
-
 ## 3. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
-
-**Rename each annot.gbk with sample names**
-```bash
-for i in */annot.gbk; do
-sample=${i%/annot.gbk}
-
-ln -s $i "$sample"_annot.gbk
-done
-```
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90) - 416 total strains**
 
