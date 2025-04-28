@@ -197,8 +197,8 @@ tar -czvf pgap_annot.tar.gz *gbk
 md5sum pgap_annot.tar.gz > pgap_annot.md5
 
 #files transfer
-scp pgap-scaffolds.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
-scp pgap-scaffolds.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
+scp pgap_annot.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
+scp pgap_annot.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
 ```
 
 ## 3. Gene presence absence analysis using Panaroo
