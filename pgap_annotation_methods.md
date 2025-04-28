@@ -202,6 +202,9 @@ scp pgap_annot.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/g
 
 #verify file integrity (do it on info)
 md5sum -c pgap_annot.md5
+
+#extract results
+tar -xzvf pgap_annot.tar.gz
 ```
 
 ## 3. Gene presence absence analysis using Panaroo
