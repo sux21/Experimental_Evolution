@@ -184,27 +184,39 @@ done
 
 ## 2. Send results back to info cluster
 ```bash
-#copy and rename each annot.gbk with sample names
-for i in */annot.gbk; do
-sample=${i%/annot.gbk}
-cp $i "$sample"_annot.gbk
-done
-
 #compress results
-tar -czvf pgap_annot.tar.gz *gbk
+#!/bin/bash
+#SBATCH --time=00-3:00:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=3G
+#SBATCH --cpus-per-task=1
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+tar -czvf pgap-scaffolds.tar.gz pgap-scaffolds
 
 #verify data integrity with MD5
-md5sum pgap_annot.tar.gz > pgap_annot.md5
+md5sum pgap-scaffolds.tar.gz > pgap-scaffolds.md5
 
 #files transfer
-scp pgap_annot.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
-scp pgap_annot.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
+scp pgap-scaffolds.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
+scp pgap-scaffolds.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
 
 #verify file integrity (do it on info)
-md5sum -c pgap_annot.md5
+md5sum -c pgap-scaffolds.md5
 
 #extract results
-tar -xzvf pgap_annot.tar.gz
+tar -xzvf pgap-scaffolds.tar.gz
+
+#rename files
+for i in */annot_with_genomic_fasta.gff; do
+sample=${i%/annot_with_genomic_fasta.gff};
+ln -s $i "$sample".gff
+done
+
+for i in */*.filtered.fasta; do
+sample=${i%/*.filtered.fasta};
+ln -s $i "$sample".fasta
+done
 ```
 
 ## 3. Gene presence absence analysis using Panaroo
@@ -220,7 +232,7 @@ Work done on info2020
 mkdir panaroo_results
 
 #create a list with eack gbk file on one line
-for i in *gbk; do  echo $i ; done > input_files.txt
+for i in *gff; do  echo $i "${i/.gff/.fasta}"; done > input_files.txt
 
 #run panaroo 
 nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes &
