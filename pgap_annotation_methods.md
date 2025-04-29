@@ -231,7 +231,7 @@ Work done on info2020
 #create a new directory for the results
 mkdir panaroo_results
 
-#create a list with eack gbk file on one line
+#create a list with each gff file and fasta file on one line for each isolate
 for i in *gff; do  echo $i "${i/.gff/.fasta}"; done > input_files.txt
 
 #run panaroo 
