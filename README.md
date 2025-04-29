@@ -176,6 +176,24 @@ nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --c
 #/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
 ```
 
+## 3. Separate gene presence absence analysis for 4_4_10 and Rht_773_N
+
+Panaroo Version: 1.5.2 <br>
+Work done on info2020
+
+```bash
+#create a new directory for 4_4_10 and Rht_773_N
+mkdir pav_for_4410and773
+
+#rename files
+for i in */*.gff; do
+sample=${i%/*.gff};
+ln -s $i "$sample".gff
+done
+
+#run panaroo 
+nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict --remove-invalid-genes &
+```
 
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
