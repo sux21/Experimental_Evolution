@@ -176,7 +176,32 @@ nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --c
 #/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
 ```
 
-## 3. Separate gene presence absence analysis for 4_4_10 and Rht_773_N
+## 3. Align DNA sequences of genes gained to each of the ancestral strains
+
+Blastn Version: 2.16.0 <br>
+Work done on info2020
+
+Previous steps are done in R.
+
+```bash
+#specify format of output: qacc (Query accession), sacc (Subject accession), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
+
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
+j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
+sample=${j%.fasta}
+
+/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query prokka_genes_gain.fasta -subject $i -outfmt "10 qacc sacc evalue bitscore length pident nident gapopen gaps qcovs" > "$sample"_blast.csv
+
+done
+
+#add variable names for the file
+for i in *blast.csv; do
+sed -i '1s/^/qacc,sacc,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
+done
+```
+
+
+## 4. Separate gene presence absence analysis for 4_4_10 and Rht_773_N
 
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
