@@ -538,6 +538,7 @@ Work done on info2020
 
 Align PacBio reads to corresponding MPA's genome
 ```bash
+#!/bin/bash
 for i in *fastq; do
 sample=${i%.fastq}
 
