@@ -546,6 +546,10 @@ sample=${i%.fastq}
 done
 ```
 
+```bash
+chmod u+x run_minimap2.sh
+nohup ./run_minimap2.sh &
+```
 
 
 
