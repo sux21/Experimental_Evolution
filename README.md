@@ -531,177 +531,24 @@ out=${j%.recode.vcf}
 done
 ```
 
-## 8. Do the following steps in R
+## 8. Align raw long reads to corresponding MPA's genome assembly 
 
-**Load these libraries**
-```r
-library(utils)
-library(stringr)
-library(tibble)
-library(tidyverse)
-library(ggplot2)
-library(viridis)
+minimap2 version: 2.17-r941 <br>
+Work done on info2020
+
+Align PacBio reads to corresponding MPA's genome
+```bash
+for i in *fastq; do
+sample=${i%.fastq}
+
+/home/xingyuan/tools/minimap2-2.29_x64-linux/minimap2 -a /home/xingyuan/rhizo_ee/derived+original_genomes/"$sample".fasta $i > "$sample"_aln.sam
+done
 ```
 
-**Put all the .recode.vcf.table from step 6 in a folder**
-
-```r
-#Set working directory to location of files
-setwd("/Users/xingyuansu/Desktop/rhizo_ee/SNPS")
-```
-
-**Load data**
-```r
-#Load metadata
-treatments <- read.csv("/Users/xingyuansu/Desktop/rhizo_ee/metadata_363EE2008isolates.csv") %>%
-  select(sample_ID_seq, Treatment, soil_slurry_sample) %>%
-  mutate(sample_ID_seq = gsub("[[:space:]]", "", sample_ID_seq)) #remove white space
-
-#Load SNPs data
-#3 different filters with different --max-meanDP (maximum mean depth values). Filt1: --max-meanDP 150, Filt2: --max-meanDP 200, Filt3: --max-meanDP 250
-
-#Use --max-meanDP 150 for the following analysis
-
-genotypes_filt1_list <- vector(mode = "list", length = length(list.files(path = ".", pattern = "filt1")))
-names(genotypes_filt1_list) <- list.files(path = ".", pattern = "filt1")
-
-#Read vcf tables and store them in the list  
-for (i in names(genotypes_filt1_list)) {
-  genotypes_filt1_list[[i]] <- read.table(i, header = TRUE, tryLogical = FALSE)
-} 
-
-#Find files with no SNPs, this means no SNPs between the original strain (most probable ancestor) and its derived isolates
-empty_files <- c()
-  
-for (i in 1:length(names(genotypes_filt1_list))) {
-  if (nrow(genotypes_filt1_list[[i]]) == 0){
-    empty_files[i] <- names(genotypes_filt1_list)[i]
-  }
-}
-
-#Check files with no SNPs
-empty_files[!is.na(empty_files)]
-
-#Remove the files that have no SNPs
-genotypes_filt1_list2 <- genotypes_filt1_list[!names(genotypes_filt1_list) %in% empty_files[!is.na(empty_files)]]
-```
-
-**Format the data**
-```r
-#Reformat the vcf tables: the row name is name of the derived isolate, each column is a SNP
-ReformatFunction <- function(df) { #write a function for formatting one data frame
-  df2 <- df %>% 
-    rowwise %>%
-    summarise(across(.cols = -c(1:8),
-                     .fns = ~paste0(CHROM, "/", REF, "-", POS, "-", .x)))
-  as.data.frame(t(df2))
-}
-
-#Use a loop to format all data frames in the list
-genotypes_filt1_list3 <- vector(mode = "list", length = length(genotypes_filt1_list2))
-
-names(genotypes_filt1_list3) <- names(genotypes_filt1_list2)
-
-for (i in 1:length(genotypes_filt1_list2)) {
-  genotypes_filt1_list3[[i]] <- ReformatFunction(genotypes_filt1_list2[[i]])
-}
-
-genotypes_filt1_df <- genotypes_filt1_list3 %>% #merge all data frames in the list to one
-  Reduce(function(dtf1,dtf2) bind_rows(dtf1,dtf2), .) %>%
-  rownames_to_column("derived_isolates")
-
-#Count number of SNPs shared and not shared, remove non-SNPs, and further format the data
-genotypes_filt1_df2 <- genotypes_filt1_df %>%
-  pivot_longer(cols = c(2:ncol(genotypes_filt1_df)), names_to = "Old_colname", values_to = "SNP") %>%
-  filter(!is.na(SNP)) %>%
-  select(-Old_colname) %>%
-  mutate(isolate = str_extract(derived_isolates, "[:digit:]+_[:digit:]+_[:alnum:]+"),
-         reference = str_extract(derived_isolates, "Rht_[:digit:]+_."),
-         SNP = paste0(reference, "/", SNP)) %>%
-  mutate(V1 = str_extract(SNP, "(?<=/)[ATCG]+"),   #remove non-SNPs, e.g. cluster_001_consensus/C-4720654-C. Check this for regular expression: https://stringr.tidyverse.org/articles/regular-expressions.html
-         V2 = str_extract(SNP, "[ATCG]+$")) %>%
-  filter(V1 != V2) %>%
-  select(-c(V1,V2)) %>%
-  group_by(SNP) %>% 
-  mutate(isolate_count = n(), .after = SNP) %>% #count number of times a SNP appears. If a SNP appears more than one time, it is a shared SNP
-  mutate(Shared = case_when(isolate_count == 1 ~ "Not Shared",
-                            isolate_count > 1 ~ "Shared")) 
-```
-
-**Create final data set with only shared SNPs**
-```r
-#Keep shared SNPs which are found in more than 1 derived isolates
-genotypes_filt1_df3 <- genotypes_filt1_df2 %>%
-  filter(isolate_count > 1) %>%
-  left_join(treatments, by = c("isolate" = "sample_ID_seq")) %>%
-  select(-c(derived_isolates, isolate, reference, Shared))
-```
-
-**Plotting**
-```r
-#plot treatment
-genotypes_filt1_df3 %>%
-  count(SNP, Treatment) %>%
-  ggplot(aes(SNP, n, fill=Treatment)) +
-  geom_col() +
-  geom_text(aes(label=n), position = position_stack(vjust=0.5), colour="white", size=5) +
-  scale_fill_viridis(discrete = T) +
-  labs(title="Filt1: --max-meanDP 150", y="Number of derived isolates") +
-  scale_y_continuous(breaks = seq(0,25,1)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle=90),
-        axis.text = element_text(colour="black")) 
-
-#plot pot
-genotypes_filt1_df3 %>%
-  count(SNP, soil_slurry_sample) %>%
-  ggplot(aes(SNP, n, fill=soil_slurry_sample)) +
-  geom_col() +
-  geom_text(aes(label=n), position = position_stack(vjust=0.5), colour="white", size=5) +
-  scale_fill_viridis(discrete = T) +
-  labs(title="Filt1: --max-meanDP 150", y="Number of derived isolates") +
-  scale_y_continuous(breaks = seq(0,25,1)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle=90),
-        axis.text = element_text(colour="black")) 
-```
-
-**Put all .genes files from step 7 in a folder**
-
-**Add a column of the closest gene next to the SNP to the final data set**
-```r
-#### Find closest genes next to the SNPs ####
-
-setwd("/Users/xingyuansu/Desktop/rhizo_ee/Closest_genes_near_SNPs")
-
-genes_filt1_list <- vector(mode = "list", length = length(list.files(path = ".", pattern = "filt1")))
-names(genes_filt1_list) <- list.files(path = ".", pattern = "filt1")
-
-#Read bed files and store them in the list  
-for (i in names(genes_filt1_list)) {
-  if (file.info(i)$size == 0) next 
-  genes_filt1_list[[i]] <- read.table(i, header = FALSE, sep="\t", stringsAsFactors=FALSE, quote="", tryLogical = FALSE)  %>%
-    select(1, 2, 4, 5, ncol(.)-8, ncol(.)-7, ncol(.)) %>%
-    rename("CHROM"=1, "POS"=2, "REF"=3, "ALT"=4, "Start"=5, "End"=6, "Gene"=7) %>%
-    mutate(SNP = paste0(CHROM, "/", REF, "-", POS, "-", ALT), .before=CHROM) %>%
-    filter(grepl("product=", Gene))
-} 
-
-#remove empty elements in the list
-genes_filt1_list2 <- genes_filt1_list[lapply(genes_filt1_list, length) > 0]
-
-#merge all data frames in the list to one
-genes_filt1_df <- genes_filt1_list2 %>% 
-  Reduce(function(dtf1,dtf2) bind_rows(dtf1,dtf2), .) %>%
-  mutate(reference=str_extract(Gene, "Rht_[:digit:]+_[NC]"),
-         SNP=paste0(reference, "/", SNP)) %>%
-  select(-c(CHROM, POS, REF, ALT, reference, Start, End))
 
 
-#combine the SNPs and genes data frames
-SNPs_results <- genotypes_filt1_df3 %>%
-  left_join(genes_filt1_df, by=c("SNP" = "SNP"))
 
-#Export this data set
-write.csv(SNPs_results, "~/Desktop/rhizo_EE_SNPs.csv", row.names = FALSE)
-```
+
+
+
+
