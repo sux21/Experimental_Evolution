@@ -533,10 +533,11 @@ done
 
 ## 8. Align raw long reads to corresponding MPA's genome assembly 
 
-minimap2 version: 2.17-r941 <br>
+Minimap2 Version: 2.17-r941 <br>
+Samtools Version: 1.13 <<br>
 Work done on info2020
 
-Align PacBio reads to corresponding MPA's genome
+**Align PacBio reads to corresponding MPA's genome**
 ```bash
 #!/bin/bash
 for i in *fastq; do
@@ -551,6 +552,37 @@ chmod u+x run_minimap2.sh
 nohup ./run_minimap2.sh &
 ```
 
+**Convert SAM format to BAM format and create corresponding index file (.bai)**
+
+Converting SAM to BAM
+```bash
+for i in *sam; do
+sample=${i%_aln.sam}
+
+/usr/local/bin/samtools view -S -b $i > "$sample".bam
+done
+```
+
+Order alignments based upon their alignment coordinates on each chromosome
+```bash
+for i in *bam; do
+sample=${i%.bam}
+
+/usr/local/bin/samtools sort $i -o "$sample".sorted.bam
+done
+```
+
+Index the BAM files
+```bash
+for i in *.sorted.bam; do
+samtools index $i
+done
+```
+
+**Visualization in IGV**
+
+-load reference genome (fasta formatted file): Genomes > Load Genome from File 
+-load BAM file with its corresponding index file (.bam and .bai): File > Load from File
 
 
 
