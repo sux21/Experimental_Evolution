@@ -534,7 +534,7 @@ done
 ## 8. Align raw long reads to corresponding MPA's genome assembly 
 
 Minimap2 Version: 2.17-r941 <br>
-Samtools Version: 1.13 <<br>
+Samtools Version: 1.13 <br>
 Work done on info2020
 
 **Align PacBio reads to corresponding MPA's genome**
