@@ -581,7 +581,7 @@ done
 
 **Visualization in IGV**
 
--load reference genome (fasta formatted file): Genomes > Load Genome from File 
+-load reference genome (fasta formatted file): Genomes > Load Genome from File <br>
 -load BAM file with its corresponding index file (.bam and .bai): File > Load from File
 
 
