@@ -126,6 +126,23 @@ sample=${file%-scaffolds.fasta}
 done
 ```
 
+## 3. Run CheckM to check completeness and contamination of the assembly
+
+**Run CheckM**
+```bash
+
+```
+
+**Run CheckM2**
+
+Activate it if downloading through conda **``conda activate checkm2``**. 
+
+```bash
+
+
+```
+
+
 # Step 3 - Find the most probable ancestor for each derived strain 
 ## 1. Run FastANI to calculate pairwise whole-genome average nucleotide identity between derived strains and original strains
 https://github.com/ParBLiSS/FastANI
