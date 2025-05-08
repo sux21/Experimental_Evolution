@@ -134,12 +134,16 @@ done
 ```
 
 **Run CheckM2**
+This can be downloaded from https://github.com/chklovski/CheckM2. 
 
-Activate it if downloading through conda **``conda activate checkm2``**. 
+Activate it if downloading through conda **``conda activate checkm2``**. When finish, run **``conda deactivate``** to go back to base.
 
 ```bash
+for i in /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/*scaffolds.fasta; do
+file=${i#/2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/}
+sample=${file%-scaffolds.fasta}
 
-
+/home/xingyuan/tools/checkm2/bin/checkm2 
 ```
 
 
