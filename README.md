@@ -537,13 +537,13 @@ Minimap2 Version: 2.17-r941 <br>
 Samtools Version: 1.13 <br>
 Work done on info2020
 
-**Align PacBio reads to corresponding MPA's genome**
+**Align PacBio reads to corresponding MPA's genome (-x map-hifi for PacBio HiFi/CCS genomic reads (v2.19+))**
 ```bash
 #!/bin/bash
 for i in *fastq; do
 sample=${i%.fastq}
 
-/home/xingyuan/tools/minimap2-2.29_x64-linux/minimap2 -ax map-pb /home/xingyuan/rhizo_ee/derived+original_genomes/"$sample".fasta $i > "$sample"_aln.sam
+/home/xingyuan/tools/minimap2-2.29_x64-linux/minimap2 -a -x map-hifi /home/xingyuan/rhizo_ee/derived+original_genomes/"$sample".fasta $i > "$sample"_aln.sam
 done
 ```
 
