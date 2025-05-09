@@ -127,23 +127,21 @@ done
 ```
 
 ## 3. Run CheckM to check completeness and contamination of the assembly
+CheckM Version: 1.2.3 <br>
+Work done on info2020
 
-**Run CheckM**
+**Following installing instruction from https://github.com/Ecogenomics/CheckM/wiki/Installation#system-requirements (If pysam fails to install, try https://anaconda.org/bioconda/pysam).**
+
 ```bash
-
+#inform checkm where is the downloaded reference data
+/home/xingyuan/tools/miniconda3/bin/checkm data setRoot /home/xingyuan/tools/checkm_data_2015_01_16
 ```
 
-**Run CheckM2**
-This can be downloaded from https://github.com/chklovski/CheckM2. 
+**Run CheckM with the recommended Lineage-specific Workflow using lineage-specific marker sets (https://github.com/Ecogenomics/CheckM/wiki/Workflows)** 
+```
+#step 1: use checkm tree <bin folder> <output folder> to place genome bins into a reference genome tree
+nohup /home/xingyuan/tools/miniconda3/bin/checkm tree -t 1 -x fasta /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes results_tree &
 
-Activate it if downloading through conda **``conda activate checkm2``**. When finish, run **``conda deactivate``** to go back to base.
-
-```bash
-for i in /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/*scaffolds.fasta; do
-file=${i#/2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/}
-sample=${file%-scaffolds.fasta}
-
-/home/xingyuan/tools/checkm2/bin/checkm2 
 ```
 
 
