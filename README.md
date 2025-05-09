@@ -24,16 +24,14 @@ nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/
 ```
 
 ## 2. Run MultiQC to combine all FastQC reports to a single file
-https://multiqc.info/
+https://github.com/MultiQC/MultiQC
 
-Version: 1.20.dev0 <br>
+Version: 1.28 <br>
 Work done on info2020
 
 ```bash
-/2/scratch/batstonelab/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_raw_reads --outdir multiqc_raw_reads --verbose
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_raw_reads --outdir multiqc_raw_reads --verbose
 ```
-
-Philip Ewels, Måns Magnusson, Sverker Lundin, Max Käller, MultiQC: summarize analysis results for multiple tools and samples in a single report, *Bioinformatics*, Volume 32, Issue 19, October 2016, Pages 3047–3048, https://doi.org/10.1093/bioinformatics/btw354
 
 ## 3. Run fastp to trim the reads for all 363 derived strains
 https://github.com/OpenGene/fastp
