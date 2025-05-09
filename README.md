@@ -63,12 +63,6 @@ https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 Versions: FastQC v0.12.1 <br>
 Work done on info114
 
-**check quality for paired reads**
-```bash
-nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/multiqc_trimmed_reads/paired_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*_P_*gz &
-```
-
-**check quality for unpaired reads**
 ```bash
 nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_trimmed_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*gz &
 ```
