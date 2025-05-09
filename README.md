@@ -139,7 +139,7 @@ Work done on info2020
 
 **Run CheckM with the recommended Lineage-specific Workflow using lineage-specific marker sets (https://github.com/Ecogenomics/CheckM/wiki/Workflows)** 
 ```
-/home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes 363EEgenomes_CheckM_Results
+nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes 363EEgenomes_CheckM_Results &
 ```
 
 
