@@ -57,29 +57,33 @@ sample=${R1%_*_L002_*gz}
 done
 ```
 
-Shifu Chen. 2023. Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp. iMeta 2: e107. https://doi.org/10.1002/imt2.107
-
-Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884–i890, https://doi.org/10.1093/bioinformatics/bty560
-
 ## 4. Run FastQC to check quality of trimmed reads 
 https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
 Versions: FastQC v0.12.1 <br>
 Work done on info114
 
+**check quality for paired reads**
+```bash
+nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/multiqc_trimmed_reads/paired_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*_P_*gz &
+```
+
+**check quality for unpaired reads**
 ```bash
 nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_trimmed_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*gz &
 ```
 
+**check quality for merged reads**
+
+
 ## 5. Run MultiQC to combine all FastQC reports to a single file
-Version: 1.20.dev0 <br>
+Version: 1.28 <br>
 Work done on info2020
 
 ```bash
-/2/scratch/batstonelab/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads --outdir multiqc_trimmed_reads --verbose
+/home/xingyuan/tools/miniconda3/bin/multiqc -v -n multiqc_fastp.html -o ./qc ./qc/fastp
+/home/xingyuan/rhizo_ee/fastQC_trimmed_reads --outdir multiqc_trimmed_reads --verbose
 ```
-
-Philip Ewels, Måns Magnusson, Sverker Lundin, Max Käller, MultiQC: summarize analysis results for multiple tools and samples in a single report, *Bioinformatics*, Volume 32, Issue 19, October 2016, Pages 3047–3048, https://doi.org/10.1093/bioinformatics/btw354
 
 # Step 2 - Genome assembly
 ## 1. Run SPAdes to assemble the trimmed reads into genomes for derived strains
