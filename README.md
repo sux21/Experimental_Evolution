@@ -67,16 +67,23 @@ Work done on info114
 nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_trimmed_reads --threads 5 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*gz &
 ```
 
-**check quality for merged reads**
-
-
 ## 5. Run MultiQC to combine all FastQC reports to a single file
 Version: 1.28 <br>
 Work done on info2020
 
+**for paired reads**
 ```bash
-/home/xingyuan/tools/miniconda3/bin/multiqc -v -n multiqc_fastp.html -o ./qc ./qc/fastp
-/home/xingyuan/rhizo_ee/fastQC_trimmed_reads --outdir multiqc_trimmed_reads --verbose
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_P_*html --outdir multiqc_trimmed_paired --verbose
+```
+
+**for single unpaired reads**
+```bash
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_UP_*html --outdir multiqc_trimmed_unpaired --verbose
+```
+
+**for merged reads**
+```bash
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_merged_*html --outdir multiqc_trimmed_merged --verbose
 ```
 
 # Step 2 - Genome assembly
