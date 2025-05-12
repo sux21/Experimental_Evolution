@@ -128,7 +128,7 @@ done
 
 **combine QUAST results to one file**
 ```bash
-cat */transposed_report.tsv | sed '2,${/^Assembly*/d;}' > quast_assembly_check.txt
+cat */transposed_report.tsv | sed '2,${/^Assembly*/d;}' > quast_assembly_check.tsv
 ```
 
 ## 3. Run CheckM to check completeness and contamination of the assembly
