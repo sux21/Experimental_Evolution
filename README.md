@@ -108,9 +108,6 @@ sample=${merged%_*_L002_*gz}
 done
 ```
 
-Prjibelski, A., Antipov, D., Meleshko, D., Lapidus, A., & Korobeynikov, A. (2020). Using SPAdes de novo assembler. Current Protocols in Bioinformatics, 70, e102. doi: 10.1002/cpbi.102
-
-
 ## 2. Run Quast to check the quality of scaffolds 
 https://github.com/ablab/quast
 
@@ -127,6 +124,11 @@ sample=${file%-scaffolds.fasta}
 /2/scratch/batstonelab/bin/quast-5.2.0/quast.py $i --min-contig 0 --threads 5 --output-dir /home/xingyuan/rhizo_ee/quast_genomes_quality_check/"$sample"
 
 done
+```
+
+**combine QUAST results to one file**
+```bash
+cat */transposed_report.txt | sed '2,${/^Assembly*/d;}' > quast_assembly_check.txt
 ```
 
 ## 3. Run CheckM to check completeness and contamination of the assembly
