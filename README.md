@@ -73,17 +73,17 @@ Work done on info2020
 
 **for paired reads**
 ```bash
-/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_P_*html --outdir multiqc_trimmed_paired --verbose
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_P_* --outdir multiqc_trimmed_paired --verbose
 ```
 
 **for single unpaired reads**
 ```bash
-/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_UP_*html --outdir multiqc_trimmed_unpaired --verbose
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_UP_* --outdir multiqc_trimmed_unpaired --verbose
 ```
 
 **for merged reads**
 ```bash
-/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_merged_*html --outdir multiqc_trimmed_merged --verbose
+/home/xingyuan/tools/miniconda3/bin/multiqc /home/xingyuan/rhizo_ee/fastQC_trimmed_reads/*_merged_* --outdir multiqc_trimmed_merged --verbose
 ```
 
 # Step 2 - Genome assembly
