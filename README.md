@@ -147,6 +147,14 @@ Work done on info2020
 nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes 363EEgenomes_CheckM_Results &
 ```
 
+## 4. Split 19_1_9 and 19_4_7 genomes into 2 because they likely contain two different genomes based on bimodal GC content distribution and CheckM 100% completeness and >= 100% contamination
+
+Install via conda. Activate by **``conda activate metabinner_env``**. Deactivate by **``conda deactivate``**.
+
+```bash
+
+
+```
 
 # Step 3 - Find the most probable ancestor for each derived strain 
 ## 1. Run FastANI to calculate pairwise whole-genome average nucleotide identity between derived strains and original strains
