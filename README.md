@@ -151,9 +151,14 @@ nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scr
 
 Install via conda. Activate by **``conda activate metabinner_env``**. Deactivate by **``conda deactivate``**.
 
+**Make coverage profiles from sequencing profiles**
 ```bash
 
 
+```
+
+```bash
+bash /home/xingyuan/tools/MetaBinner/scripts/gen_coverage_file.sh -a /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/19_1_9-scaffolds.fasta -o 19_1_9_coveragefile /home/xingyuan/rhizo_ee/raw_reads/19_1_9*fastq.gz -f "_R1_001.fastq.gz" -r "_R2_001.fastq.gz"
 ```
 
 # Step 3 - Find the most probable ancestor for each derived strain 
