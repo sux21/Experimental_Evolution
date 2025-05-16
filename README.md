@@ -153,8 +153,6 @@ Bowtie2 Version: 2.5.4 <br>
 Samtools Version: 1.13 <br> 
 Work done on info2020
 
-Install via conda. Activate by **``conda activate metabinner_env``**. Deactivate by **``conda deactivate``**.
-
 **Map reads to scaffolds and sort**
 ```bash
 for i in 19_1_9 19_4_7; do
@@ -165,6 +163,11 @@ mkdir -p -v index/"$i"
 done
 ```
 
+```bash
+for i in 19_1_9 19_4_7; do
+/home/xingyuan/tools/bowtie2-2.5.4-linux-x86_64/bowtie2 -q --fr -x index/"$i"/"$i" -1 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"*R1_P_*fastq.gz -2 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"*R2_P_*fastq.gz -S "$i".sam -p 4
+done
+```
 
 
 ```bash
