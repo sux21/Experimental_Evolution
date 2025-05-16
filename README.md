@@ -148,18 +148,32 @@ nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scr
 ```
 
 ## 4. Split 19_1_9 and 19_4_7 genomes into 2 because they likely contain two different genomes based on bimodal GC content distribution and CheckM 100% completeness and >= 100% contamination
+SemiBin2 Version: 2.2.0 <br>
+Bowtie2 Version: 2.5.4 <br>
+Samtools Version: 1.13 <br> 
+Work done on info2020
 
 Install via conda. Activate by **``conda activate metabinner_env``**. Deactivate by **``conda deactivate``**.
 
-**Make coverage profiles from sequencing profiles**
+**Map reads to scaffolds and sort**
 ```bash
+for i in 19_1_9 19_4_7; do
+mkdir -p -v index/"$i"
 
+/home/xingyuan/tools/bowtie2-2.5.4-linux-x86_64/bowtie2-build -f /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta index/"$i"/"$i"
 
+done
 ```
 
+
+
 ```bash
-bash /home/xingyuan/tools/MetaBinner/scripts/gen_coverage_file.sh -a /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/19_1_9-scaffolds.fasta -o 19_1_9_coveragefile /home/xingyuan/rhizo_ee/raw_reads/19_1_9*fastq.gz -f "_R1_001.fastq.gz" -r "_R2_001.fastq.gz"
+/home/xingyuan/tools/miniconda3/bin/SemiBin2
 ```
+
+Pan, Shaojun, Chengkai Zhu, Xing-Ming Zhao, and Luis Pedro Coelho. 2022. "A Deep Siamese Neural Network Improves Metagenome-Assembled Genomes in Microbiome Datasets across Different Environments." Nature Communications 13 (1): 2326. https://doi.org/10.1093/bioinformatics/btad209
+
+Pan, Shaojun, Xing-Ming Zhao, and Luis Pedro Coelho. 2023. "SemiBin2: Self-Supervised Contrastive Learning Leads to Better MAGs for Short- and Long-Read Sequencing." Bioinformatics  39 (39 Suppl 1): i21–29. https://doi.org/10.1038/s41467-022-29843-y
 
 # Step 3 - Find the most probable ancestor for each derived strain 
 ## 1. Run FastANI to calculate pairwise whole-genome average nucleotide identity between derived strains and original strains
