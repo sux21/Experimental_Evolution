@@ -23,6 +23,8 @@ Work done on info114
 nohup /2/scratch/batstonelab/bin/FastQC/fastqc --outdir /home/xingyuan/rhizo_ee/fastQC_raw_reads --threads 5 /home/xingyuan/rhizo_ee/raw_reads/*gz &
 ```
 
+**Notes: In the html files, quality encoding is Sanger / Illumina 1.9, which phred=ord(b)-33**
+
 ## 2. Run MultiQC to combine all FastQC reports to a single file
 https://github.com/MultiQC/MultiQC
 
