@@ -237,6 +237,7 @@ Run CheckM
 nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fa -t 1 /home/xingyuan/rhizo_ee/split_genomes/reconstructed_bins reconstructed_bins_CheckM_Results &
 ```
 
+Results: 19_4_7 contained Rhizobiaceae and Bacillus. 19_1_9 contained Rhizobiaceae, Bacillaceae, and Bacteria. 19_4_7_SemiBin_1 and 19_1_9_SemiBin_0 would be used as true isolates.
 ```
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   Bin Id                   Marker lineage        # genomes   # markers   # marker sets    0     1    2   3   4   5+   Completeness   Contamination   Strain heterogeneity  
