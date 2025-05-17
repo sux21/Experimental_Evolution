@@ -155,7 +155,7 @@ Bowtie2 Version: 2.5.4 <br>
 Samtools Version: 1.13 <br> 
 Work done on info2020
 
-**Map reads to scaffolds and sort**
+**Map reads to scaffolds and sort** <br>
 Follow steps of "Mapping using bowtie2" from https://semibin.readthedocs.io/en/latest/generate/. 
 
 ```bash
