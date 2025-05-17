@@ -185,7 +185,7 @@ done
 ```bash
 for i in 19_1_9 19_4_7; do
 
-/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin --self-supervised -i /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta -b "$i".mapped.sorted.bam -o "$i"_output --threads 5
+/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin --self-supervised -i /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta -b "$i".mapped.sorted.bam -o "$i"_output --threads 5 --engine cpu
 
 done
 ```
