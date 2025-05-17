@@ -181,9 +181,13 @@ for i in 19_1_9 19_4_7; do
 done
 ```
 
-**Run SemiBin2**
+**Run SemiBin2 with single-sample binning and self-supervised mode**
 ```bash
-/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin
+for i in 19_1_9 19_4_7; do
+
+/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin --self-supervised -i /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta -b "$i".mapped.sorted.bam -o "$i"_output --threads 5
+
+done
 ```
 
 Pan, Shaojun, Chengkai Zhu, Xing-Ming Zhao, and Luis Pedro Coelho. 2022. "A Deep Siamese Neural Network Improves Metagenome-Assembled Genomes in Microbiome Datasets across Different Environments." Nature Communications 13 (1): 2326. https://doi.org/10.1093/bioinformatics/btad209
