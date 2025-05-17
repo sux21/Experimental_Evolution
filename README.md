@@ -156,6 +156,8 @@ Samtools Version: 1.13 <br>
 Work done on info2020
 
 **Map reads to scaffolds and sort**
+Follow steps of "Mapping using bowtie2" from https://semibin.readthedocs.io/en/latest/generate/. 
+
 ```bash
 for i in 19_1_9 19_4_7; do
 mkdir -p -v index/"$i"
@@ -171,9 +173,17 @@ for i in 19_1_9 19_4_7; do
 done
 ```
 
-
 ```bash
-/home/xingyuan/tools/miniconda3/bin/SemiBin2
+for i in 19_1_9 19_4_7; do
+/usr/local/bin/samtools view -h -b -S "$i".sam | samtools view -b -F 4 - | samtools sort - -o "$i".mapped.sorted.bam
+
+/usr/local/bin/samtools index "$i".mapped.sorted.bam
+done
+```
+
+**Run SemiBin2**
+```bash
+/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin
 ```
 
 Pan, Shaojun, Chengkai Zhu, Xing-Ming Zhao, and Luis Pedro Coelho. 2022. "A Deep Siamese Neural Network Improves Metagenome-Assembled Genomes in Microbiome Datasets across Different Environments." Nature Communications 13 (1): 2326. https://doi.org/10.1093/bioinformatics/btad209
