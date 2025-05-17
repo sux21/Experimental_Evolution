@@ -212,7 +212,7 @@ filename        nbps    nr_contigs      N50     L50
 19_4_7_output/output_bins/SemiBin_3.fa  358859  14      35161   3
 ```
 
-**Run CheckM on binned scaffolds**
+**Run CheckM on binned scaffolds** <br>
 CheckM Version: 1.2.3 <br>
 Work done on info2020
 
@@ -237,7 +237,20 @@ Run CheckM
 nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fa -t 1 /home/xingyuan/rhizo_ee/split_genomes/reconstructed_bins reconstructed_bins_CheckM_Results &
 ```
 
-
+```
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Bin Id                   Marker lineage        # genomes   # markers   # marker sets    0     1    2   3   4   5+   Completeness   Contamination   Strain heterogeneity  
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  19_4_7_SemiBin_1   f__Rhizobiaceae (UID3591)       50         838           326         1    835   2   0   0   0       99.94            0.34               0.00          
+  19_1_9_SemiBin_0   f__Rhizobiaceae (UID3591)       50         838           326         1    835   2   0   0   0       99.94            0.34               0.00          
+  19_4_7_SemiBin_0      g__Bacillus (UID856)        101         682           227         3    671   7   1   0   0       98.97            2.96               0.00          
+  19_1_9_SemiBin_2    f__Bacillaceae (UID829)       128         559           183        295   260   4   0   0   0       50.23            0.96               0.00          
+  19_1_9_SemiBin_1      k__Bacteria (UID203)        5449        104            58         73    31   0   0   0   0       48.28            0.00               0.00          
+  19_4_7_SemiBin_3          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
+  19_4_7_SemiBin_2          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
+  19_1_9_SemiBin_3          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
 
 
 # Step 3 - Find the most probable ancestor for each derived strain 
