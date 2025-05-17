@@ -185,7 +185,7 @@ done
 ```bash
 for i in 19_1_9 19_4_7; do
 
-/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin --self-supervised -i /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta -b "$i".mapped.sorted.bam -o "$i"_output --threads 5 --engine cpu
+/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin --self-supervised -i /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta -b "$i".mapped.sorted.bam -o "$i"_output --threads 5 --engine cpu --compression none --random-seed 12345
 
 done
 ```
@@ -193,6 +193,52 @@ done
 Pan, Shaojun, Chengkai Zhu, Xing-Ming Zhao, and Luis Pedro Coelho. 2022. "A Deep Siamese Neural Network Improves Metagenome-Assembled Genomes in Microbiome Datasets across Different Environments." Nature Communications 13 (1): 2326. https://doi.org/10.1093/bioinformatics/btad209
 
 Pan, Shaojun, Xing-Ming Zhao, and Luis Pedro Coelho. 2023. "SemiBin2: Self-Supervised Contrastive Learning Leads to Better MAGs for Short- and Long-Read Sequencing." Bioinformatics  39 (39 Suppl 1): i21–29. https://doi.org/10.1038/s41467-022-29843-y
+
+
+Results: both 19_1_9 and 19_4_7 scaffolds were separated to 4 bins
+```
+filename        nbps    nr_contigs      N50     L50
+19_1_9_output/output_bins/SemiBin_0.fa  7134363 34      373995  6
+19_1_9_output/output_bins/SemiBin_1.fa  1903653 31      122512  6
+19_1_9_output/output_bins/SemiBin_2.fa  2948191 49      104221  10
+19_1_9_output/output_bins/SemiBin_3.fa  360297  16      52740   3
+
+######################################################################
+
+filename        nbps    nr_contigs      N50     L50
+19_4_7_output/output_bins/SemiBin_0.fa  4468896 19      463747  4
+19_4_7_output/output_bins/SemiBin_1.fa  6916484 21      596258  6
+19_4_7_output/output_bins/SemiBin_2.fa  474384  7       258841  1
+19_4_7_output/output_bins/SemiBin_3.fa  358859  14      35161   3
+```
+
+**Run CheckM on binned scaffolds**
+CheckM Version: 1.2.3 <br>
+Work done on info2020
+
+Make a new directory for reconstructed bins 
+```bash
+mkdir reconstructed_bins
+cd reconstructed_bins
+```
+
+Create symbolic links to the reconstructed bins
+```bash
+for i in /home/xingyuan/rhizo_ee/split_genomes/*_output/output_bins/*fa; do
+j=${i#/home/xingyuan/rhizo_ee/split_genomes/}
+filename=${j/output\/output_bins\/}
+
+ln -s $i $filename
+done
+```
+
+Run CheckM
+```bash
+nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fa -t 1 /home/xingyuan/rhizo_ee/split_genomes/reconstructed_bins reconstructed_bins_CheckM_Results &
+```
+
+
+
 
 # Step 3 - Find the most probable ancestor for each derived strain 
 ## 1. Run FastANI to calculate pairwise whole-genome average nucleotide identity between derived strains and original strains
