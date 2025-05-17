@@ -268,6 +268,20 @@ Reference = 56 original strains
 nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --matrix -o most_prob_ancestors.txt &
 ```
 
+## 2. Check the most probable ancestor of 19_4_7_SemiBin_1 and 19_1_9_SemiBin_0
+Query = 19_4_7_SemiBin_1, 19_1_9_SemiBin_0 <br>
+Reference = 56 original strains 
+
+```bash
+ls 19_1_9_SemiBin_0.fa 19_4_7_SemiBin_1.fa > 19_X_X_query.txt
+
+cp ~/rhizo_ee/derived+original_genomes/reference.txt .
+
+ln -s /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht*fasta .
+
+nohup /usr/local/bin/fastANI --ql 19_X_X_query.txt --rl reference.txt --threads 5 --matrix -o 19_X_X_most_prob_ancestors.txt &
+```
+
 # Step 4 - Find gene presence absence variations 
 ## 1. Annotate genome using prokka
 https://github.com/tseemann/prokka
