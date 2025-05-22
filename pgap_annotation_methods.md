@@ -19,7 +19,7 @@ done
 
 ## 2. Annotate genome using pgap (use 6 scripts because pgap is slow, and run each script in a different directory)
 
-Version: 2023-05-17.build6771 <br>
+Version: 2023-10-03.build7061 <br>
 Work done on graham cluster 
 
 **script 1**
@@ -43,6 +43,7 @@ sample=${j%-scaffolds.filtered.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+
 **script 2**
 ```bash
 #!/bin/bash
@@ -64,6 +65,7 @@ sample=${j%-scaffolds.filtered.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+
 **script 3**
 ```bash
 #!/bin/bash
@@ -85,6 +87,7 @@ sample=${j%-scaffolds.filtered.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+
 **script 4**
 ```bash
 #!/bin/bash
@@ -106,6 +109,7 @@ sample=${j%-scaffolds.filtered.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+
 **script 5**
 ```bash
 #!/bin/bash
@@ -127,6 +131,7 @@ sample=${j%.filtered.fasta}
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
 done
 ```
+
 **script 6**
 ```bash
 #!/bin/bash
@@ -179,6 +184,39 @@ else
 fi
 
 /project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample"_draft -g "$i" -s 'Rhizobium leguminosarum' -c 40 --ignore-all-errors
+done
+```
+
+### Run PGAP for 19_1_9_SemiBin_0 and 19_4_7_SemiBin_1.fasta
+Version: 2023-10-03.build7061 <br>
+Work done on minigraham cluster 
+
+**transfer from info to graham**
+```bash
+scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/split_genomes/19_1_9_output/output_bins/SemiBin_0.fa 19_1_9_SemiBin_0.fasta
+scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/split_genomes/19_4_7_output/output_bins/SemiBin_1.fa 19_4_7_SemiBin_1.fasta
+```
+
+**Run PGAP**
+```bash
+#!/bin/bash
+#SBATCH --time=01-00:00
+#SBATCH --account=def-batstone
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=10
+#SBATCH --mail-user=sux21@mcmaster.ca
+#SBATCH --mail-type=ALL
+ 
+module load apptainer
+
+export APPTAINER_BIND=/project
+
+for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/19*SemiBin*.fasta; do
+j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
+sample=${j%.fasta}
+
+/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
+
 done
 ```
 
