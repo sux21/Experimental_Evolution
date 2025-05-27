@@ -297,7 +297,7 @@ done
 ## 2. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90) - 416 total strains**
+**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90), also remove 19_1_9 and 19_4_7 for now until the cleaned genomes are annotated - 414 total strains**
 
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
@@ -307,7 +307,7 @@ Work done on info2020
 mkdir panaroo_results
 
 #run panaroo 
-nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict &
+nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict --threshold 0.9 &
 
 #filter potential pseudo genes, genes with unusual lengths, and fragmented genes
 #/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
@@ -346,6 +346,7 @@ Work done on info2020
 ```bash
 #create a new directory for 4_4_10 and Rht_773_N
 mkdir pav_for_4410and773
+cd pav_for_4410and773
 
 #rename files
 for i in */*.gff; do
@@ -354,7 +355,7 @@ ln -s $i "$sample".gff
 done
 
 #run panaroo 
-nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict --remove-invalid-genes &
+nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict --threshold 0.9 &
 ```
 
 
