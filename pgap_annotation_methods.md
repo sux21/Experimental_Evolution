@@ -273,7 +273,7 @@ mkdir panaroo_results
 for i in *gff; do  echo $i "${i/.gff/.fasta}"; done > input_files.txt
 
 #run panaroo 
-nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes &
+nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes --threshold 0.9 &
 ```
 
 ## 4. Separate gene presence absence analysis for 4_4_10 and Rht_773_N
@@ -300,5 +300,5 @@ done
 for i in *gff; do  echo $i "${i/.gff/.fasta}"; done > input_files.txt
 
 #run panaroo 
-nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes &
+nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes --threshold 0.9 &
 ```
