@@ -1,5 +1,3 @@
-# Alternative method of finding gene presence absence variations (Annotation by PGAP and gene presence absence analysis by Panaroo)
-
 # Re-do gene presence absence analysis: results are in this new directory ``genes_pav``.
 
 ## Use cleaned genomes for 19_1_9 and 19_4_7
@@ -29,7 +27,14 @@ done
 ## 2. Annotate genome using pgap (use 6 scripts because pgap is slow, and run each script in a different directory)
 
 Version: 2025-05-06.build7983 <br>
-Work done on info19
+Work done on info20
+
+## Test PGAP
+```bash
+nohup /home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer--container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o mg37_results -g $HOME/.pgap/test_genomes/MG37/ASM2732v1.annotation.nucleotide.1.fasta -s "Mycoplasmoides genitalium" &
+
+nohup /home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o 10_3_2 -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/10_3_2-scaffolds.filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 &
+```
 
 ```bash
 #!/bin/bash
@@ -37,7 +42,7 @@ for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.fasta; 
 j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
 sample=${j%.filtered.fasta}
 
-/home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum"
+/home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/singularity --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum"
 done
 ```
 
