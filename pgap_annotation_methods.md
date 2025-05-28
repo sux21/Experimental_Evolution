@@ -6,7 +6,7 @@
 https://github.com/shenwei356/seqkit
 
 Seqkit Version: v2.7.0 <br>
-Work done on info2020
+Work done on info19
 
 ```bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
@@ -21,8 +21,12 @@ done
 
 ## 2. Annotate genome using pgap (use 6 scripts because pgap is slow, and run each script in a different directory)
 
-Version: 2023-10-03.build7061 <br>
-Work done on graham cluster 
+Version: 2025-05-06.build7983 <br>
+Work done on info19
+
+```bash
+/home/xingyuan/tools/pgap.py --report-usage-false -o 
+```
 
 **script 1**
 ```bash
