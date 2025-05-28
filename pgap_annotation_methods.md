@@ -9,12 +9,11 @@ Seqkit Version: v2.7.0 <br>
 Work done on info2020
 
 ```bash
-#!/bin/bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
 file_in=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
 file_out=${file_in//.fasta/.filtered.fasta}
 
-/2/scratch/batstonelab/bin/seqkit seq --min-len 200 --threads 5 /home/xingyuan/rhizo_ee/derived+original_genomes/"$file_in" > /home/xingyuan/rhizo_ee/genes_presence_absence_variation/"$file_out"
+/2/scratch/batstonelab/bin/seqkit seq --min-len 200 --threads 5 /home/xingyuan/rhizo_ee/derived+original_genomes/"$file_in" > /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$file_out"
 done
 ```
 
