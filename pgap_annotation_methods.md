@@ -11,7 +11,7 @@ ln -s /home/xingyuan/rhizo_ee/split_genomes/19_4_7_output/output_bins/SemiBin_1.
 https://github.com/shenwei356/seqkit
 
 Seqkit Version: v2.7.0 <br>
-Work done on info19
+Work done on info20
 
 ```bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
@@ -31,9 +31,13 @@ Work done on info20
 
 ## Test PGAP
 ```bash
-nohup /home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer--container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o mg37_results -g $HOME/.pgap/test_genomes/MG37/ASM2732v1.annotation.nucleotide.1.fasta -s "Mycoplasmoides genitalium" &
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.filtered.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
+sample=${j%.filtered.fasta}
 
-nohup /home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o 10_3_2 -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/10_3_2-scaffolds.filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 &
+/home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" --prefix "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
+done
 ```
 
 ```bash
