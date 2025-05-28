@@ -1,4 +1,11 @@
 # Alternative method of finding gene presence absence variations (Annotation by PGAP and gene presence absence analysis by Panaroo)
+
+# Testing PGAP
+
+```
+./pgap.py -r -o mg37_results -g $HOME/.pgap/test_genomes/MG37/ASM2732v1.annotation.nucleotide.1.fasta -s "Mycoplasmoides genitalium" -D /home/xingyuan/tools/bin/apptainer
+```
+
 ## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
