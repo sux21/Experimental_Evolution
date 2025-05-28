@@ -1,13 +1,13 @@
 # Re-do gene presence absence analysis: results are in this new directory ``genes_pav``.
 
-## Use cleaned genomes for 19_1_9 and 19_4_7
+## 1. Use cleaned genomes for 19_1_9 and 19_4_7
 
 ```bash
 ln -s /home/xingyuan/rhizo_ee/split_genomes/19_1_9_output/output_bins/SemiBin_0.fa 19_1_9_SemiBin_0.fasta
 ln -s /home/xingyuan/rhizo_ee/split_genomes/19_4_7_output/output_bins/SemiBin_1.fa 19_4_7_SemiBin_1.fasta
 ```
 
-## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
+## 2. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
 Seqkit Version: v2.7.0 <br>
@@ -24,12 +24,11 @@ done
 
 **W Shen**, S Le, Y Li*, F Hu*. SeqKit: a cross-platform and ultrafast toolkit for FASTA/Q file manipulation. ***PLOS ONE***. doi:10.1371/journal.pone.0163962.
 
-## 2. Annotate genome using pgap (use 6 scripts because pgap is slow, and run each script in a different directory)
+## 3. Annotate genome using pgap (use 6 scripts because pgap is slow, and run each script in a different directory)
 
 Version: 2025-05-06.build7983 <br>
 Work done on info20
 
-## Test PGAP
 ```bash
 #!/bin/bash
 for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.filtered.fasta; do
@@ -40,149 +39,7 @@ sample=${j%.filtered.fasta}
 done
 ```
 
-```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.fasta; do
-j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
-sample=${j%.filtered.fasta}
-
-/home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/singularity --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum"
-done
-```
-
-**script 1**
-```bash
-#!/bin/bash
-#SBATCH --time=04-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/{1..5}_*filtered.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%-scaffolds.filtered.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-done
-```
-
-**script 2**
-```bash
-#!/bin/bash
-#SBATCH --time=04-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/{6..9}_*filtered.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%-scaffolds.filtered.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-done
-```
-
-**script 3**
-```bash
-#!/bin/bash
-#SBATCH --time=04-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/1{0..5}_*filtered.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%-scaffolds.filtered.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-done
-```
-
-**script 4**
-```bash
-#!/bin/bash
-#SBATCH --time=04-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/1{6..9}_*filtered.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%-scaffolds.filtered.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-done
-```
-
-**script 5**
-```bash
-#!/bin/bash
-#SBATCH --time=04-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=40
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/Rht*fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%.filtered.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-done
-```
-
-**script 6**
-```bash
-#!/bin/bash
-#SBATCH --time=02-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=10
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/20_*filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/as5_2_4*filtered.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%-scaffolds.filtered.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-done
-```
-
-### Find samples that don't have annot.gbk: 
+**Find samples that don't have annot.gbk:**
 ```bash
 find . -type d \! -exec test -e '{}/annot_with_genomic_fasta.gff' \; -print
 #Output: 4_4_10, 2_4_11, 19_4_7, 19_1_9, Rht_773_N
