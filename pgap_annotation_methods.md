@@ -2,6 +2,13 @@
 
 # Re-do gene presence absence analysis: results are in this new directory ``genes_pav``.
 
+## Use cleaned genomes for 19_1_9 and 19_4_7
+
+```bash
+ln -s /home/xingyuan/rhizo_ee/split_genomes/19_1_9_output/output_bins/SemiBin_0.fa 19_1_9_SemiBin_0.fasta
+ln -s /home/xingyuan/rhizo_ee/split_genomes/19_4_7_output/output_bins/SemiBin_1.fa 19_4_7_SemiBin_1.fasta
+```
+
 ## 1. Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
 https://github.com/shenwei356/seqkit
 
@@ -25,7 +32,13 @@ Version: 2025-05-06.build7983 <br>
 Work done on info19
 
 ```bash
-/home/xingyuan/tools/pgap.py --report-usage-false -o 
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
+sample=${j%.filtered.fasta}
+
+/home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum"
+done
 ```
 
 **script 1**
