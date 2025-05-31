@@ -282,7 +282,7 @@ nohup /usr/local/bin/fastANI --ql 19_X_X_query.txt --rl reference.txt --threads 
 https://github.com/tseemann/prokka
 
 Prokka Version: 1.14.6 <br>
-Work done on info2020
+Work done on info20
 
 ```bash
 #!/bin/bash
