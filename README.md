@@ -318,6 +318,17 @@ https://gthlab.au/panaroo/#/
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
 
+**create a directory containing each MPA and its corresponding derived isolates (26 MPAs, 26 directories)**
+```bash
+for mpa in ; do
+for i in `cat MPA_"$mpa".txt`; do
+ls "$i".fasta
+echo $mpa
+done
+done
+
+```
+
 ```bash
 #create a new directory for the results
 mkdir panaroo_results
