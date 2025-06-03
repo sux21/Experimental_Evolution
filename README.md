@@ -190,10 +190,6 @@ for i in 19_1_9 19_4_7; do
 done
 ```
 
-Pan, Shaojun, Chengkai Zhu, Xing-Ming Zhao, and Luis Pedro Coelho. 2022. "A Deep Siamese Neural Network Improves Metagenome-Assembled Genomes in Microbiome Datasets across Different Environments." Nature Communications 13 (1): 2326. https://doi.org/10.1093/bioinformatics/btad209
-
-Pan, Shaojun, Xing-Ming Zhao, and Luis Pedro Coelho. 2023. "SemiBin2: Self-Supervised Contrastive Learning Leads to Better MAGs for Short- and Long-Read Sequencing." Bioinformatics  39 (39 Suppl 1): i21–29. https://doi.org/10.1038/s41467-022-29843-y
-
 
 Results: both 19_1_9 and 19_4_7 scaffolds were separated to 4 bins
 ```
@@ -278,20 +274,29 @@ nohup /usr/local/bin/fastANI --ql 19_X_X_query.txt --rl reference.txt --threads 
 ```
 
 # Step 4 - Find gene presence absence variations 
-## 1. Annotate genome using prokka
-https://github.com/tseemann/prokka
 
-Prokka Version: 1.14.6 <br>
+## 1. Annotate genome using Bakta
+https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
+
+Bakta Version: 1.11.0 <br>
 Work done on info20
 
-```bash
-#!/bin/bash
-for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
-j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
-sample=${j%.fasta}
+### Bakta requires python version >=3.9 and <3.12
+```bash 
+conda create -n py39 python=3.9 #create conda environment for python 3.9
+conda activate py39 #activate the environment
+python --version #check python version. I have Python 3.9.22
+conda install -c conda-forge -c bioconda bakta=1.11 #install latest version of bakta
+```
 
-/home/xingyuan/tools/miniconda3/bin/prokka --outdir "$sample" --prefix "$sample" --addgenes --locustag "$sample" --kingdom Bacteria --gcode 11 --proteins GCF_011604505.1_Strain23B_protein.gbk --evalue 1e-9 --rfam --cpus 5 "$i"
-done
+### Download full database
+```bash
+/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta_db download --output /home/xingyuan/tools --type full #database version: 6.0
+```
+
+### Run Bakta (Remember to run ``conda activate py39``)
+```bash
+/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db genome.fasta
 ```
 
 ## 2. Gene presence absence analysis using Panaroo
