@@ -294,9 +294,14 @@ conda install -c conda-forge -c bioconda bakta=1.11 #install latest version of b
 /home/xingyuan/tools/miniconda3/envs/py39/bin/bakta_db download --output /home/xingyuan/tools --type full #database version: 6.0
 ```
 
-### Run Bakta (Remember to run ``conda activate py39``)
+### Run Bakta for all samples except as5_2_4 since it may not be *Rhizobium leguminosarum* (Remember to run ``conda activate py39``)
 ```bash
-/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db genome.fasta
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
+j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
+sample=${j%.fasta}
+
+/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db --prefix 10_1_1 --output 10_1_1 --genus Rhizobium --species leguminosarum  --keep-contig-headers --verbose --threads 5 /home/xingyuan/rhizo_ee/derived+original_genomes/10_1_1-scaffolds.fasta
+done
 ```
 
 ## 2. Gene presence absence analysis using Panaroo
