@@ -144,10 +144,67 @@ tar -xzvf pgap-scaffolds.tar.gz
 ## 3. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90) - 416 total strains**
-
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
+
+**Prepare files with MPA and its derived isolates each on one line**
+
+```r
+#open R on info2020
+R
+
+#load library
+library(tidyverse)
+
+#find most probable ancestor for each derived isolate
+MPA <- read.table("/home/xingyuan/rhizo_ee/derived+original_genomes/most_prob_ancestors.txt") %>%
+  group_by(V1) %>%
+  slice_max(tibble(V3), n = 1) %>% #select the highest ANI value for each derived isolate
+  select(V1, V2) %>%
+  rename(isolate=V1, MPA=V2) %>% #rename variable
+  mutate(isolate = str_extract(isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
+         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)")) #rename strain name
+
+#create a file with each MPA on one line
+MPA_per_line <- data.frame(MPA=unique(MPA$MPA))
+write.table(MPA_per_line, "mpa.txt", row.names=F, quote=F, col.names=F)
+
+#create files with MPA and its derived isolates each on one line (26 files total)
+ancestors <- unique(MPA$MPA)
+output <- vector(mode="list", length(ancestors))
+names(output) <- ancestors
+
+for (i in seq_along(ancestors)) {
+  output[[i]] <- filter(MPA, MPA==ancestors[i]) %>%
+    select(1) 
+  
+  colnames(output[[i]]) <- names(output)[[i]]
+  
+  output[[i]] <- rbind(names(output[[i]]), as.data.frame(output[[i]]))
+  
+  write.table(output[[i]], paste0("MPA_", names(output[[i]]), ".txt"),
+              row.names=F, quote=F, col.names=F)
+}
+
+#exit R
+q()
+```
+
+**create directories containing the annotation results of each MPA and its derived isolates (26 directories total for each of the 26 MPAs)**
+
+```bash
+for mpa in `cat mpa.txt`; do
+for i in `cat MPA_"$mpa".txt`; do
+
+if [ ! -d "$mpa"-pav-analysis ]
+mkdir "$mpa"-pav-analysis
+fi
+
+ln -s /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/"$i" "$mpa"-pav-analysis/
+
+done
+done
+```
 
 ```bash
 #rename files
