@@ -190,39 +190,46 @@ for (i in seq_along(ancestors)) {
 q()
 ```
 
-**create directories containing the annotation results of each MPA and its derived isolates (26 directories total for each of the 26 MPAs)**
+**Prepare input files for Panaroo**
+
+mpa.txt has each MPA on one line. MPA_"$mpa".txt (26 unique files for each MPA) has MPA and all its derived isolates each on one line.
 
 ```bash
 for mpa in `cat mpa.txt`; do
 for i in `cat MPA_"$mpa".txt`; do
 
-if [ ! -d "$mpa"-pav-analysis ]
+#skip files not existed
+if [ ! -d "$i" ]; then
+continue
+fi
+
+#make directory for each MPA
+if [ ! -d "$mpa"-pav-analysis ]; then
 mkdir "$mpa"-pav-analysis
 fi
 
-ln -s /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/"$i" "$mpa"-pav-analysis/
+#make symbolic links for GFF files
+ln -s /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/"$i"/annot_with_genomic_fasta.gff "$mpa"-pav-analysis/"$i".gff
+
+#make symbolic links for FASTA files
+ln -s /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/"$i"/*.filtered.fasta "$mpa"-pav-analysis/"$i".fasta
 
 done
 done
 ```
 
+
 ```bash
-#rename files
-for i in */annot_with_genomic_fasta.gff; do
-sample=${i%/annot_with_genomic_fasta.gff};
-ln -s $i "$sample".gff
-done
-
-for i in */*.filtered.fasta; do
-sample=${i%/*.filtered.fasta};
-ln -s $i "$sample".fasta
-done
-
-#create a new directory for the results
-mkdir panaroo_results
-
 #create a list with each gff file and fasta file on one line for each isolate
-for i in *gff; do  echo $i "${i/.gff/.fasta}"; done > input_files.txt
+for mpa in *-pav-analysis; do
+for i in "$mpa"/*gff; do
+sample_gff=${i#"$mpa"/}
+sample_fasta=${sample_gff/.gff/.fasta}
+
+echo "$sample_gff" "$sample_fasta";
+done > "$mpa"/input_files.txt
+
+done
 
 #run panaroo 
 nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes --threshold 0.9 &
