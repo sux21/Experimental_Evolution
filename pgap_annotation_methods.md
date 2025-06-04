@@ -147,7 +147,7 @@ https://gthlab.au/panaroo/#/
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
 
-**Prepare files with MPA and its derived isolates each on one line**
+**Using R, prepare a file with each MPA on one line (``mpa.txt``). Prepare 26 files with MPA and its derived isolates each on one line (``MPA_"$mpa".txt``)**
 
 ```r
 #open R on info2020
@@ -190,9 +190,7 @@ for (i in seq_along(ancestors)) {
 q()
 ```
 
-**Prepare input files for Panaroo**
-
-mpa.txt has each MPA on one line. MPA_"$mpa".txt (26 unique files for each MPA) has MPA and all its derived isolates each on one line.
+**Make 26 working directories for Panaroo one for each MPA**
 
 ```bash
 for mpa in `cat mpa.txt`; do
@@ -218,21 +216,25 @@ done
 done
 ```
 
+**Make input file for Panaroo in each of the 26 working directories**
 
 ```bash
-#create a list with each gff file and fasta file on one line for each isolate
+#each line is a GFF file and a FASTA file of each isolate
 for mpa in *-pav-analysis; do
-for i in "$mpa"/*gff; do
-sample_gff=${i#"$mpa"/}
+for sample_gff in "$mpa"/*gff; do
+#sample_gff=${i#"$mpa"/}
 sample_fasta=${sample_gff/.gff/.fasta}
 
 echo "$sample_gff" "$sample_fasta";
 done > "$mpa"/input_files.txt
 
 done
+```
 
-#run panaroo 
-nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes --threshold 0.9 &
+**Run Panaroo**
+
+```bash
+/home/xingyuan/tools/miniconda3/bin/panaroo -i Rht_901_C-pav-analysis/input_files.txt -o Rht_901_C-pav-analysis/panaroo_results --clean-mode strict --remove-invalid-genes --merge_paralogs
 ```
 
 ## 3. Align DNA sequences of genes gained to each of the ancestral strains
