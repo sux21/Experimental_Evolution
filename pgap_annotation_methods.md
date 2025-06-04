@@ -234,7 +234,9 @@ done
 **Run Panaroo**
 
 ```bash
-/home/xingyuan/tools/miniconda3/bin/panaroo -i Rht_901_C-pav-analysis/input_files.txt -o Rht_901_C-pav-analysis/panaroo_results --clean-mode strict --remove-invalid-genes --merge_paralogs
+for i in *pav*; do
+/home/xingyuan/tools/miniconda3/bin/panaroo -i "$i"/input_files.txt -o "$i"/panaroo_results --clean-mode strict --remove-invalid-genes --merge_paralogs
+done
 ```
 
 ## 3. Align DNA sequences of genes gained to each of the ancestral strains
