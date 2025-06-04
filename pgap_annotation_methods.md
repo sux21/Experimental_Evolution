@@ -261,29 +261,3 @@ sed -i '1s/^/qacc,sacc,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n
 done
 ```
 
-## 4. Separate gene presence absence analysis for 4_4_10 and Rht_773_N
-
-Panaroo Version: 1.5.2 <br>
-Work done on info2020
-
-```bash
-#create a new directory for 4_4_10 and Rht_773_N
-mkdir pav_for_4410and773
-
-#rename files
-for i in */annot_with_genomic_fasta.gff; do
-sample=${i%/annot_with_genomic_fasta.gff};
-ln -s $i "$sample".gff
-done
-
-for i in */*.filtered.fasta; do
-sample=${i%/*.filtered.fasta};
-ln -s $i "$sample".fasta
-done
-
-#create a list with each gff file and fasta file on one line for each isolate
-for i in *gff; do  echo $i "${i/.gff/.fasta}"; done > input_files.txt
-
-#run panaroo 
-nohup panaroo -i input_files.txt -o panaroo_results --clean-mode strict --remove-invalid-genes --threshold 0.9 &
-```
