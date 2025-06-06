@@ -241,71 +241,44 @@ for i in *pav*; do
 done
 ```
 
-## 4. Merge Panaroo graphs
+## 4. gene gain analysis (for each 26 pangenome)
 
-```bash
-/home/xingyuan/tools/miniconda3/bin/panaroo-merge --threads 5 --directories *pav*/panaroo_results --out_dir merged_panaroo_output --merge_paralogs 
-```
-
-## 5. Prepare data for gene gain and gene loss analysis
-
-Open R on info2020
 ```r
+#Open R on info2020
 R
-```
 
-Install required packages
-```r
-#install packages if needed
 #install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
 
 #load packages
 library("tidyverse", lib.loc	= "/home/xingyuan/tools/R_library")
 
-
 #remove all variables existed in the working directory
 rm(list=ls()) 
 
-gene_pre_abs_tab <- read.table("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/merged_panaroo_output/gene_presence_absence.Rtab", header = TRUE) 
+gene_pre_abs_tab <- read.table("gene_presence_absence.Rtab", header = TRUE)
 
-gene_pre_abs_csv <- read.csv("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/merged_panaroo_output/gene_presence_absence.csv", header = TRUE) 
+gene_pre_abs_csv <- read.csv("gene_presence_absence.csv", header = TRUE) 
 
-derived_prokka_pav <- prokka_pav %>%
-  pivot_longer(cols = c(2:417), names_to = "derived", values_to = "derived_pres_abs") %>%
+gene_data_csv <- read.csv("gene_data.csv", header = TRUE)
+
+derived_subset <- gene_pre_abs_tab %>%
+  pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "derived", values_to = "derived_pres_abs") %>%
   filter(!grepl("Rht", derived, fixed = FALSE)) %>% #remove "Rht" samples and make a subset for the derived isolates
   mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #rename isolate
 
-ancestral_prokka_pav <- prokka_pav %>%
-  pivot_longer(cols = c(2:417), names_to = "ancestral", values_to = "MPA_pres_abs") %>%
-  filter(grepl("Rht", ancestral, fixed = FALSE)) #select "Rht" samples and make a subset for ancestral strains
+ancestral_subset <- gene_pre_abs_tab %>%
+  pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "MPA", values_to = "MPA_pres_abs") %>%
+  filter(grepl("Rht", MPA, fixed = FALSE)) #select "Rht" samples and make a subset for ancestral strains
 
-#check names of derived isolates are correct and the number is 359
-sort(unique(derived_prokka_pav$derived))
+#join derived_subset and ancestral_subset
+pres_abs_data <- left_join(derived_subset, ancestral_subset, by = "Gene") %>%
+left_join(gene_pre_abs_csv[,c("Gene","Non.unique.Gene.name","Annotation")], by = "Gene")
 
-#check names of ancestral are correct and the number is 55
-sort(unique(ancestral_prokka_pav$ancestral))
+#obtain genes gained (1 in isolate, 0 in MPA)
+genes_gained <- filter(pres_abs_data, derived_pres_abs == 1 & MPA_pres_abs == 0) %>%
+distinct() #remove duplicated gene name in "Gene" column
 
-#load most probable ancestors data
-ani_values <- read.table("/Users/xingyuansu/Desktop/rhizo_ee/most_prob_ancestors.txt")
 
-MPA <- ani_values %>%
-  group_by(V1) %>%
-  slice_max(tibble(V3), n = 1) %>% #select the highest ANI value for each derived isolate
-  select(V1, V2) %>%
-  rename(isolate=V1, MPA=V2) %>% #rename variable
-  mutate(isolate = str_extract(isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
-         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)")) #rename strain name
-
-MPA$isolate[duplicated(MPA$isolate)] #note 20_2_6 appears twice because it has two MPAs. 596 is in the mixed population, the MPA
-
-#join the MPA to the genes presence absence data
-derived_prokka_pav2 <- derived_prokka_pav %>%
-  left_join(MPA, by=c("derived"="isolate"), relationship = "many-to-many") #many-to-many matching to add the two MPAs for 20_2_6
-
-#join the presence absence data of MPA and annotation data
-prokka_data_clean <- derived_prokka_pav2 %>%
-  left_join(ancestral_prokka_pav, by=c("Gene"="Gene", "MPA"="ancestral"), relationship = "many-to-one") %>%
-  left_join(prokka_annotation[,1:3], by="Gene", relationship = "many-to-one") #add gene annotation
 ```
 
 ## 3. Align DNA sequences of genes gained to each of the ancestral strains
