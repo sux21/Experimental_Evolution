@@ -244,10 +244,8 @@ done
 
 ## 4. gene gain analysis (for each 26 pangenome)
 
+Write an R script to find genes gained and output them in FASTA format
 ```r
-#Open R on info2020
-R
-
 #install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
 
 #load packages
@@ -256,11 +254,17 @@ library("tidyverse", lib.loc	= "/home/xingyuan/tools/R_library")
 #remove all variables existed in the working directory
 rm(list=ls()) 
 
-gene_pre_abs_tab <- read.table("gene_presence_absence.Rtab", header = TRUE)
+#load panaroo results: gene_presence_absence.Rtab, gene_presence_absence.csv, gene_data.csv
+gene_pre_abs_tab <- read.table("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/Rht_016_N-pav-analysis/panaroo_results/gene_presence_absence.Rtab", header = TRUE)
 
-gene_pre_abs_csv <- read.csv("gene_presence_absence.csv", header = TRUE) 
+gene_pre_abs_csv <- read.csv("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/Rht_016_N-pav-analysis/panaroo_results/gene_presence_absence.csv", header = TRUE) 
 
-gene_data_csv <- read.csv("gene_data.csv", header = TRUE)
+gene_pre_abs_csv2 <- gene_pre_abs_csv %>%
+  pivot_longer(cols = c(4:ncol(gene_pre_abs_csv)), names_to = "derived", values_to = "derived_annotation_id") %>%
+  filter(!grepl("Rht", derived, fixed = FALSE)) %>% #remove rows with ancestral isolate
+  mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #rename isolate
+
+gene_data_csv <- read.csv("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/Rht_016_N-pav-analysis/panaroo_results/gene_data.csv", header = TRUE)
 
 derived_subset <- gene_pre_abs_tab %>%
   pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "derived", values_to = "derived_pres_abs") %>%
@@ -273,14 +277,24 @@ ancestral_subset <- gene_pre_abs_tab %>%
 
 #join derived_subset and ancestral_subset
 pres_abs_data <- left_join(derived_subset, ancestral_subset, by = "Gene") %>%
-left_join(gene_pre_abs_csv[,c("Gene","Non.unique.Gene.name","Annotation")], by = "Gene")
+  left_join(gene_pre_abs_csv[,c("Gene","Non.unique.Gene.name","Annotation")], by = "Gene")
 
 #obtain genes gained (1 in isolate, 0 in MPA)
 genes_gained <- filter(pres_abs_data, derived_pres_abs == 1 & MPA_pres_abs == 0) %>%
-distinct() #remove duplicated gene name in "Gene" column
+  left_join(gene_pre_abs_csv2[,c("Gene", "derived", "derived_annotation_id")], by = c("Gene", "derived")) %>% #add annotation id
+  distinct(Gene, .keep_all = TRUE) %>% #only keep unique genes
+  mutate(derived_annotation_id = str_remove(derived_annotation_id, "_pseudo")) %>% #remove "_pseudo" from anntation id as gene_data_csv does not has this
+  left_join(gene_data_csv, by = c("derived"="gff_file", "derived_annotation_id"="annotation_id")) %>% #add DNA sequence
+  mutate(derived_annotation_id2 = paste(derived, derived_annotation_id, sep = "_"), .after = derived_annotation_id) #include derived isolate name in derived_annotation_id
 
+#write genes gained to a FASTA file
+genes_gained$derived_annotation_id2 <- paste0(">", genes_gained$derived_annotation_id2)
 
+genes_gained_fasta <- c(rbind(genes_gained$derived_annotation_id2, genes_gained$dna_sequence))
+
+write(x = genes_gained_fasta, file = "/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/Rht_016_N-pav-analysis/gene_gain_analysis")
 ```
+
 
 ## 3. Align DNA sequences of genes gained to each of the ancestral strains
 
