@@ -246,6 +246,11 @@ done
 
 Write an R script to find genes gained and output them in FASTA format
 ```r
+#Open R on info2020
+R
+
+#copy and paste the code below to the R console on info2020
+
 #install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
 
 #load packages
@@ -292,16 +297,14 @@ genes_gained$derived_annotation_id2 <- paste0(">", genes_gained$derived_annotati
 
 genes_gained_fasta <- c(rbind(genes_gained$derived_annotation_id2, genes_gained$dna_sequence))
 
-write(x = genes_gained_fasta, file = "/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/Rht_016_N-pav-analysis/gene_gain_analysis")
+write(x = genes_gained_fasta, file = "/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/Rht_016_N-pav-analysis/gene_gain_analysis/genes_gained.fasta")
 ```
 
 
-## 3. Align DNA sequences of genes gained to each of the ancestral strains
+## 3. Which ancestral strain mostly had the genes gained?
 
 Blastn Version: 2.16.0 <br>
 Work done on info2020
-
-Previous steps are done in R.
 
 ```bash
 #specify format of output: qacc (Query accession), sacc (Subject accession), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
@@ -310,7 +313,7 @@ for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
 sample=${j%.fasta}
 
-/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query pgap_genes_gain.fasta -subject $i -outfmt "10 qacc sacc evalue bitscore length pident nident gapopen gaps qcovs" > pgap_"$sample"_blast.csv
+/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query genes_gained.fasta -subject $i -outfmt "10 qacc sacc evalue bitscore length pident nident gapopen gaps qcovs" > pgap_"$sample"_blast.csv
 
 done
 
@@ -319,4 +322,62 @@ for i in *blast.csv; do
 sed -i '1s/^/qacc,sacc,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
 done
 ```
+
+Investigate the BLAST results in R
+```R
+#Open R
+R
+
+#install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
+
+#load packages
+library("tidyverse", lib.loc	= "/home/xingyuan/tools/R_library")
+
+#load BLAST output
+blast_out <- vector(mode = "list", length = length(list.files(path = ".", pattern = "_blast.csv")))
+
+names(blast_out) <- list.files(path = ".", pattern = "_blast.csv")
+
+for (i in names(blast_out)) {
+  blast_out[[i]] <- read.csv(i, header = TRUE)
+}
+
+#add ancestral strain name as a column to each data frame
+pgap_blast_results2 <- mapply(cbind, pgap_blast_results, "reference_genome" = names(pgap_blast_results), SIMPLIFY = F)
+
+
+#merge all data frames in the list to one
+blast_results_df <- pgap_blast_results2 %>% 
+  Reduce(function(dtf1,dtf2) bind_rows(dtf1,dtf2), .) %>%
+  mutate(reference_genome = str_extract(reference_genome, "Rht_[:digit:]+_(N|C)"),
+         derived_isolate = str_extract(qacc, "[:digit:]+_[:digit:]+_[:alnum:]+"))
+
+#load metadata of ancestral isolate community and MPA of the derived isolate
+Klinger_Rhizobium_2008strains <- readxl::read_xlsx("/Users/xingyuansu/Desktop/rhizo_ee/Klinger_Rhizobium_2008strains.xlsx") %>%
+  mutate(ancestral_isolate = str_extract(sample_name, "Rht_[:digit:]+_(N|C)")) %>%
+  select(ancestral_isolate, community) %>%
+  drop_na(community) %>%
+  mutate(number = formatC(as.numeric(str_extract(ancestral_isolate, "[:digit:]+")), width = 3, flag = "0"),
+         group = str_extract(ancestral_isolate, "(N|C)"),
+         ancestral_isolate = paste0("Rht", "_", number, "_", group)) %>%
+  select(-c(number, group))
+
+MPA <- read.table("/Users/xingyuansu/Desktop/rhizo_ee/most_prob_ancestors.txt") %>%
+  group_by(V1) %>%
+  slice_max(tibble(V3), n = 1) %>% #select the highest ANI value for each derived isolate
+  select(V1, V2) %>%
+  rename(derived_isolate=V1, MPA=V2) %>% #rename variable
+  mutate(derived_isolate = str_extract(derived_isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
+         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)")) #rename strain name
+
+blast_results_df2 <- left_join(blast_results_df, MPA, by="derived_isolate", relationship = "many-to-many") 
+
+```
+
+
+
+
+
+
+
 
