@@ -47,7 +47,7 @@ sample=${j%.filtered.fasta}
 done
 ```
 
-## Below are old commands
+## -------------- Below are old commands ---------------
 
 **Find samples that don't have annot.gbk:**
 ```bash
@@ -140,6 +140,7 @@ md5sum -c pgap-scaffolds.md5
 #extract results
 tar -xzvf pgap-scaffolds.tar.gz
 ```
+## -------------- Above are old commands ---------------
 
 ## 3. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
