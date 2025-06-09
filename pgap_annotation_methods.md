@@ -307,19 +307,21 @@ Blastn Version: 2.16.0 <br>
 Work done on info2020
 
 ```bash
-#specify format of output: qacc (Query accession), sacc (Subject accession), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
+#specify format of output: qacc (Query accession), qlen (Query sequence length), sacc (Subject accession), sstart (Start of alignment in subject), send (End of alignment in subject), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
 
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
 sample=${j%.fasta}
 
-/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query genes_gained.fasta -subject $i -outfmt "10 qacc sacc evalue bitscore length pident nident gapopen gaps qcovs" > pgap_"$sample"_blast.csv
+/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query genes_gained.fasta -subject $i -outfmt "10 qacc qlen sacc sstart send evalue bitscore length pident nident gapopen gaps qcovs" > pgap_"$sample"_blast.csv
+
+/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query genes_gained.fasta -subject $i > pgap_"$sample"_blast.out
 
 done
 
 #add variable names for the file
 for i in *blast.csv; do
-sed -i '1s/^/qacc,sacc,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
+sed -i '1s/^/qacc,qlen,sacc,sstart,send,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
 done
 ```
 
