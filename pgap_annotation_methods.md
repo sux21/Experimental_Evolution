@@ -24,14 +24,10 @@ done
 
 **W Shen**, S Le, Y Li*, F Hu*. SeqKit: a cross-platform and ultrafast toolkit for FASTA/Q file manipulation. ***PLOS ONE***. doi:10.1371/journal.pone.0163962.
 
-## 3. Annotate genome using pgap (very slow, so include a if statement for restarting at where it stops) 
+## 3. Annotate genome using pgap
 
 Version: 2025-05-06.build7983 <br>
 Work done on info20
-
-```
-/home/xingyuan/tools/pgap.py -r -o mg37_results -g $HOME/.pgap/test_genomes/MG37/ASM2732v1.annotation.nucleotide.1.fasta -s "Mycoplasmoides genitalium"
-```
 
 ```bash
 #!/bin/bash
@@ -39,11 +35,7 @@ for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.filtere
 j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
 sample=${j%.filtered.fasta}
 
-#delete directory not completed
-
-
-
-/home/xingyuan/tools/pgap.py -D /home/xingyuan/tools/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" --prefix "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" --prefix "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
 done
 ```
 
