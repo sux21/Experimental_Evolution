@@ -310,6 +310,8 @@ fi
 done
 ```
 
+### Stop at 4_1_3 (not finished) due to scratch drives upgrade. Delete 4_1_3 directory and continue (Remember to run ``conda activate py39``)
+
 ## 2. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
