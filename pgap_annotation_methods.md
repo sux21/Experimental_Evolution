@@ -208,7 +208,15 @@ find_gene_gain <- function(mpa) {
   write(x = genes_gained_fasta, file = paste0(mpa, "_gene_gain.fasta"))
 }
 
-find_gene_gain("Rht_016_N")
+#loop through all 26 groups of derived isolates and their most probable ancestors
+
+mpa_names <- list.files(path = ".", pattern = "-pav-analysis")
+mpa_names <- unique(str_extract(mpa_names, ".*(?=-pav)"))
+mpa_names
+
+for (i in 1:length(mpa_names)) {
+  find_gene_gain(mpa_names[i])
+}
 ```
 
 
