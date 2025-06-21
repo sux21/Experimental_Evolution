@@ -47,91 +47,6 @@ find . -type d \! -exec test -e '{}/annot_with_genomic_fasta.gff' \; -print
 #Output: 4_4_10, 2_4_11, 19_4_7, 19_1_9, Rht_773_N
 ```
 
-### Run PGAP for the failed samples (4_4_10, 2_4_11, 19_4_7, 19_1_9, Rht_773_N) using the option `--ignore-all-errors`)
-```bash
-#!/bin/bash
-#SBATCH --time=01-30:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=10
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/4_4_10-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/2_4_11-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/19_4_7-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/19_1_9-scaffolds.filtered.fasta /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/Rht_773_N.filtered.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-
-if [[ "$j" =~ "Rht_773_N" ]]; then
- sample=${j%.filtered.fasta}
-else
- sample=${j%-scaffolds.filtered.fasta}
-fi
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample"_draft -g "$i" -s 'Rhizobium leguminosarum' -c 40 --ignore-all-errors
-done
-```
-
-### Run PGAP for 19_1_9_SemiBin_0 and 19_4_7_SemiBin_1.fasta
-Version: 2023-10-03.build7061 <br>
-Work done on minigraham cluster 
-
-**transfer from info to graham**
-```bash
-scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/split_genomes/19_1_9_output/output_bins/SemiBin_0.fa 19_1_9_SemiBin_0.fasta
-scp xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/split_genomes/19_4_7_output/output_bins/SemiBin_1.fa 19_4_7_SemiBin_1.fasta
-```
-
-**Run PGAP**
-```bash
-#!/bin/bash
-#SBATCH --time=01-00:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=32G
-#SBATCH --cpus-per-task=10
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
- 
-module load apptainer
-
-export APPTAINER_BIND=/project
-
-for i in /project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/19*SemiBin*.fasta; do
-j=${i#/project/6078724/sux21/rhizo_ee/genomes/genes_presence_absence_variation/}
-sample=${j%.fasta}
-
-/project/6078724/sux21/tools/pgap/pgap.py -D apptainer --container-path /project/6078724/sux21/tools/pgap/pgap_2023-10-03.build7061.sif --no-internet --no-self-update -r -o "$sample" -g "$i" -s 'Rhizobium leguminosarum' -c 40
-
-done
-```
-
-## 2. Send results back to info cluster
-```bash
-#compress results
-#!/bin/bash
-#SBATCH --time=00-3:00:00
-#SBATCH --account=def-batstone
-#SBATCH --mem=3G
-#SBATCH --cpus-per-task=1
-#SBATCH --mail-user=sux21@mcmaster.ca
-#SBATCH --mail-type=ALL
-tar -czvf pgap-scaffolds.tar.gz pgap-scaffolds
-
-#verify data integrity with MD5
-md5sum pgap-scaffolds.tar.gz > pgap-scaffolds.md5
-
-#files transfer
-scp pgap-scaffolds.tar.gz xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
-scp pgap-scaffolds.md5 xingyuan@info.mcmaster.ca:/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap
-
-#verify file integrity (do it on info)
-md5sum -c pgap-scaffolds.md5
-
-#extract results
-tar -xzvf pgap-scaffolds.tar.gz
-```
 ## -------------- Above are old commands ---------------
 
 ## 3. Gene presence absence analysis using Panaroo
@@ -235,8 +150,66 @@ done
 ```
 
 ## 4. gene gain analysis (for each 26 pangenome)
+Work done on info2020
 
-Write an R script to find genes gained and output them in FASTA format
+R code to find genes present in derived isolates but not in its most probable ancestors
+```r
+#Save as find_gene_gain.R
+
+#install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
+
+#load packages
+library(dplyr, lib.loc	= "/home/xingyuan/tools/R_library")
+library(magrittr, lib.loc	= "/home/xingyuan/tools/R_library")
+
+#remove all variables existed in the working directory
+rm(list=ls())
+
+#read most probable ancestor name from command line argument
+mpa <- commandArgs(trailingOnly = TRUE)
+
+find_gene_gain <- function(mpa) {
+  gene_pre_abs_tab <- read.table(paste0("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/", i, "-pav-analysis/panaroo_results/gene_presence_absence.Rtab"), header = TRUE)
+
+  gene_pre_abs_csv <- read.csv(paste0("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/", i, "-pav-analysis/panaroo_results/gene_presence_absence.csv"), header = TRUE) 
+  
+  gene_pre_abs_csv2 <- gene_pre_abs_csv %>%
+    pivot_longer(cols = c(4:ncol(gene_pre_abs_csv)), names_to = "derived", values_to = "derived_annotation_id") %>%
+    filter(!grepl("Rht", derived, fixed = FALSE)) %>% #remove rows with ancestral isolate
+    mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #rename isolate
+  
+  gene_data_csv <- read.csv(paste0("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/", i, "-pav-analysis/panaroo_results/gene_data.csv"), header = TRUE)
+  
+  derived_subset <- gene_pre_abs_tab %>%
+    pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "derived", values_to = "derived_pres_abs") %>%
+    filter(!grepl("Rht", derived, fixed = FALSE)) %>% #remove "Rht" samples and make a subset for the derived isolates
+    mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #rename isolate
+  
+  ancestral_subset <- gene_pre_abs_tab %>%
+    pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "MPA", values_to = "MPA_pres_abs") %>%
+    filter(grepl("Rht", MPA, fixed = FALSE)) #select "Rht" samples and make a subset for ancestral strains
+  
+  #join derived_subset and ancestral_subset
+  pres_abs_data <- left_join(derived_subset, ancestral_subset, by = "Gene") %>%
+    left_join(gene_pre_abs_csv[,c("Gene","Non.unique.Gene.name","Annotation")], by = "Gene")
+  
+  #obtain genes gained (1 in isolate, 0 in MPA)
+  genes_gained <- filter(pres_abs_data, derived_pres_abs == 1 & MPA_pres_abs == 0) %>%
+    left_join(gene_pre_abs_csv2[,c("Gene", "derived", "derived_annotation_id")], by = c("Gene", "derived")) %>% #add annotation id
+    distinct(Gene, .keep_all = TRUE) %>% #only keep unique genes
+    mutate(derived_annotation_id = str_remove(derived_annotation_id, "_pseudo")) %>% #remove "_pseudo" from anntation id as gene_data_csv does not has this
+    left_join(gene_data_csv, by = c("derived"="gff_file", "derived_annotation_id"="annotation_id")) %>% #add DNA sequence
+    mutate(derived_annotation_id2 = paste(derived, derived_annotation_id, sep = "_"), .after = derived_annotation_id) #include derived isolate name in derived_annotation_id
+  
+  #write genes gained to a FASTA file
+  genes_gained$derived_annotation_id2 <- paste0(">", genes_gained$derived_annotation_id2)
+  
+  genes_gained_fasta <- c(rbind(genes_gained$derived_annotation_id2, genes_gained$dna_sequence))
+  
+  write(x = genes_gained_fasta, file = paste0("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/", i, "_gene_gain.fasta"))
+}
+```
+
 ```r
 #Open R on info2020
 R
