@@ -220,7 +220,7 @@ for (i in 1:length(mpa_names)) {
 ```
 
 
-## 3. Which ancestral strain mostly had the genes gained?
+## 3. Which ancestral isolates are the genes gained originated
 
 Blastn Version: 2.16.0 <br>
 Work done on info2020
