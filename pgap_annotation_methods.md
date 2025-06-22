@@ -260,7 +260,7 @@ done
 Remove empty files
 ```bash
 for i in *csv; do
-if [ ! -s $i ]; then
+if [ ! -s $i ]; then #remove files if their size is zero
   rm -f $i
 fi
 done
