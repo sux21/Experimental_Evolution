@@ -225,9 +225,10 @@ for (i in 1:length(mpa_names)) {
 Blastn Version: 2.16.0 <br>
 Work done on info2020
 
+Align DNA sequences of genes gained to all 56 ancestral genomes
+```bash
 specify format of output: qacc (Query accession), qlen (Query sequence length), sacc (Subject accession), sstart (Start of alignment in subject), send (End of alignment in subject), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
 
-```bash
 for genes_gain_file in *_gene_gain.fasta; do
 gene_gain=${genes_gain_file%.fasta}
 
@@ -249,8 +250,8 @@ done
 done
 ```
 
+Add variable names for the file
 ```bash
-#add variable names for the file
 for i in *blast.csv; do
 sed -i '1s/^/qacc,qlen,sacc,sstart,send,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
 done
