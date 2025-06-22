@@ -257,61 +257,11 @@ sed -i '1s/^/qacc,qlen,sacc,sstart,send,evalue,bitscore,length,pident,nident,gap
 done
 ```
 
-Investigate the BLAST results in R
-```R
-#Open R
-R
-
-#install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
-
-#load packages
-library("tidyverse", lib.loc	= "/home/xingyuan/tools/R_library")
-
-#load BLAST output
-blast_out <- vector(mode = "list", length = length(list.files(path = ".", pattern = "_blast.csv")))
-
-names(blast_out) <- list.files(path = ".", pattern = "_blast.csv")
-
-for (i in names(blast_out)) {
-  blast_out[[i]] <- read.csv(i, header = TRUE)
-}
-
-#add ancestral strain name as a column to each data frame
-pgap_blast_results2 <- mapply(cbind, pgap_blast_results, "reference_genome" = names(pgap_blast_results), SIMPLIFY = F)
-
-
-#merge all data frames in the list to one
-blast_results_df <- pgap_blast_results2 %>% 
-  Reduce(function(dtf1,dtf2) bind_rows(dtf1,dtf2), .) %>%
-  mutate(reference_genome = str_extract(reference_genome, "Rht_[:digit:]+_(N|C)"),
-         derived_isolate = str_extract(qacc, "[:digit:]+_[:digit:]+_[:alnum:]+"))
-
-#load metadata of ancestral isolate community and MPA of the derived isolate
-Klinger_Rhizobium_2008strains <- readxl::read_xlsx("/Users/xingyuansu/Desktop/rhizo_ee/Klinger_Rhizobium_2008strains.xlsx") %>%
-  mutate(ancestral_isolate = str_extract(sample_name, "Rht_[:digit:]+_(N|C)")) %>%
-  select(ancestral_isolate, community) %>%
-  drop_na(community) %>%
-  mutate(number = formatC(as.numeric(str_extract(ancestral_isolate, "[:digit:]+")), width = 3, flag = "0"),
-         group = str_extract(ancestral_isolate, "(N|C)"),
-         ancestral_isolate = paste0("Rht", "_", number, "_", group)) %>%
-  select(-c(number, group))
-
-MPA <- read.table("/Users/xingyuansu/Desktop/rhizo_ee/most_prob_ancestors.txt") %>%
-  group_by(V1) %>%
-  slice_max(tibble(V3), n = 1) %>% #select the highest ANI value for each derived isolate
-  select(V1, V2) %>%
-  rename(derived_isolate=V1, MPA=V2) %>% #rename variable
-  mutate(derived_isolate = str_extract(derived_isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
-         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)")) #rename strain name
-
-blast_results_df2 <- left_join(blast_results_df, MPA, by="derived_isolate", relationship = "many-to-many") 
-
+Remove empty files
+```bash
+for i in *csv; do
+if [ ! -s $i ]; then
+  rm -f $i
+fi
+done
 ```
-
-
-
-
-
-
-
-
