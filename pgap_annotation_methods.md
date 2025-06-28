@@ -172,6 +172,6 @@ done
 Add variable names for the file
 ```bash
 for i in *blast.csv; do
-sed -i '1s/^/qacc,qlen,sacc,sstart,send,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
+sed -i '1s/^/qacc qlen sacc slen qstart qend sstart send evalue bitscore length pident nident mismatch gapopen gaps sstrand qcovs qcovhsp qcovus\n/' $i
 done
 ```
