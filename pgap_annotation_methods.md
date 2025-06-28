@@ -204,7 +204,7 @@ find_gene_gain <- function(mpa) {
   
   genes_gained_fasta <- c(rbind(genes_gained$derived_annotation_id2, genes_gained$dna_sequence))
   
-  write(x = genes_gained_fasta, file = paste0(mpa, "_gene_gain.fasta"))
+  write(x = genes_gained_fasta, file = paste0(mpa, "_gene_gain.fasta2"))
 }
 
 #loop through all 26 groups of derived isolates and their most probable ancestors
