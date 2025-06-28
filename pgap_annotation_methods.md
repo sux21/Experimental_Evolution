@@ -195,7 +195,6 @@ find_gene_gain <- function(mpa) {
   #obtain genes gained (1 in isolate, 0 in MPA)
   genes_gained <- filter(pres_abs_data, derived_pres_abs == 1 & MPA_pres_abs == 0) %>%
     left_join(gene_pre_abs_csv2[,c("Gene", "derived", "derived_annotation_id")], by = c("Gene", "derived")) %>% #add annotation id
-    distinct(Gene, .keep_all = TRUE) %>% #only keep unique genes
     mutate(derived_annotation_id = str_remove(derived_annotation_id, "_pseudo")) %>% #remove "_pseudo" from anntation id as gene_data_csv does not has this
     left_join(gene_data_csv, by = c("derived"="gff_file", "derived_annotation_id"="annotation_id")) %>% #add DNA sequence
     mutate(derived_annotation_id2 = paste(derived, derived_annotation_id, sep = "_"), .after = derived_annotation_id) #include derived isolate name in derived_annotation_id
