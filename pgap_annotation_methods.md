@@ -49,7 +49,7 @@ find . -type d \! -exec test -e '{}/annot_with_genomic_fasta.gff' \; -print
 
 ## -------------- Above are old commands ---------------
 
-## 3. Gene presence absence analysis using Panaroo
+## 4. Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
 Panaroo Version: 1.5.2 <br>
@@ -149,101 +149,21 @@ for i in *pav*; do
 done
 ```
 
-## 4. gene gain analysis (for each 26 pangenome)
-Work done on info2020
-
-```r
-#Open R
-R
-
-#install.packages("tidyverse", lib = "/home/xingyuan/tools/R_library", repos = "http://cran.us.r-project.org") #lib = where to install the packages
-
-#load packages
-library(tidyverse, lib.loc = "/home/xingyuan/tools/R_library")
-
-#remove all variables existed in the working directory
-rm(list=ls())
-
-setwd("/home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_pgap/")
-
-#make a function to find genes gained for each most probable ancestor and derived isolate group
-find_gene_gain <- function(mpa) {
-  gene_pre_abs_tab <- read.table(paste0(mpa, "-pav-analysis/panaroo_results/gene_presence_absence.Rtab"), header = TRUE)
-
-  gene_pre_abs_csv <- read.csv(paste0(mpa, "-pav-analysis/panaroo_results/gene_presence_absence.csv"), header = TRUE) 
-  
-  gene_pre_abs_csv2 <- gene_pre_abs_csv %>%
-    pivot_longer(cols = c(4:ncol(gene_pre_abs_csv)), names_to = "derived", values_to = "derived_annotation_id") %>%
-    filter(!grepl("Rht", derived, fixed = FALSE)) %>% #remove rows with ancestral isolate
-    mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #rename isolate
-  
-  gene_data_csv <- read.csv(paste0(mpa, "-pav-analysis/panaroo_results/gene_data.csv"), header = TRUE)
-  
-  derived_subset <- gene_pre_abs_tab %>%
-    pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "derived", values_to = "derived_pres_abs") %>%
-    filter(!grepl("Rht", derived, fixed = FALSE)) %>% #remove "Rht" samples and make a subset for the derived isolates
-    mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #rename isolate
-  
-  ancestral_subset <- gene_pre_abs_tab %>%
-    pivot_longer(cols = c(2:ncol(gene_pre_abs_tab)), names_to = "MPA", values_to = "MPA_pres_abs") %>%
-    filter(grepl("Rht", MPA, fixed = FALSE)) #select "Rht" samples and make a subset for ancestral strains
-  
-  #join derived_subset and ancestral_subset
-  pres_abs_data <- left_join(derived_subset, ancestral_subset, by = "Gene") %>%
-    left_join(gene_pre_abs_csv[,c("Gene","Non.unique.Gene.name","Annotation")], by = "Gene")
-  
-  #obtain genes gained (1 in isolate, 0 in MPA)
-  genes_gained <- filter(pres_abs_data, derived_pres_abs == 1 & MPA_pres_abs == 0) %>%
-    left_join(gene_pre_abs_csv2[,c("Gene", "derived", "derived_annotation_id")], by = c("Gene", "derived")) %>% #add annotation id
-    mutate(derived_annotation_id = str_remove(derived_annotation_id, "_pseudo")) %>% #remove "_pseudo" from anntation id as gene_data_csv does not has this
-    left_join(gene_data_csv, by = c("derived"="gff_file", "derived_annotation_id"="annotation_id")) %>% #add DNA sequence
-    mutate(derived_annotation_id2 = paste(derived, derived_annotation_id, sep = "_"), .after = derived_annotation_id) #include derived isolate name in derived_annotation_id
-  
-  #write genes gained to a FASTA file
-  genes_gained$derived_annotation_id2 <- paste0(">", genes_gained$derived_annotation_id2)
-  
-  genes_gained_fasta <- c(rbind(genes_gained$derived_annotation_id2, genes_gained$dna_sequence))
-  
-  write(x = genes_gained_fasta, file = paste0(mpa, "_gene_gain.fasta2"))
-}
-
-#loop through all 26 groups of derived isolates and their most probable ancestors
-
-mpa_names <- list.files(path = ".", pattern = "-pav-analysis")
-mpa_names <- unique(str_extract(mpa_names, ".*(?=-pav)"))
-mpa_names
-
-for (i in 1:length(mpa_names)) {
-  find_gene_gain(mpa_names[i])
-}
-```
-
-
-## 3. Which ancestral isolates are the genes gained originated
+## 5. Which ancestral isolates are the genes gained originated
 
 Blastn Version: 2.16.0 <br>
 Work done on info2020
 
 Align DNA sequences of genes gained to all 56 ancestral genomes
 ```bash
-specify format of output: qacc (Query accession), qlen (Query sequence length), sacc (Subject accession), sstart (Start of alignment in subject), send (End of alignment in subject), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
+for i in *_gene_gain.fasta; do
+mpa_group=${i%_gene_gain.fasta}
 
-for genes_gain_file in *_gene_gain.fasta; do
-gene_gain=${genes_gain_file%.fasta}
+for reference in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/Rht*; do
+j=${reference#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
+ancestal_isolate=${j%.filtered.fasta}
 
-#skip files with no DNA sequences
-content=$(cat -A $genes_gain_file | head -1) 
-if [ $content = "$" ]; then
-  continue
-fi
-
-for reference_file in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/Rht*; do
-j=${reference_file#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
-reference=${j%.filtered.fasta}
-
-/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query $genes_gain_file -subject $reference_file -outfmt "10 qacc qlen sacc sstart send evalue bitscore length pident nident gapopen gaps qcovs" > pgap_"$gene_gain"_"$reference"_blast.csv
-
-/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query $genes_gain_file -subject $reference_file > pgap_"$gene_gain"_"$reference"_blast.out
+/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query $i -subject $reference -outfmt "10 qacc qlen sacc slen qstart qend sstart send evalue bitscore length pident nident mismatch gapopen gaps sstrand qcovs qcovhsp qcovus" > MPA_"$mpa_group"_subject_"$ancestal_isolate"_blast.csv
 
 done
 done
@@ -253,14 +173,5 @@ Add variable names for the file
 ```bash
 for i in *blast.csv; do
 sed -i '1s/^/qacc,qlen,sacc,sstart,send,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
-done
-```
-
-Remove empty files
-```bash
-for i in *csv; do
-if [ ! -s $i ]; then #remove files if their size is zero
-  rm -f $i
-fi
 done
 ```
