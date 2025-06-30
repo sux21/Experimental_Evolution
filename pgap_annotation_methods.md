@@ -151,7 +151,7 @@ done
 
 ## 5. Which ancestral isolates are the genes gained originated
 
-Blastn Version: 2.16.0 <br>
+Blastn Version: 2.16.0+ <br>
 Work done on info2020
 
 Align DNA sequences of genes gained to all 56 ancestral genomes
@@ -168,6 +168,7 @@ ancestal_isolate=${j%.filtered.fasta}
 done
 done
 ```
+Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb Miller (2000), "A greedy algorithm for aligning DNA sequences", J Comput Biol 2000; 7(1-2):203-14.
 
 Add variable names for the file
 ```bash
