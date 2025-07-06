@@ -274,8 +274,47 @@ nohup /usr/local/bin/fastANI --ql 19_X_X_query.txt --rl reference.txt --threads 
 ```
 
 # Step 4 - Find gene presence absence variations 
+## 1A. Annotate genome using PGAP
+### Use cleaned genomes for 19_1_9 and 19_4_7
 
-## 1. Annotate genome using Bakta
+```bash
+ln -s /home/xingyuan/rhizo_ee/split_genomes/19_1_9_output/output_bins/SemiBin_0.fa 19_1_9_SemiBin_0.fasta
+ln -s /home/xingyuan/rhizo_ee/split_genomes/19_4_7_output/output_bins/SemiBin_1.fa 19_4_7_SemiBin_1.fasta
+```
+
+### Filter sequences shorter than 200 bp (pgap only takes sequences equal or longer than 200 bp)
+https://github.com/shenwei356/seqkit
+
+Seqkit Version: v2.7.0 <br>
+Work done on info20
+
+```bash
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
+file_in=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
+file_out=${file_in//.fasta/.filtered.fasta}
+
+/2/scratch/batstonelab/bin/seqkit seq --min-len 200 --threads 5 /home/xingyuan/rhizo_ee/derived+original_genomes/"$file_in" > /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$file_out"
+done
+```
+
+**W Shen**, S Le, Y Li*, F Hu*. SeqKit: a cross-platform and ultrafast toolkit for FASTA/Q file manipulation. ***PLOS ONE***. doi:10.1371/journal.pone.0163962.
+
+### Run pgap (This will take a long time, about 4 to 5 hours per sample)
+
+Version: 2025-05-06.build7983 <br>
+Work done on info20
+
+```bash
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.filtered.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
+sample=${j%.filtered.fasta}
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" --prefix "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
+done
+```
+
+## 1B. Annotate genome using Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
 
 Bakta Version: 1.11.0 <br>
@@ -340,50 +379,9 @@ nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --c
 #/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
 ```
 
-## 3. Align DNA sequences of genes gained to each of the ancestral strains
-
-Blastn Version: 2.16.0 <br>
-Work done on info2020
-
-Previous steps are done in R.
-
-```bash
-#specify format of output: qacc (Query accession), sacc (Subject accession), evalue (Expect value), bitscore (Bit score), length (Alignment length), pident (Percentage of identical matches), nident (Number of identical matches), gapopen (Number of gap openings), gaps (Total number of gaps), qcovs (Query Coverage Per Subject)
-
-for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
-j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
-sample=${j%.fasta}
-
-/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query prokka_genes_gain.fasta -subject $i -outfmt "10 qacc sacc evalue bitscore length pident nident gapopen gaps qcovs" > "$sample"_blast.csv
-
-done
-
-#add variable names for the file
-for i in *blast.csv; do
-sed -i '1s/^/qacc,sacc,evalue,bitscore,length,pident,nident,gapopen,gaps,qcovs\n/' $i
-done
-```
 
 
-## 4. Separate gene presence absence analysis for 4_4_10 and Rht_773_N
 
-Panaroo Version: 1.5.2 <br>
-Work done on info2020
-
-```bash
-#create a new directory for 4_4_10 and Rht_773_N
-mkdir pav_for_4410and773
-cd pav_for_4410and773
-
-#rename files
-for i in */*.gff; do
-sample=${i%/*.gff};
-ln -s $i "$sample".gff
-done
-
-#run panaroo 
-nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict --threshold 0.9 &
-```
 
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
