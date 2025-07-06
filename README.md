@@ -273,7 +273,7 @@ Reference = 56 original strains
 nohup /usr/local/bin/fastANI --ql 19_X_X_query.txt --rl reference.txt --threads 5 --matrix -o 19_X_X_most_prob_ancestors.txt &
 ```
 
-# Step 4 - Find gene presence absence variations 
+# Step 4 - Gene gain and loss analysis
 ## 1A. Annotate genome using PGAP
 ### Use cleaned genomes for 19_1_9 and 19_4_7
 
