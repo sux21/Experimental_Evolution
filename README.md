@@ -388,8 +388,9 @@ nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --c
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 ## 0. Clean up the reads for the two derived isolates (19_4_7, 19_1_9). Recall the two derived isolates, 19_4_7 and 19_1_9, are contaminated. Align the trimmed reads to the cleaned genomes and only use the aligned reads for subsequent steps.  
-BWA Version: 0.7.17-r1188 <br>
-Samtools Version: 1.13 (using htslib 1.13) <br>
+BWA version: 0.7.17-r1188 <br>
+Samtools version: 1.13 (using htslib 1.13) <br>
+bedtools version:2.31.1
 Work done on info2020
 
 Index the cleaned genomes of 19_1_9 and 19_4_7 for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
@@ -407,6 +408,39 @@ r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R2_P*
 ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$i"*SemiBin*fasta
 
 /usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o "$i".bam - 
+done
+```
+
+Only keep reads that are paired-end and aligned in proper pair (flag 3 based on the output of ```/usr/local/bin/samtools flags paired,proper_pair```). 
+```bash
+for i in *bam; do
+/usr/local/bin/samtools view -u -f 3 -o ${i/.bam/.cleaned.bam} $i
+done
+```
+
+Verify the number of reads are correct
+```
+/usr/local/bin/samtools view -b -f 3 -c 19_1_9.bam 
+857028
+/usr/local/bin/samtools view -b -c 19_1_9.cleaned.bam 
+857028
+/usr/local/bin/samtools view -b -f 3 -c 19_4_7.bam 
+2380142
+/usr/local/bin/samtools view -b -c 19_4_7.cleaned.bam 
+2380142
+```
+
+Sort the reads by read name (-n option). Required by ```bedtools bamtofastq```. 
+```bash
+for i in *cleaned.bam; do
+/usr/local/bin/samtools sort -n -o ${i/.cleaned.bam/.cleaned.qsort.bam} $i
+done
+```
+
+Convert bam to fastq
+```bash
+for i in *cleaned.qsort.bam; do
+/home/xingyuan/tools/miniconda3/bin/bedtools bamtofastq -i $i -fq ${i/.bam/_R1.fastq} -fq2 ${i/.bam/_R2.fastq}
 done
 ```
 
@@ -453,8 +487,7 @@ for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 done
 ```
 
-### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS), and produce alignment statistics (samtools stats)
-Samtools stats: http://www.htslib.org/doc/samtools-stats.html
+### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS)
 
 ```bash
 #!/bin/bash
