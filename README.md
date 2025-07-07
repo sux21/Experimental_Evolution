@@ -387,7 +387,30 @@ nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --c
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
-## 1. Run BWA 
+## 0. Clean up the reads for the two derived isolates (19_4_7, 19_1_9). Recall the two derived isolates, 19_4_7 and 19_1_9, are contaminated. Align the trimmed reads to the cleaned genomes and only use the aligned reads for subsequent steps.  
+BWA Version: 0.7.17-r1188 <br>
+Samtools Version: 1.13 (using htslib 1.13) <br>
+Work done on info2020
+
+Index the cleaned genomes of 19_1_9 and 19_4_7 for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
+```bash
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/{19_1_9,19_4_7}*SemiBin*fasta; do
+/usr/bin/bwa index "$i" 
+done
+```
+
+Use BWA to align reads to genomes
+```bash
+for i in 19_1_9 19_4_7; do
+r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R1_P*
+r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R2_P*
+ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$i"*SemiBin*fasta
+
+/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o "$i".bam - 
+done
+```
+
+## 1. Align the trimmed reads of derived isolate to genomes of its most probable ancestor
 https://bio-bwa.sourceforge.net/
 
 **Useful tools: decoding SAM flags: https://broadinstitute.github.io/picard/explain-flags.html**
@@ -425,11 +448,6 @@ write.table(MPA[,1:2], file="./MPA_data/derived_mpa.csv", sep=",", quote=FALSE, 
 
 ### Index 56 genomes of ancestral strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
 ```bash
-mkdir ancestral_index
-cd ancestral_index
-```
-
-```bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 /usr/bin/bwa index "$i" 
 done
@@ -440,17 +458,6 @@ Samtools stats: http://www.htslib.org/doc/samtools-stats.html
 
 ```bash
 #!/bin/bash
-# Usage: ./ThisScript file.csv
-#csv file has the following format:
-#-----------------------------------------
-#Derived_Strains,Most_Probable_Ancestor
-#10_1_1,Rht_460_C
-#10_1_5,Rht_462_C
-#10_1_8,Rht_460_C
-#.
-#.
-#.
-#-----------------------------------------
 while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
 r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R1_P*
 r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R2_P*
