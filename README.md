@@ -426,11 +426,12 @@ write.table(MPA[,1:2], file="./MPA_data/derived_mpa.csv", sep=",", quote=FALSE, 
 ### Index 56 genomes of ancestral strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
 ```bash
 mkdir ancestral_index
+cd ancestral_index
 ```
 
 ```bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
-/usr/bin/bwa index ancestral_index/"$i"
+/usr/bin/bwa index "$i" 
 done
 ```
 
