@@ -398,7 +398,7 @@ Work done on info2020
 
 ### Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor
 
-```bash
+```
 10_1_1,Rht_460_C
 10_1_5,Rht_462_C
 10_1_8,Rht_460_C
@@ -407,11 +407,30 @@ Work done on info2020
 .
 ```
 
-### Index 56 genomes of original strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
+```r
+#load FastANI results and metadata
+ani_values <- read.table("./MPA_data/most_prob_ancestors.txt")
+
+#select the ancestral isolate with the highest ANI (defined as the most probable ancestor in this study)
+MPA <- ani_values %>%
+  rename(isolate=V1, MPA=V2, ANI=V3, match=V4, total=V5) %>% #rename variable
+  mutate(isolate = str_extract(isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
+         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)"))  %>% #rename isolates
+  group_by(isolate) %>%
+  slice_max(tibble(ANI), n = 1) #select the top 1 ANI values for each derived isolate (MPA)
+
+#prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor
+write.table(MPA[,1:2], file="./MPA_data/derived_mpa.csv", sep=",", quote=FALSE, row.names=FALSE, col.names=FALSE)
+```
+
+### Index 56 genomes of ancestral strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
 ```bash
-#!/bin/bash
-for i in Rht*fasta; do
-/usr/bin/bwa index $i
+mkdir ancestral_index
+```
+
+```bash
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
+/usr/bin/bwa index ancestral_index/"$i"
 done
 ```
 
