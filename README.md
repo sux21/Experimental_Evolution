@@ -393,14 +393,14 @@ Samtools version: 1.13 (using htslib 1.13) <br>
 bedtools version:2.31.1
 Work done on info2020
 
-Index the cleaned genomes of 19_1_9 and 19_4_7 for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
+Index the cleaned genomes of 19_1_9 and 19_4_7 for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa).
 ```bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/{19_1_9,19_4_7}*SemiBin*fasta; do
 /usr/bin/bwa index "$i" 
 done
 ```
 
-Use BWA to align reads to genomes
+Use BWA to align reads to the cleaned genomes (-M mark shorter split hits as secondary).
 ```bash
 for i in 19_1_9 19_4_7; do
 r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R1_P*
@@ -411,37 +411,109 @@ ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$i"*SemiBin*fasta
 done
 ```
 
-Only keep reads that are paired-end and aligned in proper pair (flag 3 based on the output of ```/usr/local/bin/samtools flags paired,proper_pair```). 
+Only keep reads that are mapped and paired. 
+```bash
+/usr/local/bin/samtools flags
+
+#About: Convert between textual and numeric flag representation
+#Usage: samtools flags FLAGS...
+#
+#Each FLAGS argument is either an INT (in decimal/hexadecimal/octal) representing
+#a combination of the following numeric flag values, or a comma-separated string
+#NAME,...,NAME representing a combination of the following flag names:
+#
+#   0x1     1  PAIRED         paired-end / multiple-segment sequencing technology
+#   0x2     2  PROPER_PAIR    each segment properly aligned according to aligner
+#   0x4     4  UNMAP          segment unmapped
+#   0x8     8  MUNMAP         next segment in the template unmapped
+#  0x10    16  REVERSE        SEQ is reverse complemented
+#  0x20    32  MREVERSE       SEQ of next segment in template is rev.complemented
+#  0x40    64  READ1          the first segment in the template
+#  0x80   128  READ2          the last segment in the template
+# 0x100   256  SECONDARY      secondary alignment
+# 0x200   512  QCFAIL         not passing quality controls or other filters
+# 0x400  1024  DUP            PCR or optical duplicate
+# 0x800  2048  SUPPLEMENTARY  supplementary alignment
+```
+
 ```bash
 for i in *bam; do
-/usr/local/bin/samtools view -u -f 3 -o ${i/.bam/.cleaned.bam} $i
+/usr/local/bin/samtools view -u -f 1 -F 12 -o ${i/.bam/.mapped_and_paired.bam} $i #remove unmapped reads and singletons (one read maps and the other does not map)
 done
 ```
 
-Verify the number of reads are correct
-```
-/usr/local/bin/samtools view -b -f 3 -c 19_1_9.bam 
-857028
-/usr/local/bin/samtools view -b -c 19_1_9.cleaned.bam 
-857028
-/usr/local/bin/samtools view -b -f 3 -c 19_4_7.bam 
-2380142
-/usr/local/bin/samtools view -b -c 19_4_7.cleaned.bam 
-2380142
+Verify the reads are 100% mapped and 0% singletons
+```bash
+/usr/local/bin/samtools flagstat 19_1_9.mapped_and_paired.bam
+#859371 + 0 in total (QC-passed reads + QC-failed reads)
+#859206 + 0 primary
+#165 + 0 secondary
+#0 + 0 supplementary
+#0 + 0 duplicates
+#0 + 0 primary duplicates
+#859371 + 0 mapped (100.00% : N/A)
+#859206 + 0 primary mapped (100.00% : N/A)
+#859206 + 0 paired in sequencing
+#429603 + 0 read1
+#429603 + 0 read2
+#856918 + 0 properly paired (99.73% : N/A)
+#859206 + 0 with itself and mate mapped
+#0 + 0 singletons (0.00% : N/A)
+#910 + 0 with mate mapped to a different chr
+#874 + 0 with mate mapped to a different chr (mapQ>=5)
+
+/usr/local/bin/samtools flagstat 19_4_7.mapped_and_paired.bam
+#2386764 + 0 in total (QC-passed reads + QC-failed reads)
+#2386370 + 0 primary
+#394 + 0 secondary
+#0 + 0 supplementary
+#0 + 0 duplicates
+#0 + 0 primary duplicates
+#2386764 + 0 mapped (100.00% : N/A)
+#2386370 + 0 primary mapped (100.00% : N/A)
+#2386370 + 0 paired in sequencing
+#1193185 + 0 read1
+#1193185 + 0 read2
+#2379888 + 0 properly paired (99.73% : N/A)
+#2386370 + 0 with itself and mate mapped
+#0 + 0 singletons (0.00% : N/A)
+#1392 + 0 with mate mapped to a different chr
+#1324 + 0 with mate mapped to a different chr (mapQ>=5)
 ```
 
 Sort the reads by read name (-n option). Required by ```bedtools bamtofastq```. 
 ```bash
-for i in *cleaned.bam; do
-/usr/local/bin/samtools sort -n -o ${i/.cleaned.bam/.cleaned.qsort.bam} $i
+for i in *mapped_and_paired.bam; do
+/usr/local/bin/samtools sort -n -o ${i/mapped_and_paired.bam/mapped_and_paired.qsort.bam} $i
 done
 ```
 
 Convert bam to fastq
 ```bash
-for i in *cleaned.qsort.bam; do
-/home/xingyuan/tools/miniconda3/bin/bedtools bamtofastq -i $i -fq ${i/.bam/_R1.fastq} -fq2 ${i/.bam/_R2.fastq}
+for i in *mapped_and_paired.qsort.bam; do
+/home/xingyuan/tools/miniconda3/bin/bedtools bamtofastq -i $i -fq ${i/.bam/.R1.fastq} -fq2 ${i/.bam/.R2.fastq}
 done
+```
+
+Verify the number of reads are correct
+```bash
+grep -c "@A00419" 19_1_9.mapped_and_paired.qsort.R1.fastq
+#429603
+grep -c "@A00419" 19_1_9.mapped_and_paired.qsort.R2.fastq
+#429603
+grep -c "@A00419" 19_4_7.mapped_and_paired.qsort.R1.fastq
+#1193185
+grep -c "@A00419" 19_4_7.mapped_and_paired.qsort.R2.fastq
+#1193185
+```
+
+Make a directory with symbolic link to the cleaned reads and other reads for BWA.
+```bash
+mkdir /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads
+cd /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads
+ln -s /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*_P_* .
+rm -f 19_1_9* 19_4_7* #remove the old reads of the two contaminated samples
+ln -s /home/xingyuan/rhizo_ee/fastp_results/clean_reads_for_19_X_X/*fastq .
 ```
 
 ## 1. Align the trimmed reads of derived isolate to genomes of its most probable ancestor
