@@ -393,21 +393,21 @@ Samtools version: 1.13 (using htslib 1.13) <br>
 bedtools version:2.31.1
 Work done on info2020
 
-Index the cleaned genomes of 19_1_9 and 19_4_7 for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa).
+Index the decontaminated genomes of 19_1_9 and 19_4_7 for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa).
 ```bash
-for i in /home/xingyuan/rhizo_ee/derived+original_genomes/{19_1_9,19_4_7}*SemiBin*fasta; do
+for i in l{19_1_9,19_4_7}*SemiBin*fasta; do
 /usr/bin/bwa index "$i" 
 done
 ```
 
-Use BWA to align reads to the cleaned genomes (-M mark shorter split hits as secondary).
+Use BWA to align reads to the decontaminated genomes.
 ```bash
 for i in 19_1_9 19_4_7; do
 r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R1_P*
 r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R2_P*
 ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$i"*SemiBin*fasta
 
-/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o "$i".bam - 
+/usr/bin/bwa mem -t 5 $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o "$i".bam - 
 done
 ```
 
@@ -438,17 +438,17 @@ Only keep reads that are mapped and paired.
 
 ```bash
 for i in *bam; do
-/usr/local/bin/samtools view -u -f 1 -F 12 -o ${i/.bam/.mapped_and_paired.bam} $i #remove unmapped reads and singletons (one read maps and the other does not map)
+/usr/local/bin/samtools view -u -f 1 -F 12 -o ${i/.bam/_mapped_and_paired.bam} $i #remove unmapped reads and singletons (one read maps and the other does not map)
 done
 ```
 
 Verify the reads are 100% mapped and 0% singletons
 ```bash
-/usr/local/bin/samtools flagstat 19_1_9.mapped_and_paired.bam
+/usr/local/bin/samtools flagstat 19_1_9_mapped_and_paired.bam
 #859371 + 0 in total (QC-passed reads + QC-failed reads)
 #859206 + 0 primary
-#165 + 0 secondary
-#0 + 0 supplementary
+#0 + 0 secondary
+#165 + 0 supplementary
 #0 + 0 duplicates
 #0 + 0 primary duplicates
 #859371 + 0 mapped (100.00% : N/A)
@@ -462,11 +462,11 @@ Verify the reads are 100% mapped and 0% singletons
 #910 + 0 with mate mapped to a different chr
 #874 + 0 with mate mapped to a different chr (mapQ>=5)
 
-/usr/local/bin/samtools flagstat 19_4_7.mapped_and_paired.bam
+/usr/local/bin/samtools flagstat 19_4_7_mapped_and_paired.bam
 #2386764 + 0 in total (QC-passed reads + QC-failed reads)
 #2386370 + 0 primary
-#394 + 0 secondary
-#0 + 0 supplementary
+#0 + 0 secondary
+#394 + 0 supplementary
 #0 + 0 duplicates
 #0 + 0 primary duplicates
 #2386764 + 0 mapped (100.00% : N/A)
@@ -481,39 +481,38 @@ Verify the reads are 100% mapped and 0% singletons
 #1324 + 0 with mate mapped to a different chr (mapQ>=5)
 ```
 
-Sort the reads by read name (-n option). Required by ```bedtools bamtofastq```. 
+Sort the reads by read name (-n option). Required by ``bedtools bamtofastq``. 
 ```bash
 for i in *mapped_and_paired.bam; do
 /usr/local/bin/samtools sort -n -o ${i/mapped_and_paired.bam/mapped_and_paired.qsort.bam} $i
 done
 ```
 
-Convert bam to fastq
+Convert bam to fastq.
 ```bash
 for i in *mapped_and_paired.qsort.bam; do
 /home/xingyuan/tools/miniconda3/bin/bedtools bamtofastq -i $i -fq ${i/.bam/.R1.fastq} -fq2 ${i/.bam/.R2.fastq}
 done
 ```
 
-Verify the number of reads are correct
+Verify the number of reads are correct.
 ```bash
-grep -c "@A00419" 19_1_9.mapped_and_paired.qsort.R1.fastq
+grep -c "@A00419" 19_1_9_mapped_and_paired.qsort.R1.fastq
 #429603
-grep -c "@A00419" 19_1_9.mapped_and_paired.qsort.R2.fastq
+grep -c "@A00419" 19_1_9_mapped_and_paired.qsort.R2.fastq
 #429603
-grep -c "@A00419" 19_4_7.mapped_and_paired.qsort.R1.fastq
+grep -c "@A00419" 19_4_7_mapped_and_paired.qsort.R1.fastq
 #1193185
-grep -c "@A00419" 19_4_7.mapped_and_paired.qsort.R2.fastq
+grep -c "@A00419" 19_4_7_mapped_and_paired.qsort.R2.fastq
 #1193185
 ```
 
 Make a directory with symbolic link to the cleaned reads and other reads for BWA.
 ```bash
-mkdir /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads
-cd /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads
-ln -s /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*_P_* .
+ln -s /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/*_P_* /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads
 rm -f 19_1_9* 19_4_7* #remove the old reads of the two contaminated samples
-ln -s /home/xingyuan/rhizo_ee/fastp_results/clean_reads_for_19_X_X/*fastq .
+ln -s /home/xingyuan/rhizo_ee/fastp_results/clean_reads_for_19_X_X/*fastq /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads
+ls 19_1_9* 19_4_7* #verify the reads are correct for these two samples
 ```
 
 ## 1. Align the trimmed reads of derived isolate to genomes of its most probable ancestor
@@ -562,15 +561,20 @@ done
 ### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS)
 
 ```bash
+mkdir bwa_output
+cd bwa_output
+```
+
+```bash
 #!/bin/bash
 while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
-r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R1_P*
-r2=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$a"_*R2_P*
-ref=/home/xingyuan/rhizo_ee/SNPS/"$b".fasta
+r1=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R1*
+r2=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R2*
+ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$b".fasta
 
 /usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - 
 
-done < $1
+done < ../derived_mpa.csv
 ```
 
 ## 2. Run picard to manipulate the SAM files
