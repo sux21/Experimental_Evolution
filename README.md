@@ -518,14 +518,11 @@ ls 19_1_9* 19_4_7* #verify the reads are correct for these two samples
 ## 1. Align the trimmed reads of derived isolate to genomes of its most probable ancestor
 https://bio-bwa.sourceforge.net/
 
-**Useful tools: decoding SAM flags: https://broadinstitute.github.io/picard/explain-flags.html**
-
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.13 (using htslib 1.13) <br>
 Work done on info2020
 
-### Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor
-
+Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor.
 ```
 10_1_1,Rht_460_C
 10_1_5,Rht_462_C
@@ -551,15 +548,14 @@ MPA <- ani_values %>%
 write.table(MPA[,1:2], file="./MPA_data/derived_mpa.csv", sep=",", quote=FALSE, row.names=FALSE, col.names=FALSE)
 ```
 
-### Index 56 genomes of ancestral strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa)
+Index 56 genomes of ancestral strains for bwa (Create files ending with .amb, .ann, .bwt, .pac, .sa).
 ```bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 /usr/bin/bwa index "$i" 
 done
 ```
 
-### Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS)
-
+Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS).
 ```bash
 mkdir bwa_output
 cd bwa_output
@@ -581,28 +577,35 @@ done < ../derived_mpa.csv
 Picard Version: 3.0.0 <br>
 Work done one info2020
 
-### (1) Reorder reads in the BAM file to match the contig ordering in reference file
+(1) Reorder reads in the BAM file to match the contig ordering in reference file. <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
 
-### Create sequence dictionary file (.dict) for the 56 original strains (Required for ReorderSam)
+Create sequence dictionary file (.dict) for the 56 original strains (Required for ReorderSam). <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard-
 
 ```bash
-#!/bin/bash
-for i in Rht*fasta; do
-ref=${i%.fasta}
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar CreateSequenceDictionary -R "$ref".fasta -O "$ref".dict
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
+j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
+sample_name=${j%.fasta}
+
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar CreateSequenceDictionary -R $i -O /home/xingyuan/rhizo_ee/derived+original_genomes/"$sample_name".dict
 done
 ```
 
-### Run ReorderSam
+Run ReorderSam.
 ```bash
-#!/bin/bash
-for i in *bam; do
-sample=${i%.bam}
-ref=${sample#*-}
+mkdir reorderSAM_output
+cd reorderSAM_output
+```
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R "$ref".fasta -I "$sample".bam -O "$sample".reordered.bam -SD "$ref".dict
+```bash
+for i in /home/xingyuan/rhizo_ee/snp_indel/bwa_output/*bam; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/bwa_output/}
+base_name=${j%.bam}
+mpa_name=${base_name#*-}
+
+for i in /home/xingyuan/rhizo_ee/snp_indel/bwa_output/*bam; do
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$mpa_name".fasta -I $i -O /home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/"$base_name".reordered.bam -SD /home/xingyuan/rhizo_ee/derived+original_genomes/"$mpa_name".dict
 done
 ```
 
