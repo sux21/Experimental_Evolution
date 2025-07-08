@@ -577,9 +577,6 @@ done < ../derived_mpa.csv
 Picard Version: 3.0.0 <br>
 Work done one info2020
 
-(1) Reorder reads in the BAM file to match the contig ordering in reference file. <br>
-https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
-
 Create sequence dictionary file (.dict) for the 56 original strains (Required for ReorderSam). <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard-
 
@@ -592,7 +589,9 @@ sample_name=${j%.fasta}
 done
 ```
 
-Run ReorderSam.
+Reorder reads in the BAM file to match the contig ordering in reference file. <br>
+https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
+
 ```bash
 mkdir reorderSAM_output
 cd reorderSAM_output
@@ -604,7 +603,6 @@ j=${i#/home/xingyuan/rhizo_ee/snp_indel/bwa_output/}
 base_name=${j%.bam}
 mpa_name=${base_name#*-}
 
-for i in /home/xingyuan/rhizo_ee/snp_indel/bwa_output/*bam; do
 /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar ReorderSam -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$mpa_name".fasta -I $i -O /home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/"$base_name".reordered.bam -SD /home/xingyuan/rhizo_ee/derived+original_genomes/"$mpa_name".dict
 done
 ```
