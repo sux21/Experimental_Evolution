@@ -593,11 +593,6 @@ Reorder reads in the BAM file to match the contig ordering in reference file. <b
 https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
 
 ```bash
-mkdir reorderSAM_output
-cd reorderSAM_output
-```
-
-```bash
 for i in /home/xingyuan/rhizo_ee/snp_indel/bwa_output/*bam; do
 j=${i#/home/xingyuan/rhizo_ee/snp_indel/bwa_output/}
 base_name=${j%.bam}
@@ -607,15 +602,17 @@ mpa_name=${base_name#*-}
 done
 ```
 
-### (2) Assign all the reads in a file to a single new read-group
+Assign all the reads in a file to a single new read-group. Read group fields are required by GATK <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard-
 
 ```bash
 #!/bin/bash
-for i in *.reordered.bam; do
-sample=${i%.reordered.bam}
+for i in /home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/*.reordered.bam; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/}
+base_name=${j%.reordered.bam}
+derived_isolate_name=${base_name%-*}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I "$sample".reordered.bam -O "$sample".new_rg.bam -ID "$sample" -LB rhizo_ee -PL Illumina -PU 1 -SM "$sample" 
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I $i -O /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/"$base_name".new_rg.bam -ID "$derived_isolate_name" -LB rhizo_ee -PL ILLUMINA -PU 1 -SM "$derived_isolate_name" 
 done
 ```
 
