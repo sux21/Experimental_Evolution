@@ -620,9 +620,9 @@ HTH5JDRX2:2
 This indicates the flowcell ID is HTH5JDRX2 and the lane is 2 for all reads. Read more about read groups on https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups.
 
 Add the following read group fields: 
-* ``ID``: read group identifier, use combination of names of the derived isolate and its most probable ancestor (ID must be unique among all read groups as described in SAM Format Specification document)
+* ``ID``: read group identifier, use combination of names of the derived isolate and its most probable ancestor, **already added during BWA alignment step** (ID must be unique among all read groups as described in SAM Format Specification document)
 * ``PU``: platform unit, use HTH5JDRX2.2 (flowcell ID and lane)
-* ``SM``: sample, 
+* ``SM``: sample, use the name of the derived isolate, **already added during BWA alignment step**
 * ``PL``: platform/technology used to produce the reads, use ILLUMINA
 * ``LB``: library, use the name of the derived isolate
 
@@ -634,7 +634,7 @@ j=${i#/home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/}
 base_name=${j%.reordered.bam}
 derived_isolate_name=${base_name%-*}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I $i -O /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/"$base_name".new_rg.bam -ID "$derived_isolate_name" -LB rhizo_ee -PL ILLUMINA -PU 1 -SM "$derived_isolate_name" 
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I $i -O /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/"$base_name".new_rg.bam -LB "$derived_isolate_name" -PL ILLUMINA -PU HTH5JDRX2.2
 done
 ```
 
