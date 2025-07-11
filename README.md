@@ -606,7 +606,7 @@ done
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard- 
 
 
-Obtain the flowcell ID and lane number from FASTQ for all reads. This indicates the flowcell ID is HTH5JDRX2 and the lane is 2 for all reads. Read more about read groups on https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups. The format of the first line of FASTQ is as following (https://help.basespace.illumina.com/files-used-by-basespace/fastq-files): 
+Obtain the flowcell ID and lane number from FASTQ for all reads. The format of the first line of FASTQ is as following (https://help.basespace.illumina.com/files-used-by-basespace/fastq-files): 
 ```
 @<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos> <read>:<is filtered>:<control number>:<sample number>
 ```
@@ -617,6 +617,7 @@ HTH5JDRX2:2
 (base) [xingyuan@info2020 raw_reads]$ zcat *_R2_*fastq.gz | grep "^@" | cut -d ":" -f 3,4 | uniq
 HTH5JDRX2:2
 ```
+This indicates the flowcell ID is HTH5JDRX2 and the lane is 2 for all reads. Read more about read groups on https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups.
 
 Add the following read group fields: 
 * ``ID``: read group identifier, use combination of names of the derived isolate and its most probable ancestor (ID must be unique among all read groups as described in SAM Format Specification document)
