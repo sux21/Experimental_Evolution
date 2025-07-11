@@ -564,7 +564,7 @@ r1=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R1*
 r2=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R2*
 ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$b".fasta
 
-/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"-"$b"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - 
+/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"-"$b"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o "$a"-"$b".bam - 
 
 done < ../derived_mpa.csv
 ```
