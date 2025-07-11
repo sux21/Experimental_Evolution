@@ -522,7 +522,7 @@ BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.13 (using htslib 1.13) <br>
 Work done on info2020
 
-Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor.
+**Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor.**
 ```
 10_1_1,Rht_460_C
 10_1_5,Rht_462_C
@@ -555,34 +555,16 @@ for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 done
 ```
 
-Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS).
-
-Read more about read groups on https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups. 
-
-The format of the first line of FASTQ is as following (https://help.basespace.illumina.com/files-used-by-basespace/fastq-files): 
-```
-@<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos> <read>:<is filtered>:<control number>:<sample number>
-```
-
-Obtain the flowcell ID and lane number from FASTQ for all reads. This indicates the flowcell ID is HTH5JDRX2 and the lane is 2 for all reads. 
-```bash
-(base) [xingyuan@info2020 raw_reads]$ zcat *_R1_*fastq.gz | grep "^@" | cut -d ":" -f 3,4 | uniq
-HTH5JDRX2:2
-(base) [xingyuan@info2020 raw_reads]$ zcat *_R2_*fastq.gz | grep "^@" | cut -d ":" -f 3,4 | uniq
-HTH5JDRX2:2
-```
-
-Add the following read group fields: ``ID`` = HTH5JDRX2.2 (flowcell ID and lane), ``SM`` = name of the derived isolate. 
-
-Run bwa (bwa mem -t 5 -M -R), convert .sam to .bam (samtools view -huS).
+**Run bwa (bwa mem -t 5 -M -R), convert SAM to BAM.**
 ```bash
 #!/bin/bash
+#Usage: nohup ./ThisScript &
 while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
 r1=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R1*
 r2=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R2*
 ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$b".fasta
 
-/usr/bin/bwa mem -t 5 -M -R "@RG\tID:HTH5JDRX2.2\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - 
+/usr/bin/bwa mem -t 5 -M -R "@RG\tID:"$a"-"$b"\tSM:"$a $ref $r1 $r2 | /usr/local/bin/samtools view -huS -o $a-"$b".bam - 
 
 done < ../derived_mpa.csv
 ```
@@ -591,10 +573,12 @@ done < ../derived_mpa.csv
 Picard Version: 3.0.0 <br>
 Work done one info2020
 
-Create sequence dictionary file (.dict) for the 56 original strains (Required for ReorderSam). <br>
+**Create sequence dictionary file (.dict) for the 56 original strains (Required for ReorderSam).** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037068312-CreateSequenceDictionary-Picard-
 
 ```bash
+#!/bin/bash
+#Usage: nohup ./ThisScript &
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 j=${i#/home/xingyuan/rhizo_ee/derived+original_genomes/}
 sample_name=${j%.fasta}
@@ -603,10 +587,12 @@ sample_name=${j%.fasta}
 done
 ```
 
-Reorder reads in the BAM file to match the contig ordering in reference file. <br>
+**Reorder reads in the BAM file to match the contig ordering in reference file.** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037426651-ReorderSam-Picard-
 
 ```bash
+#!/bin/bash
+#Usage: nohup ./ThisScript &
 for i in /home/xingyuan/rhizo_ee/snp_indel/bwa_output/*bam; do
 j=${i#/home/xingyuan/rhizo_ee/snp_indel/bwa_output/}
 base_name=${j%.bam}
@@ -616,18 +602,32 @@ mpa_name=${base_name#*-}
 done
 ```
 
-Assign all the reads in a file to a single new read-group. Read group fields are required by GATK <br>
+**Assign all the reads in a file to a single new read-group. Read group fields are required by GATK.** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037226472-AddOrReplaceReadGroups-Picard- 
 
 
+Obtain the flowcell ID and lane number from FASTQ for all reads. This indicates the flowcell ID is HTH5JDRX2 and the lane is 2 for all reads. Read more about read groups on https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups. The format of the first line of FASTQ is as following (https://help.basespace.illumina.com/files-used-by-basespace/fastq-files): 
+```
+@<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos> <read>:<is filtered>:<control number>:<sample number>
+```
+
+```bash
+(base) [xingyuan@info2020 raw_reads]$ zcat *_R1_*fastq.gz | grep "^@" | cut -d ":" -f 3,4 | uniq
+HTH5JDRX2:2
+(base) [xingyuan@info2020 raw_reads]$ zcat *_R2_*fastq.gz | grep "^@" | cut -d ":" -f 3,4 | uniq
+HTH5JDRX2:2
+```
+
 Add the following read group fields: 
-* ``ID``: read group identifier, use Illumina flowcell and lane number 
-* ``PU``: platform unit
-* ``SM``: sample
-* ``PL``: platform/technology used to produce the reads
+* ``ID``: read group identifier, use combination of names of the derived isolate and its most probable ancestor (ID must be unique among all read groups as described in SAM Format Specification document)
+* ``PU``: platform unit, use HTH5JDRX2.2 (flowcell ID and lane)
+* ``SM``: sample, 
+* ``PL``: platform/technology used to produce the reads, use ILLUMINA
+* ``LB``: library, use the name of the derived isolate
 
 ```bash
 #!/bin/bash
+#Usage: nohup ./ThisScript &
 for i in /home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/*.reordered.bam; do
 j=${i#/home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/}
 base_name=${j%.reordered.bam}
