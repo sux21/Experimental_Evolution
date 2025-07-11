@@ -634,7 +634,7 @@ j=${i#/home/xingyuan/rhizo_ee/snp_indel/reorderSAM_output/}
 base_name=${j%.reordered.bam}
 derived_isolate_name=${base_name%-*}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I $i -O /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/"$base_name".new_rg.bam -LB "$derived_isolate_name" -PL ILLUMINA -PU HTH5JDRX2.2
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar AddOrReplaceReadGroups -I $i -O /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/"$base_name".new_rg.bam -ID "$base_name" -LB "$derived_isolate_name" -PL ILLUMINA -PU HTH5JDRX2.2 -SM "$derived_isolate_name"
 done
 ```
 
