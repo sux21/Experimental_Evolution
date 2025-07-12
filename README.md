@@ -638,9 +638,9 @@ derived_isolate_name=${base_name%-*}
 done
 ```
 
-verify read group is added correctly.
+Verify read group is added correctly.
 ```bash
-for i in *bam; do 
+for i in *new_rg.bam; do 
 samtools view -H $i | grep "^@RG"
 done
 ```
@@ -659,39 +659,17 @@ base_name=${j%.new_rg.bam}
 done
 ```
 
-### (4) Identify duplicate reads and index the BAM files
+**Identify duplicate reads and index the BAM files** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard- <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
 
 ```bash
 #!/bin/bash
+#Usage: nohup ./ThisScript &
 for i in *.coordinate_sorted.bam; do
 sample=${i%.coordinate_sorted.bam}
 
 /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I "$sample".marked_duplicates.bam
-done
-```
-
-**Create alignment statistics**
-Samtools Version: 1.9 (using htslib 1.9) <br>
-
-```br
-#!/bin/bash
-for i in *.marked_duplicates.bam; do
-sample=${i%.marked_duplicates.bam}
-
-/home/xingyuan/tools/miniconda3/envs/samtools/bin/samtools stats $i > "$sample".stats
-done
-```
-
-**Plot the results**
-
-```br
-#!/bin/bash
-for i in *stats; do
-sample=${i%.stats}
-
-/home/xingyuan/tools/miniconda3/envs/samtools/bin/plot-bamstats -p "$sample".output "$i"
 done
 ```
 
