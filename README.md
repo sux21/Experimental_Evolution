@@ -620,9 +620,9 @@ HTH5JDRX2:2
 This indicates the flowcell ID is HTH5JDRX2 and the lane is 2 for all reads. Read more about read groups on https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups.
 
 Add the following read group fields: 
-* ``ID``: read group identifier, use combination of names of the derived isolate and its most probable ancestor, **already added during BWA alignment step** (ID must be unique among all read groups as described in SAM Format Specification document)
+* ``ID``: read group identifier, use combination of names of the derived isolate and its most probable ancestor (ID must be unique among all read groups as described in SAM Format Specification document)
 * ``PU``: platform unit, use HTH5JDRX2.2 (flowcell ID and lane)
-* ``SM``: sample, use the name of the derived isolate, **already added during BWA alignment step**
+* ``SM``: sample, use the name of the derived isolate
 * ``PL``: platform/technology used to produce the reads, use ILLUMINA
 * ``LB``: library, use the name of the derived isolate
 
@@ -638,15 +638,17 @@ derived_isolate_name=${base_name%-*}
 done
 ```
 
-### (3) Sort the input BAM file by coordinate
+**Sort the input BAM file by coordinate.** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
 
 ```bash
 #!/bin/bash
-for i in *.new_rg.bam; do
-sample=${i%.new_rg.bam}
+#Usage: nohup ./ThisScript &
+for i in /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/*.new_rg.bam; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/}
+base_name=${j%.new_rg.bam}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar SortSam -I "$sample".new_rg.bam -O "$sample".coordinate_sorted.bam -SO coordinate
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar SortSam -I $i -O "$base_name".coordinate_sorted.bam -SO coordinate
 done
 ```
 
