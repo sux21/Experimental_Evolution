@@ -676,31 +676,32 @@ base_name=${j%.coordinate_sorted.bam}
 done
 ```
 
-## 3. Run HaplotypeCaller
+## 3. Call SNPS and indels 
+https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
+
 Samtools Version: 1.13 (using htslib 1.13) <br>
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
 
-### Create index file (.fai) for the 56 original strains for GATK
+**Create index file (.fai) for the 56 ancestral isolates for GATK.** <br>
 http://www.htslib.org/doc/samtools-faidx.html
 
 ```bash
-#!/bin/bash
-for i in Rht*fasta; do
+for i in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
 /usr/local/bin/samtools faidx $i
 done
 ```
 
-### HaplotypeCaller
-https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
-
+**Run HaplotypeCaller.**
 ```bash
 #!/bin/bash
-for i in *.marked_duplicates.bam; do
-sample=${i%.marked_duplicates.bam}
-ref=${sample#*-}
+#Usage: nohup ./ThisScript &
+for i in /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/*.marked_duplicates.bam; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/}
+base_name=${j%.marked_duplicates.bam}
+mpa_name=${base_name#*-}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar HaplotypeCaller -R "$ref".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O "$sample".g.vcf.gz -ERC GVCF
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar HaplotypeCaller -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$mpa_name".fasta -I "$i" --dont-use-soft-clipped-bases TRUE -ploidy 1 -O /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/"$base_name".g.vcf.gz -ERC GVCF
 done
 ```
 
