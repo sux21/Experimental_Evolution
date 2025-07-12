@@ -655,7 +655,7 @@ for i in /home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/*.new_r
 j=${i#/home/xingyuan/rhizo_ee/snp_indel/AddOrReplaceReadGroups_output/}
 base_name=${j%.new_rg.bam}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar SortSam -I $i -O "$base_name".coordinate_sorted.bam -SO coordinate
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar SortSam -I $i -O /home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/"$base_name".coordinate_sorted.bam -SO coordinate
 done
 ```
 
