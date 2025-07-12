@@ -659,17 +659,20 @@ base_name=${j%.new_rg.bam}
 done
 ```
 
-**Identify duplicate reads and index the BAM files** <br>
+**Identify duplicate reads and index the BAM files. BuildBamIndex requires BAM files to be sorted by coordinate.** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard- <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360037057932-BuildBamIndex-Picard-
+
+Duplicate reads are the reads from the same fragment of DNA. Optical duplicates occur when a single amplification cluster is detected incorrectly by the optical sensor to be multiple clusters. Duplicate types (DT): library/PCR-generated duplicates (LB), sequencing-platform artifact duplicates (SQ). When the input is coordinate-sorted, unmapped mates of mapped records and supplementary/secondary alignments are not marked as duplicates.
 
 ```bash
 #!/bin/bash
 #Usage: nohup ./ThisScript &
-for i in *.coordinate_sorted.bam; do
-sample=${i%.coordinate_sorted.bam}
+for i in /home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/*.coordinate_sorted.bam; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/}
+base_name=${j%.coordinate_sorted.bam}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I "$sample".coordinate_sorted.bam -O "$sample".marked_duplicates.bam -M "$sample".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I "$sample".marked_duplicates.bam
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I $i -O /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$sample".marked_duplicates.bam -M /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_duplicates.bam
 done
 ```
 
