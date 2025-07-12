@@ -672,7 +672,7 @@ for i in /home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/*.coordinate_sorted.ba
 j=${i#/home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/}
 base_name=${j%.coordinate_sorted.bam}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I $i -O /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$sample".marked_duplicates.bam -M /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_duplicates.bam
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar MarkDuplicates -I $i -O /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_duplicates.bam -M /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_dup_metrics.txt && /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/picard.jar BuildBamIndex -I /home/xingyuan/rhizo_ee/snp_indel/markduplicate_and_index_output/"$base_name".marked_duplicates.bam
 done
 ```
 
