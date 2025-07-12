@@ -638,6 +638,13 @@ derived_isolate_name=${base_name%-*}
 done
 ```
 
+verify read group is added correctly.
+```bash
+for i in *bam; do 
+samtools view -H $i | grep "^@RG"
+done
+```
+
 **Sort the input BAM file by coordinate.** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360036510732-SortSam-Picard-
 
