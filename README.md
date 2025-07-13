@@ -727,7 +727,7 @@ find /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/*"$Rht"*.vcf.gz > 
 /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta --variant MPA-"$Rht".list -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz &&
 
 # Run GenotypeGVCFs on each 26 cohort.g.vcf files
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta -V /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz -ploidy 1 -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/genotype_"$Rht".vcf.gz -stand-call-conf 30
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta -V /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz -ploidy 1 -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/genotype_"$Rht".vcf.gz -stand-call-conf 30
 
 done < ../MPA_list
 ```
