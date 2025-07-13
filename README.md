@@ -714,17 +714,17 @@ Create a list with MPA name on each row.
 cat derived_mpa.csv | cut -d "," -f 2 | sort | uniq > MPA_list
 ```
 
-Run CombineGVCFs and GenotypeGVCFs.
+Run CombineGVCFs and GenotypeGVCFs (input file name for ``--variant`` must end in ".list").
 ```bash
 #!/bin/bash
 #Usage: nohup ./ThisScript &
 while read Rht; do
 
 # Group derived strains with the same most probable ancestors to a list. This should create 26 lists.
-find /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/*"$Rht"*.vcf.gz > /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/MPA-"$Rht"_list &&
+find /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/*"$Rht"*.vcf.gz > /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/MPA-"$Rht".list &&
 
 # Run CombineGVCFs to combine the vcf.gz files in each list to one vcf.gz file. This should create 26 cohort.g.vcf.gz files.
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta --variant /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/MPA-"$Rht"_list -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz &&
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta --variant MPA-"$Rht".list -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz &&
 
 # Run GenotypeGVCFs on each 26 cohort.g.vcf files
 /scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta -V /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz -ploidy 1 -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/genotype_"$Rht".vcf.gz -stand-call-conf 30
