@@ -732,22 +732,26 @@ find /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/*"$Rht"*.vcf.gz > 
 done < ../MPA_list
 ```
 
-## 5. Filter SNPs
+## 4. Filter SNPs
 https://vcftools.github.io/man_latest.html 
 
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
 
+* bi-allelic sites
+* sites with mean depth values (over all included individuals) greater than or equal to 20 and less than or equal to 230
+* sites with Quality value above 30
+* sites only allowed to have less than or equal to 10% missing data (set ``--max-missing`` to 0.9 since it is defined to be between 0 and 1, where 0 allows sites that are completely missing and 1 indicates no missing data allowed)
+
 ```bash
 #!/bin/bash
-for i in genotype*gz; do
-out=${i%.vcf.gz}
+#Usage: nohup ./ThisScript &
+for i in /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/genotype*gz; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/}
+out=${j%.vcf.gz}
 
-/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 150 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt1
+/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 230 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt
 
-/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 200 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt2
-
-/2/scratch/batstonelab/bin/vcftools-0.1.16/bin/vcftools --gzvcf "$i" --min-meanDP 20 --max-meanDP 250 --minQ 30 --max-missing 0.9 --min-alleles 2 --max-alleles 2 --recode --recode-INFO-all --out "$out".filt3
 done
 ```
 
