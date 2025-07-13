@@ -676,7 +676,7 @@ base_name=${j%.coordinate_sorted.bam}
 done
 ```
 
-## 3. Call SNPS and indels 
+## 3. Call SNPs and indels 
 https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
 
 Samtools Version: 1.13 (using htslib 1.13) <br>
@@ -705,57 +705,34 @@ mpa_name=${base_name#*-}
 done
 ```
 
-## 4. CombineGVCFs, GenotypeGVCFs
+**Merge SNPs and indels results and perform joint genotyping.** <br>
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
 GATK Version: 4.4.0.0 <br>
 Work done on info2020
 
-### Create a list, named ``MPA_list.txt``,  for the most probable ancestors (26 most probable ancestors)
+Create a list with MPA name on each row.
 ```bash
-Rht_016_N
-Rht_056_N
-Rht_074_C
-Rht_097_N
-Rht_108_C
-Rht_113_C
-Rht_116_N
-Rht_156_N
-Rht_173_C
-Rht_325_C
-Rht_415_C
-Rht_438_C
-Rht_449_C
-Rht_460_C
-Rht_462_C
-Rht_493_C
-Rht_511_N
-Rht_527_N
-Rht_559_C
-Rht_596_N
-Rht_706_C
-Rht_758_C
-Rht_773_N
-Rht_837_C
-Rht_861_C
-Rht_901_C
+cat derived_mpa.csv | cut -d "," -f 2 | sort | uniq > MPA_list
 ```
-### Run CombineGVCFs and GenotypeGVCFs
+
+**Run CombineGVCFs and GenotypeGVCFs.**
 ```bash
 #!/bin/bash
+#Usage: nohup ./ThisScript &
 while read Rht; do
 
 # Group derived strains with the same most probable ancestors to a list. This should create 26 lists.
-find *"$Rht"*.vcf.gz > MPA-"$Rht".list &&
+find /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/*"$Rht"*.vcf.gz > /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/MPA-"$Rht"_list &&
 
 # Run CombineGVCFs to combine the vcf.gz files in each list to one vcf.gz file. This should create 26 cohort.g.vcf.gz files.
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R "$Rht".fasta --variant MPA-"$Rht".list -O "$Rht".cohort.g.vcf.gz &&
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar CombineGVCFs -R /home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta --variant /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/MPA-"$Rht"_list -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz &&
 
 # Run GenotypeGVCFs on each 26 cohort.g.vcf files
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R "$Rht".fasta -V "$Rht".cohort.g.vcf.gz -ploidy 1 -O genotype_"$Rht".vcf.gz -stand-call-conf 30
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar GenotypeGVCFs -R home/xingyuan/rhizo_ee/derived+original_genomes/"$Rht".fasta -V /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/"$Rht".cohort.g.vcf.gz -ploidy 1 -O /home/xingyuan/rhizo_ee/snp_indel/genotypegvcfs_output/genotype_"$Rht".vcf.gz -stand-call-conf 30
 
-done < MPA_list.txt
+done < ../MPA_list
 ```
 
 ## 5. Filter SNPs
