@@ -709,15 +709,12 @@ done
 CombineGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832710975771-CombineGVCFs <br>
 GenotypeGVCFs: https://gatk.broadinstitute.org/hc/en-us/articles/13832766863259-GenotypeGVCFs
 
-GATK Version: 4.4.0.0 <br>
-Work done on info2020
-
 Create a list with MPA name on each row.
 ```bash
 cat derived_mpa.csv | cut -d "," -f 2 | sort | uniq > MPA_list
 ```
 
-**Run CombineGVCFs and GenotypeGVCFs.**
+Run CombineGVCFs and GenotypeGVCFs.
 ```bash
 #!/bin/bash
 #Usage: nohup ./ThisScript &
