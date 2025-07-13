@@ -755,25 +755,18 @@ out=${j%.vcf.gz}
 done
 ```
 
-### Check which samples have no data left for analysis
-```
-grep "No data left for analysis" *log
-#Files with no data: Rht_016_N, Rht_074_C, Rht_113_C, Rht_156_N, Rht_173_C, Rht_325_C, Rht_462_C, Rht_527_N, Rht_559_C, Rht_773_N, Rht_861_C
-```
-
-## 6. VariantsToTable
+Extract fields from a VCF file to a tab-delimited table <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
 
-GATK Version: 4.4.0.0 <br>
-Work done on info2020
+See descriptions of each field on https://samtools.github.io/hts-specs/VCFv4.2.pdf (match the documentation version to your VCF file format version. VCF file format version here is VCFv4.2). 
 
 ```bash
-#!/bin/bash
-for i in genotype_Rht_*.recode.vcf; do
-j=${i%.filt*vcf}
-ref=${j#genotype_}
+for i in /home/xingyuan/rhizo_ee/snp_indel/vcftools_output/genotype_Rht_*.recode.vcf; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/vcftools_output/}
+base_name=${j%.filt.recode.vcf}
+mpa_name=${base_name#genotype_}
 
-/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar VariantsToTable -V "$i" -R "$ref".fasta -F CHROM -F POS -F REF -F ALT -F QUAL -F AF -F ANN -F DP -GF GT -O "$i".table
+/scratch/batstonelab/bin/apps/jdk-21.0.2/bin/java -jar /scratch/batstonelab/bin/gatk-4.4.0.0/gatk-package-4.4.0.0-local.jar VariantsToTable -V "$i" -F CHROM -F POS -F ID -F REF -F ALT -F QUAL -F FILTER -F AC -F AF -F AN -F DP -GF GT -GF AD -GF DP -GF GQ -GF PL -O /home/xingyuan/rhizo_ee/snp_indel/variantstotable/"$base_name".table
 done
 ```
 
