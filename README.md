@@ -676,7 +676,7 @@ base_name=${j%.coordinate_sorted.bam}
 done
 ```
 
-## 3. Call SNPs and indels 
+## 3A. Call SNPs and indels using GATK HaplotypeCaller
 https://gatk.broadinstitute.org/hc/en-us/articles/13832687299739-HaplotypeCaller
 
 Samtools Version: 1.13 (using htslib 1.13) <br>
@@ -732,12 +732,13 @@ find /home/xingyuan/rhizo_ee/snp_indel/haplotypecaller_output/*"$Rht"*.vcf.gz > 
 done < ../MPA_list
 ```
 
-## 4. Filter SNPs
+**Filter SNPs.**
 https://vcftools.github.io/man_latest.html 
 
 Vcftools Version: 0.1.16 <br>
 Work done on info2020
 
+Only keep sites that meet all of the following thresholds: 
 * bi-allelic sites
 * sites with mean depth values (over all included individuals) greater than or equal to 20 and less than or equal to 230
 * sites with Quality value above 30
@@ -755,7 +756,7 @@ out=${j%.vcf.gz}
 done
 ```
 
-Extract fields from a VCF file to a tab-delimited table <br>
+**Extract fields from a VCF file to a tab-delimited table.** <br>
 https://gatk.broadinstitute.org/hc/en-us/articles/360036896892-VariantsToTable
 
 See descriptions of each field on https://samtools.github.io/hts-specs/VCFv4.2.pdf (match the documentation version to your VCF file format version. VCF file format version here is VCFv4.2). 
@@ -770,7 +771,17 @@ mpa_name=${base_name#genotype_}
 done
 ```
 
-## 7. Find genes at the positions of SNPs
+**Download all 26 tab-delimited table to local computer to be analyzed in R.**
+
+## 3B. Call SNPs and indels using snippy
+
+```bash
+#!/bin/bash
+#Usage: nohup ./ThisScript &
+
+```
+
+## 5. Find genes at and near the positions of SNPs - To be continued after annotations are done
 https://github.com/bedops/bedops
 
 ### Covert gff and vcf to bed format
@@ -781,9 +792,7 @@ Work done on info2020
 
 **Convert gff of original strains to bed format**
 ```bash
-#!/bin/bash
 for i in /home/xingyuan/rhizo_ee/Genes_PAV/genome_annotation_prokka/Rht*gff; do
-
 /home/xingyuan/tools/bin/gff2bed < "$i" > "$i".bed
 done
 ```
