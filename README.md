@@ -773,12 +773,24 @@ done
 
 **Download all 26 tab-delimited table to local computer to be analyzed in R.**
 
-## 3B. Call SNPs and indels using snippy
+## 3B. Call SNPs and indels using snippy - To be continued
+https://github.com/tseemann/snippy
+
+snippy version: 4.6.0 <br>
+Work done on info2020
+
+Prepare input file.
+```bash
+for i in /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/*R1*; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/}
+isolate_name=`expr "$j" : '\([:alnum:]+_[:digit:]+_[:alnum:]+\)'` 
+```
 
 ```bash
 #!/bin/bash
 #Usage: nohup ./ThisScript &
 
+/home/xingyuan/tools/snippy/bin/snippy-multi sample.list.txt --ref reference.genome.gbk --cpus 16 --ram 100 --tmpdir ./tmp --report
 ```
 
 ## 5. Find genes at and near the positions of SNPs - To be continued after annotations are done
