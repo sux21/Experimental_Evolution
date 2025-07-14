@@ -790,7 +790,10 @@ isolate_name=`expr "$j" : '\([:alnum:]+_[:digit:]+_[:alnum:]+\)'`
 #!/bin/bash
 #Usage: nohup ./ThisScript &
 
+while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
 /home/xingyuan/tools/snippy/bin/snippy-multi sample.list.txt --ref reference.genome.gbk --cpus 16 --ram 100 --tmpdir ./tmp --report
+
+/home/xingyuan/tools/snippy/bin/snippy --cpus 6 --outdir mysnps --ref /home/xingyuan/rhizo_ee/derived+original_genomes/Rht_460_C.fasta --R1 /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R1_P_001.fastq.gz --R2 /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R2_P_001.fastq.gz
 ```
 
 ## 5. Find genes at and near the positions of SNPs - To be continued after annotations are done
