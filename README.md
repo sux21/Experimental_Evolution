@@ -314,6 +314,42 @@ sample=${j%.filtered.fasta}
 done
 ```
 
+### Which samples failed to be annotated (don't have the *_with_genomic_fasta.gff file). Code taken from https://askubuntu.com/questions/196960/find-directories-that-dont-contain-a-file/196966#196966. 
+```bash
+find . -type d '!' -exec sh -c 'ls "{}"|egrep -i -q "_with_genomic_fasta.gff"' ';' -print
+```
+
+The folllowing samples failed to be annotated.
+```bash
+.
+./Rht_156_N
+./Rht_493_C
+./Rht_328_N
+./Rht_726_C
+./Rht_773_N
+./4_4_10-scaffolds
+./2_4_11-scaffolds
+./Rht_861_C
+```
+
+### Re-run failed samples
+Version: 2025-05-06.build7983 <br>
+Work done on info20
+
+```bash
+#!/bin/bash
+set -e          #exit when any commands have nonzero exit status
+set -u          #exit when encounter unset variable
+set -o pipefail #exit when any commands in the pipe have nonzero exit status
+
+failed_samples="Rht_156_N Rht_493_C Rht_328_N Rht_726_C Rht_773_N 4_4_10-scaffolds 2_4_11-scaffolds Rht_861_C"
+
+for i in $failed_samples; do
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$failed_samples" --prefix "$failed_samples" -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
+done
+```
+
 ## 1B. Annotate genome using Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
 
