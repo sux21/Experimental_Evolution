@@ -558,6 +558,7 @@ BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.13 (using htslib 1.13) <br>
 Work done on info2020
 
+Prepare a CSV file with a pair of derived isolate and its most probable ancestor.
 ```r
 #load FastANI results and metadata
 ani_values <- read.table("./MPA_data/most_prob_ancestors.txt")
