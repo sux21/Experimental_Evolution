@@ -423,7 +423,7 @@ nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --c
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
-## 0. Clean up the reads for the two derived isolates (19_4_7, 19_1_9). Recall the two derived isolates, 19_4_7 and 19_1_9, are contaminated. Align the trimmed reads to the cleaned genomes and only use the aligned reads for subsequent steps.  
+## 0. Filter the reads for the two derived isolates (19_4_7, 19_1_9). Recall the two derived isolates, 19_4_7 and 19_1_9, are contaminated. Align the trimmed reads to the split genomes and only use the aligned reads for subsequent steps.  
 BWA version: 0.7.17-r1188 <br>
 Samtools version: 1.13 (using htslib 1.13) <br>
 bedtools version:2.31.1
@@ -436,7 +436,7 @@ for i in l{19_1_9,19_4_7}*SemiBin*fasta; do
 done
 ```
 
-Use BWA to align reads to the decontaminated genomes.
+Use BWA to align reads to the split genomes.
 ```bash
 for i in 19_1_9 19_4_7; do
 r1=/home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"_*R1_P*
@@ -557,16 +557,6 @@ https://bio-bwa.sourceforge.net/
 BWA Version: 0.7.17-r1188 <br>
 Samtools Version: 1.13 (using htslib 1.13) <br>
 Work done on info2020
-
-**Prepare a csv file as the following: Derived_Strains,Most_Probable_Ancestor.**
-```
-10_1_1,Rht_460_C
-10_1_5,Rht_462_C
-10_1_8,Rht_460_C
-.
-.
-.
-```
 
 ```r
 #load FastANI results and metadata
