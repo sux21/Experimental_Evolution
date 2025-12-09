@@ -353,7 +353,7 @@ done
 ## 1B. Annotate genome using Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
 
-Bakta Version: 1.11.0 <br>
+Bakta Version: 1.11.4 <br>
 Work done on info20
 
 ### Bakta requires python version >=3.9 and <3.12
@@ -361,7 +361,7 @@ Work done on info20
 conda create -n py39 python=3.9 #create conda environment for python 3.9
 conda activate py39 #activate the environment
 python --version #check python version. I have Python 3.9.22
-conda install -c conda-forge -c bioconda bakta=1.11 #install latest version of bakta
+conda install -c conda-forge -c bioconda bakta=1.11.4 #install latest version of bakta
 ```
 
 ### Download full database
@@ -369,7 +369,12 @@ conda install -c conda-forge -c bioconda bakta=1.11 #install latest version of b
 /home/xingyuan/tools/miniconda3/envs/py39/bin/bakta_db download --output /home/xingyuan/tools --type full #database version: 6.0
 ```
 
-### Run Bakta for all samples except as5_2_4 since it is not *Rhizobium leguminosarum* (Remember to run ``conda activate py39``)
+### Run Bakta for all samples except as5_2_4 since it is not *Rhizobium leguminosarum*
+
+```bash
+conda activate py39
+```
+
 ```bash
 #!/bin/bash
 for i in /home/xingyuan/rhizo_ee/derived+original_genomes/*fasta; do
@@ -381,7 +386,7 @@ if [[ "$sample" =~ "as5_2_4" ]]; then
 continue
 fi
 
-/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db --prefix "$sample" --output "$sample" --genus Rhizobium --species leguminosarum  --keep-contig-headers --verbose --threads 6 "$i"
+/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db --prefix "$sample" --output "$sample" --genus Rhizobium --species leguminosarum  --keep-contig-headers --verbose --threads 10 "$i"
 done
 ```
 
