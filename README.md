@@ -344,7 +344,7 @@ failed_samples="Rht_156_N Rht_493_C Rht_328_N Rht_726_C Rht_773_N 4_4_10-scaffol
 
 for i in $failed_samples; do
 
-/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$failed_samples" --prefix "$failed_samples" -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 --no-self-update --taxcheck --auto-correct-tax
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$i" --prefix "$i" -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 --no-self-update --taxcheck --auto-correct-tax
 done
 ```
 
