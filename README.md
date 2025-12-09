@@ -386,7 +386,7 @@ if [[ "$sample" =~ "as5_2_4" ]]; then
 continue
 fi
 
-/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db --prefix "$sample" --output "$sample" --genus Rhizobium --species leguminosarum  --keep-contig-headers --verbose --threads 10 "$i"
+/home/xingyuan/tools/miniconda3/envs/py39/bin/bakta --db /home/xingyuan/tools/db --prefix "$sample" --output "$sample" --genus Rhizobium --species leguminosarum  --keep-contig-headers --verbose --threads 8 "$i"
 done
 ```
 
