@@ -336,17 +336,47 @@ The folllowing samples failed to be annotated.
 Version: 2025-05-06.build7983 <br>
 Work done on info20
 
-**Run with --taxcheck and --auto-correct-tax**
+
+**Solution 1: Split each FASTA entry to single file and annotate each file individually**
+
+Split FASTA entry
+```bash
+#!/bin/bash
+# A script to split each fasta entry
+# run as './split_fasta.sh filename'
+i=0
+while read line; do
+    if [[ $line =~ ">" ]]; then
+        let i=$i+1
+    fi
+    if [[ $i -eq $i ]]; then
+        echo $line >> "${1%.fasta}"."$i".fasta
+    fi
+done < $1
+```
+
+**TEST RUN**
+```bash
+/split_fasta.sh ../../input_sequences/Rht_156_N.filtered.fasta
+
+for i in Rht_156_N.filtered.*; do
+sample=${i%.fasta}
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update --taxcheck --auto-correct-tax
+done
+```
+
 ```bash
 #!/bin/bash
 
 failed_samples="Rht_156_N Rht_493_C Rht_328_N Rht_726_C Rht_773_N 4_4_10-scaffolds 2_4_11-scaffolds Rht_861_C"
 
-for i in $failed_samples; do
+for i in "4_4_10 Rht_773_N"; do
 
-/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$i" --prefix "$i" -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 --no-self-update --taxcheck --auto-correct-tax
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$i" --prefix "$i" -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
 done
 ```
+
 
 ## 1B. Annotate genome using Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
