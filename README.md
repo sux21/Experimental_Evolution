@@ -110,7 +110,8 @@ sample=${merged%_*_L002_*gz}
 done
 ```
 
-## 2. Run Quast to check the quality of scaffolds 
+## 2. Genome assembly QC
+### Run Quast to check the quality of scaffolds 
 https://github.com/ablab/quast
 
 Version: 5.2.0, 3d87c606 <br>
@@ -133,7 +134,7 @@ done
 cat */transposed_report.tsv | sed '2,${/^Assembly*/d;}' > quast_assembly_check.tsv
 ```
 
-## 3. Run CheckM to check completeness and contamination of the assembly
+### Run CheckM to check completeness and contamination of the assembly
 CheckM Version: 1.2.3 <br>
 Work done on info2020
 
@@ -147,6 +148,31 @@ Work done on info2020
 **Run CheckM with the recommended Lineage-specific Workflow using lineage-specific marker sets (https://github.com/Ecogenomics/CheckM/wiki/Workflows)** 
 ```
 nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes 363EEgenomes_CheckM_Results &
+```
+
+### Run PGAP taxonomy check
+Version: 2025-05-06.build7983 <br>
+Work done on info20
+
+Remove sequences 200 bp because PGAP does not accept these
+```bash
+#!/bin/bash
+for i in /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/*scaffolds.fasta; do
+j=${i#/2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/}
+output=${j//.fasta/.filtered.fasta}
+
+/2/scratch/batstonelab/bin/seqkit seq --min-len 200 --threads 5 "$i" > ./"$output"
+done
+```
+
+Run PGAP taxonomy check
+```bash
+#!/bin/bash
+for i in *.filtered.fasta; do
+sample=${i%.filtered.fasta}
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 8 --no-self-update --taxcheck-only
+done
 ```
 
 ## 4. Split 19_1_9 and 19_4_7 genomes into 2 because they likely contain two different genomes based on bimodal GC content distribution and CheckM 100% completeness and >= 100% contamination
