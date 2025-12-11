@@ -457,13 +457,12 @@ Work done on info2020
 #Run this script: /usr/bin/Rscript get_MPA_descendents_names.R
 
 #load ANI data output by fastANI
-ANI_dat <- read.table("/home/xingyuan/rhizo_ee/derived+original_genomes/most_prob_ancestors.txt")
+ANI_dat <- read.table("E:/rhizobia_exp_evo_genetics/second_manuscript/MPA_data/most_prob_ancestors.txt")
 
 #for each derived isolate, find the maximum ANI value
 max_ANI <- aggregate(V3 ~ V1, data = ANI_dat, FUN = max)
 
-#subset the ANI data to only include these maximum ANI values - these ancestral isolates are the most probable anc
-estors (MPAs)
+#subset the ANI data to only include these maximum ANI values - these ancestral isolates are the most probable ancestors (MPAs)
 MPA_dat <- subset(ANI_dat, paste0(V1, V3) %in% paste0(max_ANI$V1, max_ANI$V3))
 
 #rename isolates
@@ -475,7 +474,7 @@ MPA_dat$V2 <- sub(".fasta", "", MPA_dat$V2, fixed = T)
 MPA_names <- data.frame(MPA_name=unique(MPA_dat$V2))
 
 #output the list of MPA names
-write.table(MPA_names, "./MPA_names.csv",
+write.table(MPA_names, "E:/rhizobia_exp_evo_genetics/second_manuscript/MPA_names.csv", 
             row.names=F, quote=F, col.names=F)
 
 
@@ -484,6 +483,18 @@ write.table(MPA_names, "./MPA_names.csv",
 descendents <- vector(mode="list", length(MPA_names$MPA_name))
 
 names(descendents) <- MPA_names$MPA_name
+
+for (i in seq_along(MPA_names$MPA_name)) {
+  descendents[[i]] <- subset(MPA_dat, V2 %in% MPA_names$MPA_name[i])[,1] # a vector of descendent names
+  
+  descendents[[i]] <- c(MPA_names$MPA_name[i], descendents[[i]]) #add MPA name to the vector
+  
+  #output as each name on one line
+  
+  file = paste0(MPA_names$MPA_name[i], "_descendents.txt")
+  
+  writeLines(c(descendents[[i]]), con = file)
+}
 ```
 
 **create a directory containing each MPA and its corresponding derived isolates (26 MPAs, 26 directories)**
