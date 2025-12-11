@@ -873,21 +873,21 @@ https://github.com/tseemann/snippy
 snippy version: 4.6.0 <br>
 Work done on info2020
 
-Prepare input file.
-```bash
-for i in /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/*R1*; do
-j=${i#/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/}
-isolate_name=`expr "$j" : '\([:alnum:]+_[:digit:]+_[:alnum:]+\)'` 
-```
-
 ```bash
 #!/bin/bash
 #Usage: nohup ./ThisScript &
-
 while IFS=',' read -r a b; do # a=derived_strain,b=most_probable_ancestor
-/home/xingyuan/tools/snippy/bin/snippy-multi sample.list.txt --ref reference.genome.gbk --cpus 16 --ram 100 --tmpdir ./tmp --report
+r1=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R1*
+r2=/home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/"$a"_*R2*
+ref=/home/xingyuan/rhizo_ee/derived+original_genomes/"$b".fasta
 
-/home/xingyuan/tools/snippy/bin/snippy --cpus 6 --outdir mysnps --ref /home/xingyuan/rhizo_ee/derived+original_genomes/Rht_460_C.fasta --R1 /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R1_P_001.fastq.gz --R2 /home/xingyuan/rhizo_ee/snp_indel/trimmed_paired_reads/10_1_1_CGTGTACCAG-AACTTATCCT_L002_R2_P_001.fastq.gz
+/home/xingyuan/tools/snippy/bin/snippy --cpus 10 --ram 8 --outdir "$a"-"$b" --reference $ref --R1 $r1 --R2 $r2 --rgid "$a"-"$b" --mapqual 60 --basequal 30
+done < ../derived_mpa.csv
+```
+
+Merge single-sample VCF file to multi-samples VCF files
+```bash
+/usr/local/bin/bcftools merge
 ```
 
 ## 5. Find genes at and near the positions of SNPs - To be continued after annotations are done
