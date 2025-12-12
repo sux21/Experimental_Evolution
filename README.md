@@ -175,6 +175,24 @@ sample=${i%.filtered.fasta}
 done
 ```
 
+Extract ANI statuses to a tab separated file
+```bash
+#!/bin/bash
+# this script will extract ANI statuses from ani-tax-report.txt for all 363 derived isolates. Output is a tab separated file.
+
+#first line of the file consists of column names
+head -n 6 10_1_1-scaffolds/ani-tax-report.txt | cut -d : -f 1 | tr "\n" "\t" > pgap_ani_taxo_check.txt
+
+echo "" >> pgap_ani_taxo_check.txt
+
+#remaining 363 lines consist of ANI status for each isolate
+for i in *-scaffolds/ani-tax-report.txt; do
+  head -n 6 "$i" | cut -d : -f 2 | tr "\n" "\t" >> pgap_ani_taxo_check.txt
+
+  echo "" >> pgap_ani_taxo_check.txt
+done
+```
+
 ## 4. Split 19_1_9 and 19_4_7 genomes into 2 because they likely contain two different genomes based on bimodal GC content distribution and CheckM 100% completeness and >= 100% contamination
 SemiBin2 Version: 2.2.0 <br>
 Bowtie2 Version: 2.5.4 <br>
