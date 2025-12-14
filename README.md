@@ -181,15 +181,36 @@ Extract ANI statuses to a tab separated file
 # this script will extract ANI statuses from ani-tax-report.txt for all 363 derived isolates. Output is a tab separated file.
 
 #first line of the file consists of column names
-head -n 6 10_1_1-scaffolds/ani-tax-report.txt | cut -d : -f 1 | tr "\n" "\t" > pgap_ani_taxo_check.txt
+head -n 6 10_1_1-scaffolds/ani-tax-report.txt | cut -d : -f 1 | tr "\n" "\t" > pgap_ani_status.txt
 
-echo "" >> pgap_ani_taxo_check.txt
+echo "" >> pgap_ani_status.txt # add newline character to the end of line
 
 #remaining 363 lines consist of ANI status for each isolate
 for i in *-scaffolds/ani-tax-report.txt; do
-  head -n 6 "$i" | cut -d : -f 2 | tr "\n" "\t" >> pgap_ani_taxo_check.txt
+  head -n 6 "$i" | sed 's/: /\t/'| cut -f 2 | tr "\n" "\t" >> pgap_ani_status.txt
 
-  echo "" >> pgap_ani_taxo_check.txt
+  echo "" >> pgap_ani_status.txt # add newline character
+done
+```
+
+Extract ANI statistics to a tab separated file
+```bash
+#!/bin/bash
+
+# this script will extract ANI tables from ani-tax-report.txt for all 363 derived isolates. Output is a tab separated file.
+
+#first line is the column names
+
+sed -n '18p' 10_1_1-scaffolds/ani-tax-report.txt | sed 's/./\t/8' | sed 's/./\t/22' | sed 's/./\t/31' | sed 's/./\t/40' | sed 's/./\t/50' | sed 's/./\t/54' | sed 's/ //g' > pgap_ani_table.txt
+
+sed -i "s/^/ANI report for assembly\t/" pgap_ani_table.txt
+
+#remaining lines are ANI tables of all 363 derived isolates.
+
+for i in *-scaffolds/ani-tax-report.txt; do
+  file=`head -n 1 "$i" | sed 's/: /:/' | cut -d : -f 2`
+
+  tail -n +20 $i | sed 's/./\t/8' | sed 's/./\t/22' | sed 's/./\t/31' | sed 's/./\t/40' | sed 's/./\t/50' | sed 's/./\t/54' | sed "s/^/$file\t/" >>  pgap_ani_table.txt
 done
 ```
 
