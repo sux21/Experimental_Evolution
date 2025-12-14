@@ -150,6 +150,16 @@ Work done on info2020
 nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fasta -t 1 /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes 363EEgenomes_CheckM_Results &
 ```
 
+For citations:
+
+Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.
+
+Matsen FA, Kodner RB, Armbrust EV. 2010. pplacer: linear time maximum-likelihood and Bayesian phylogenetic placement of sequences onto a fixed reference tree. BMC Bioinformatics 11: doi:10.1186/1471-2105-11-538.
+
+Hyatt D, Locascio PF, Hauser LJ, Uberbacher EC. 2012. Gene and translation initiation site prediction in metagenomic sequences. Bioinformatics 28: 2223–2230.
+
+http://hmmer.org/
+
 ### Run PGAP taxonomy check
 Version: 2025-05-06.build7983 <br>
 Work done on info20
