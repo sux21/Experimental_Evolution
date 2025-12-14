@@ -201,9 +201,7 @@ Extract ANI statistics to a tab separated file
 
 #first line is the column names
 
-sed -n '18p' 10_1_1-scaffolds/ani-tax-report.txt | sed 's/./\t/8' | sed 's/./\t/22' | sed 's/./\t/31' | sed 's/./\t/40' | sed 's/./\t/50' | sed 's/./\t/54' | sed 's/ //g' > pgap_ani_table.txt
-
-sed -i "s/^/ANI report for assembly\t/" pgap_ani_table.txt
+sed -n '18p' 10_1_1-scaffolds/ani-tax-report.txt | sed 's/./\t/8' | sed 's/./\t/22' | sed 's/./\t/31' | sed 's/./\t/40' | sed 's/./\t/50' | sed 's/./\t/54' | sed 's/ //g' | sed "s/^/ANI report for assembly\t/" > pgap_ani_table.txt
 
 #remaining lines are ANI tables of all 363 derived isolates.
 
