@@ -336,6 +336,42 @@ sample=${i%.fa}
 done
 ```
 
+Extract ANI statuses to a tab separated file
+```bash
+#!/bin/bash
+# this script will extract and combine ANI statuses from ani-tax-report.txt. Output is a tab separated file.
+
+#first line of the file consists of column names
+head -n 6 PGAP_taxo_check_19_1_9_SemiBin_0/ani-tax-report.txt | cut -d : -f 1 | tr "\n" "\t" > contamination_resolution_pgap_ani_status.txt
+
+echo "" >> contamination_resolution_pgap_ani_status.txt # add newline character to the end of line
+
+#remaining 363 lines consist of ANI status for each isolate
+for i in PGAP_taxo_check*/ani-tax-report.txt; do
+  head -n 6 "$i" | sed 's/: /\t/'| cut -f 2 | tr "\n" "\t" >> contamination_resolution_pgap_ani_status.txt
+
+  echo "" >> contamination_resolution_pgap_ani_status.txt # add newline character
+done
+```
+
+Extract ANI statistics to a tab separated file
+```bash
+!/bin/bash
+
+# this script will extract and combine ANI tables from ani-tax-report.txt. Output is a tab separated file.
+
+#first line is the column names
+
+sed -n '18p' PGAP_taxo_check_19_1_9_SemiBin_0/ani-tax-report.txt | sed 's/./\t/8' | sed 's/./\t/22' | sed 's/./\t/31' | sed 's/./\t/40' | sed 's/./\t/50' | sed 's/./\t/54' | sed 's/ //g' | sed "s/^/ANI report for assembly\t/" > contamination_resolution_pgap_ani_table.txt
+
+#remaining lines are ANI tables of all 363 derived isolates.
+
+for i in PGAP_taxo_check*/ani-tax-report.txt; do
+  file=`head -n 1 "$i" | sed 's/: /:/' | cut -d : -f 2`
+
+  tail -n +20 $i | sed 's/./\t/8' | sed 's/./\t/22' | sed 's/./\t/31' | sed 's/./\t/40' | sed 's/./\t/50' | sed 's/./\t/54' | sed "s/^/$file\t/" >>  contamination_resolution_pgap_ani_table.txt
+done
+```
 
 ### Check the most probable ancestor of 19_4_7_SemiBin_1 and 19_1_9_SemiBin_0
 Query = 19_4_7_SemiBin_1, 19_1_9_SemiBin_0 <br>
