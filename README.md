@@ -307,21 +307,6 @@ Run CheckM
 nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fa -t 1 /home/xingyuan/rhizo_ee/split_genomes/reconstructed_bins reconstructed_bins_CheckM_Results &
 ```
 
-Results: 19_4_7 contained Rhizobiaceae and *Bacillus*. 19_1_9 contained Rhizobiaceae, Bacillaceae, and Bacteria. 19_4_7_SemiBin_1 and 19_1_9_SemiBin_0 would be used as true isolates.
-```
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Bin Id                   Marker lineage        # genomes   # markers   # marker sets    0     1    2   3   4   5+   Completeness   Contamination   Strain heterogeneity  
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  19_4_7_SemiBin_1   f__Rhizobiaceae (UID3591)       50         838           326         1    835   2   0   0   0       99.94            0.34               0.00          
-  19_1_9_SemiBin_0   f__Rhizobiaceae (UID3591)       50         838           326         1    835   2   0   0   0       99.94            0.34               0.00          
-  19_4_7_SemiBin_0      g__Bacillus (UID856)        101         682           227         3    671   7   1   0   0       98.97            2.96               0.00          
-  19_1_9_SemiBin_2    f__Bacillaceae (UID829)       128         559           183        295   260   4   0   0   0       50.23            0.96               0.00          
-  19_1_9_SemiBin_1      k__Bacteria (UID203)        5449        104            58         73    31   0   0   0   0       48.28            0.00               0.00          
-  19_4_7_SemiBin_3          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
-  19_4_7_SemiBin_2          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
-  19_1_9_SemiBin_3          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-```
 
 **Check which bin contains the true Rhizobium species (PGAP Taxonomy Check method)** <br>
 Version: 2025-05-06.build7983 <br>
@@ -351,7 +336,108 @@ Reference = 56 original strains
 nohup /usr/local/bin/fastANI --ql query.txt --rl reference.txt --threads 5 --matrix -o most_prob_ancestors.txt &
 ```
 
-## 2. Check the most probable ancestor of 19_4_7_SemiBin_1 and 19_1_9_SemiBin_0
+## 2. Contamination resolution and ancestral verification for 19_1_9 and 19_4_7 genomes which show bimodal GC content distribution and CheckM 100% completeness and >= 100% contamination
+SemiBin2 Version: 2.2.0 <br>
+Bowtie2 Version: 2.5.4 <br>
+Samtools Version: 1.13 <br> 
+Work done on info2020
+
+### Use SemiBin2 to group DNA sequences from the same genome together
+Map reads to scaffolds and sort <br>
+Follow steps of "Mapping using bowtie2" from https://semibin.readthedocs.io/en/latest/generate/. 
+
+```bash
+for i in 19_1_9 19_4_7; do
+mkdir -p -v index/"$i"
+
+/home/xingyuan/tools/bowtie2-2.5.4-linux-x86_64/bowtie2-build -f /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta index/"$i"/"$i"
+
+done
+```
+
+```bash
+for i in 19_1_9 19_4_7; do
+/home/xingyuan/tools/bowtie2-2.5.4-linux-x86_64/bowtie2 -q --fr -x index/"$i"/"$i" -1 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"*R1_P_*fastq.gz -2 /home/xingyuan/rhizo_ee/fastp_results/fastp_reads/"$i"*R2_P_*fastq.gz -S "$i".sam -p 4
+done
+```
+
+```bash
+for i in 19_1_9 19_4_7; do
+/usr/local/bin/samtools view -h -b -S "$i".sam | samtools view -b -F 4 - | samtools sort - -o "$i".mapped.sorted.bam
+
+/usr/local/bin/samtools index "$i".mapped.sorted.bam
+done
+```
+
+Run SemiBin2 with single-sample binning and self-supervised mode.
+```bash
+for i in 19_1_9 19_4_7; do
+
+/home/xingyuan/tools/miniconda3/bin/SemiBin2 single_easy_bin --self-supervised -i /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/"$i"*fasta -b "$i".mapped.sorted.bam -o "$i"_output --threads 5 --engine cpu --compression none --random-seed 12345
+
+done
+```
+
+Check binning results
+```
+(base) xingyuan@info20:~/rhizo_ee/split_genomes$ cat 19_1_9_output/recluster_bins_info.tsv
+filename        nbps    nr_contigs      N50     L50
+19_1_9_output/output_bins/SemiBin_0.fa  7134363 34      373995  6
+19_1_9_output/output_bins/SemiBin_1.fa  1903653 31      122512  6
+19_1_9_output/output_bins/SemiBin_2.fa  2948191 49      104221  10
+19_1_9_output/output_bins/SemiBin_3.fa  360297  16      52740   3
+(base) xingyuan@info20:~/rhizo_ee/split_genomes$ cat 19_4_7_output/recluster_bins_info.tsv
+filename        nbps    nr_contigs      N50     L50
+19_4_7_output/output_bins/SemiBin_0.fa  4468896 19      463747  4
+19_4_7_output/output_bins/SemiBin_1.fa  6916484 21      596258  6
+19_4_7_output/output_bins/SemiBin_2.fa  474384  7       258841  1
+19_4_7_output/output_bins/SemiBin_3.fa  358859  14      35161   3
+```
+
+Both 19_1_9 and 19_4_7 scaffolds were separated to 4 bins
+
+
+### Check which bin contains the true Rhizobium species (CheckM method)
+CheckM Version: 1.2.3 <br>
+Work done on info2020
+
+Make a new directory for reconstructed bins 
+```bash
+mkdir reconstructed_bins
+cd reconstructed_bins
+```
+
+Create symbolic links to the reconstructed bins
+```bash
+for i in /home/xingyuan/rhizo_ee/split_genomes/*_output/output_bins/*fa; do
+j=${i#/home/xingyuan/rhizo_ee/split_genomes/}
+filename=${j/output\/output_bins\/}
+
+ln -s $i $filename
+done
+```
+
+Run CheckM
+```bash
+nohup /home/xingyuan/tools/miniconda3/bin/checkm lineage_wf -x fa -t 1 /home/xingyuan/rhizo_ee/split_genomes/reconstructed_bins reconstructed_bins_CheckM_Results &
+```
+
+
+### Check which bin contains the true Rhizobium species (PGAP Taxonomy Check method)
+Version: 2025-05-06.build7983 <br>
+Work done on info20
+
+```bash
+#!/bin/bash
+for i in *.fa; do
+sample=${i%.fa}
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o PGAP_taxo_check_"$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 8 --no-self-update --taxcheck-only
+done
+```
+
+
+### Check the most probable ancestor of 19_4_7_SemiBin_1 and 19_1_9_SemiBin_0
 Query = 19_4_7_SemiBin_1, 19_1_9_SemiBin_0 <br>
 Reference = 56 original strains 
 
