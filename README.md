@@ -164,7 +164,7 @@ http://hmmer.org/
 Version: 2025-05-06.build7983 <br>
 Work done on info20
 
-Remove sequences 200 bp because PGAP does not accept these
+Remove sequences less than 200 bp because PGAP does not accept these
 ```bash
 #!/bin/bash
 for i in /2/scratch/batstonelab/N_adaptation_Rhizobium/2020_derived_strains_genomes/*scaffolds.fasta; do
@@ -263,17 +263,15 @@ for i in 19_1_9 19_4_7; do
 done
 ```
 
-
-Results: both 19_1_9 and 19_4_7 scaffolds were separated to 4 bins
+Check binning results
 ```
+(base) xingyuan@info20:~/rhizo_ee/split_genomes$ cat 19_1_9_output/recluster_bins_info.tsv
 filename        nbps    nr_contigs      N50     L50
 19_1_9_output/output_bins/SemiBin_0.fa  7134363 34      373995  6
 19_1_9_output/output_bins/SemiBin_1.fa  1903653 31      122512  6
 19_1_9_output/output_bins/SemiBin_2.fa  2948191 49      104221  10
 19_1_9_output/output_bins/SemiBin_3.fa  360297  16      52740   3
-
-######################################################################
-
+(base) xingyuan@info20:~/rhizo_ee/split_genomes$ cat 19_4_7_output/recluster_bins_info.tsv
 filename        nbps    nr_contigs      N50     L50
 19_4_7_output/output_bins/SemiBin_0.fa  4468896 19      463747  4
 19_4_7_output/output_bins/SemiBin_1.fa  6916484 21      596258  6
@@ -281,7 +279,10 @@ filename        nbps    nr_contigs      N50     L50
 19_4_7_output/output_bins/SemiBin_3.fa  358859  14      35161   3
 ```
 
-**Run CheckM on binned scaffolds** <br>
+Both 19_1_9 and 19_4_7 scaffolds were separated to 4 bins
+
+
+**Check which bin contains the true Rhizobium species (CheckM method)** <br>
 CheckM Version: 1.2.3 <br>
 Work done on info2020
 
@@ -320,7 +321,19 @@ Results: 19_4_7 contained Rhizobiaceae and *Bacillus*. 19_1_9 contained Rhizobia
   19_4_7_SemiBin_2          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
   19_1_9_SemiBin_3          root (UID1)             5656         56            24         56    0    0   0   0   0        0.00            0.00               0.00          
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
 
+**Check which bin contains the true Rhizobium species (PGAP Taxonomy Check method)** <br>
+Version: 2025-05-06.build7983 <br>
+Work done on info20
+
+```bash
+#!/bin/bash
+for i in *.fa; do
+sample=${i%.fa}
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o PGAP_taxo_check_"$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 8 --no-self-update --taxcheck-only
+done
 ```
 
 
