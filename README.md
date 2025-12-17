@@ -483,6 +483,18 @@ sample=${j%.filtered.1-4.fasta}_partial
 done
 ```
 
+Rht_773_N, 4_4_10-scaffolds, 2_4_11-scaffolds failed to verify genome size (genome size has to between 6075000 bp and 9114000 bp). Allow auto-correct taxa
+
+```bash
+#!/bin/bash
+for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.filtered.1-4.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
+sample=${j%.filtered.1-4.fasta}_partial
+
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" --prefix "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update  --taxcheck --auto-correct-tax
+done
+```
+
 ## 1B. Annotate genome using Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
 
