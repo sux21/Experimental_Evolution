@@ -422,7 +422,7 @@ sample=${j%.filtered.fasta}
 done
 ```
 
-### Which samples failed to be annotated (don't have the *_with_genomic_fasta.gff file). Code taken from https://askubuntu.com/questions/196960/find-directories-that-dont-contain-a-file/196966#196966. 
+Which samples failed to be annotated (don't have the *_with_genomic_fasta.gff file). Code taken from https://askubuntu.com/questions/196960/find-directories-that-dont-contain-a-file/196966#196966. 
 ```bash
 find . -type d '!' -exec sh -c 'ls "{}"|egrep -i -q "_with_genomic_fasta.gff"' ';' -print
 ```
@@ -440,12 +440,7 @@ The folllowing samples failed to be annotated.
 ./Rht_861_C
 ```
 
-### Re-run failed samples
-Version: 2025-05-06.build7983 <br>
-Work done on info20
-
-
-**Solution 1: Split each FASTA entry to single file and annotate each file individually**
+Rht_156_N, Rht_493_C, Rht_328_N, Rht_726_C, Rht_861_C all failed at the step of "Find_Best_Evidence_Alignments", which failed at the last sequence (cluster_005_consensus which is a plasmid). Remove the last sequence and annotate the first 4 sequences.
 
 Split FASTA entry
 ```bash
@@ -463,28 +458,30 @@ while read line; do
 done < $1
 ```
 
-**TEST RUN**
+Run for all 5 samples
 ```bash
-/split_fasta.sh ../../input_sequences/Rht_156_N.filtered.fasta
-
-for i in Rht_156_N.filtered.*; do
-sample=${i%.fasta}
-
-/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update --taxcheck --auto-correct-tax
+for i in Rht_156_N Rht_493_C Rht_328_N Rht_726_C Rht_861_C; do
+  ./split_fasta.sh /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i"*fasta
 done
 ```
 
+Concatenate the first 4 sequences.
+```bash
+for i in Rht_156_N Rht_493_C Rht_328_N Rht_726_C Rht_861_C; do
+  cat /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.{1..4}.fasta > /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.1-4.fasta
+done
+```
+
+Run PGAP again.
 ```bash
 #!/bin/bash
+for i in /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/*.filtered.1-4.fasta; do
+j=${i#/home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/}
+sample=${j%.filtered.1-4.fasta}_partial
 
-failed_samples="Rht_156_N Rht_493_C Rht_328_N Rht_726_C Rht_773_N 4_4_10-scaffolds 2_4_11-scaffolds Rht_861_C"
-
-for i in "4_4_10 Rht_773_N"; do
-
-/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$i" --prefix "$i" -g /home/xingyuan/rhizo_ee/genes_pav/pgap_method/input_sequences/"$i".filtered.fasta -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
+/home/xingyuan/tools/pgap.py -D /usr/bin/apptainer --container-path /home/xingyuan/tools/pgap_2025-05-06.build7983.sif --report-usage-false -o "$sample" --prefix "$sample" -g "$i" -s "Rhizobium leguminosarum" --cpu 6 --no-self-update
 done
 ```
-
 
 ## 1B. Annotate genome using Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
