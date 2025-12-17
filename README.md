@@ -1112,7 +1112,16 @@ done
 -load BAM file with its corresponding index file (.bam and .bai): File > Load from File
 
 
+## Align scaffolds (where SNPs located) of derived isolates on genomes of MPA
+nucmer version: 4.0.1 <br>
+Work done on info114
 
+```bash
+#!/bin/bash
+#Usage: nohup ./ThisScript &
+
+/home/xingyuan/tools/bin/nucmer 
+```
 
 
 
