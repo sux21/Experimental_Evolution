@@ -495,7 +495,7 @@ sample=${j%.filtered.1-4.fasta}_partial
 done
 ```
 
-## 1B. Annotate genome using Bakta
+## 2. Gene annotation by Bakta
 https://github.com/oschwengers/bakta?tab=readme-ov-file#database-download
 
 Bakta Version: 1.11.4 <br>
@@ -535,7 +535,7 @@ fi
 done
 ```
 
-## 2B. Gene presence absence analysis using Panaroo
+### Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
 **Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90), also remove 19_1_9 and 19_4_7 for now until the cleaned genomes are annotated - 414 total strains**
@@ -543,12 +543,13 @@ https://gthlab.au/panaroo/#/
 Panaroo Version: 1.5.2 <br>
 Work done on info2020
 
+There are 26 MPAs. Create 26 files each containing a MPA and all of its descendants. 
 ```bash
 #!/usr/bin/Rscript
 #Run this script: /usr/bin/Rscript get_MPA_descendents_names.R
 
 #load ANI data output by fastANI
-ANI_dat <- read.table("E:/rhizobia_exp_evo_genetics/second_manuscript/MPA_data/most_prob_ancestors.txt")
+ANI_dat <- read.table("/home/xingyuan/rhizo_ee/derived+original_genomes/most_prob_ancestors.txt")
 
 #for each derived isolate, find the maximum ANI value
 max_ANI <- aggregate(V3 ~ V1, data = ANI_dat, FUN = max)
@@ -565,7 +566,7 @@ MPA_dat$V2 <- sub(".fasta", "", MPA_dat$V2, fixed = T)
 MPA_names <- data.frame(MPA_name=unique(MPA_dat$V2))
 
 #output the list of MPA names
-write.table(MPA_names, "E:/rhizobia_exp_evo_genetics/second_manuscript/MPA_names.csv", 
+write.table(MPA_names, "./MPA_names.csv", 
             row.names=F, quote=F, col.names=F)
 
 
