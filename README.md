@@ -538,10 +538,8 @@ done
 ### Gene presence absence analysis using Panaroo
 https://gthlab.au/panaroo/#/
 
-**Based on ANI values, remove 4_4_10, Rht_773_N, as5_2_4 since they have low ANI (below 90), also remove 19_1_9 and 19_4_7 for now until the cleaned genomes are annotated - 414 total strains**
-
 Panaroo Version: 1.5.2 <br>
-Work done on info2020
+Work done on info20
 
 There are 26 MPAs. Create 26 files each containing a MPA and all of its descendants. 
 ```bash
@@ -589,15 +587,25 @@ for (i in seq_along(MPA_names$MPA_name)) {
 }
 ```
 
-**create a directory containing each MPA and its corresponding derived isolates (26 MPAs, 26 directories)**
-```bash
-for mpa in ; do
-for i in `cat MPA_"$mpa".txt`; do
-ls "$i".fasta
-echo $mpa
-done
-done
+Panaroo will be run 26 times for each group of MPA and its descendants. First, we will make 26 directories containing annotation files of MPA and its descendents for Panaroo. 
 
+```bash
+#!/bin/bash
+# Run this script as /usr/bin/bash make_panaroo_dir.sh
+
+for mpa in `cat MPA_names.csv`; do
+for sample in `cat "$mpa"_descendents.txt`; do
+
+#make 26 directories for Panaroo
+if [ ! -d panaroo_"$mpa" ]; then
+mkdir panaroo_"$mpa"
+fi
+
+#make symbolic links of GFF3 annotation files in the 26 directories
+ln -s /home/xingyuan/rhizo_ee/genes_pav/bakta_method/"$sample"*/*.gff3 panaroo_"$mpa"/"$sample".gff3
+
+done
+done
 ```
 
 ```bash
