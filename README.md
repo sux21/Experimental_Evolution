@@ -587,7 +587,7 @@ for (i in seq_along(MPA_names$MPA_name)) {
 }
 ```
 
-Panaroo will be run 26 times for each group of MPA and its descendants. First, we will make 26 directories containing annotation files of MPA and its descendents for Panaroo. 
+Panaroo will be run for each group of MPA and its descendants. First, we will make 26 directories containing annotation files of MPA and its descendents for Panaroo. 
 
 ```bash
 #!/bin/bash
@@ -596,30 +596,37 @@ Panaroo will be run 26 times for each group of MPA and its descendants. First, w
 for mpa in `cat MPA_names.csv`; do
 for sample in `cat "$mpa"_descendents.txt`; do
 
-#make 26 directories for Panaroo
+#make a directory for Panaroo
 if [ ! -d panaroo_"$mpa" ]; then
 mkdir panaroo_"$mpa"
 fi
 
-#make symbolic links of GFF3 annotation files in the 26 directories
-ln -s /home/xingyuan/rhizo_ee/genes_pav/bakta_method/"$sample"*/*.gff3 panaroo_"$mpa"/"$sample".gff3
+#make symbolic links of GFF3 annotation files in the directory
+if [[ "$sample" =~ "Rht" ]]; then
+  ln -s /home/xingyuan/rhizo_ee/genes_pav/bakta_method/"$sample"*/*.gff3 panaroo_"$mpa"/"$sample".gff3 # make symbolic link for "Rht" strains
+elif [[ "$sample" =~ "19_1_9" ]]; then
+  ln -s /home/xingyuan/rhizo_ee/genes_pav/bakta_method/"$sample"_SemiBin_0/*.gff3 panaroo_"$mpa"/"$sample".gff3 # make symbolic link for 19_1_9
+elif [[ "$sample" =~ "19_4_7" ]]; then
+  ln -s /home/xingyuan/rhizo_ee/genes_pav/bakta_method/"$sample"_SemiBin_1/*.gff3 panaroo_"$mpa"/"$sample".gff3 # make symbolic link for 19_4_7
+else
+  ln -s /home/xingyuan/rhizo_ee/genes_pav/bakta_method/"$sample"-scaffolds/*.gff3 panaroo_"$mpa"/"$sample".gff3 # make symbolic links for the rest of derived isolates
+fi
 
 done
 done
 ```
 
+Run panaroo. 
 ```bash
-#create a new directory for the results
-mkdir panaroo_results
-
-#run panaroo 
-nohup /home/xingyuan/tools/miniconda3/bin/panaroo -i *gff -o panaroo_results --clean-mode strict --threshold 0.9 &
+#!/bin/bash
+# Run this script: ./panaroo.sh
+for mpa in `cat MPA_names.csv`; do
+  /home/xingyuan/tools/miniconda3/bin/panaroo -i panaroo_"$mpa"/*gff3 -o panaroo_"$mpa"/"$mpa"_panaroo_output --clean-mode strict --remove-invalid-genes --refind-mode strict --threads 10
+done
+```
 
 #filter potential pseudo genes, genes with unusual lengths, and fragmented genes
 #/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
-```
-
-
 
 
 
