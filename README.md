@@ -648,6 +648,13 @@ done
 done
 ```
 
+Add column names
+```bash
+for i in *blast.csv; do
+printf 'qacc,qlen,sacc,slen,qstart,qend,sstart,send,evalue,bitscore,length,pident,nident,mismatch,gapopen,gaps,sstrand,qcovs,qcovhsp,qcovus\n' | cat - $i > temp && mv -f temp $i
+done
+```
+
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
