@@ -628,8 +628,25 @@ done
 #filter potential pseudo genes, genes with unusual lengths, and fragmented genes
 #/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
 
+### Perform BLAST alignment with genes gained as query and each of the 56 ancestral strains as reference.
+blastn version: 2.16.0+ <br>
+Work done on info20
 
+```bash
+#!/bin/bash
 
+for i in *_gene_gain.fasta; do
+mpa=${i%_gene_gain.fasta}
+
+for j in /home/xingyuan/rhizo_ee/derived+original_genomes/Rht*fasta; do
+k=${j#/home/xingyuan/rhizo_ee/derived+original_genomes/}
+ref=${k%.fasta}
+
+/home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query $i -subject $j -outfmt "10 qacc qlen sacc slen qstart qend sstart send evalue bitscore length pident nident mismatch gapopen gaps sstrand qcovs qcovhsp qcovus" > MPA_"$mpa"_reference_"$ref"_blast.csv
+
+done
+done
+```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
