@@ -643,7 +643,7 @@ k=${j#/home/xingyuan/rhizo_ee/derived+original_genomes/}
 ref=${k%.fasta}
 
 # First line is column names
-echo -e "qacc,qlen,sacc,slen,qstart,qend,sstart,send,evalue,bitscore,length,pident,nident,mismatch,gapopen,gaps,sstrand,qcovs,qcovhsp,qcovus\n" > MPA_"$mpa"_reference_"$ref"_blast.csv
+echo -e "qacc,qlen,sacc,slen,qstart,qend,sstart,send,evalue,bitscore,length,pident,nident,mismatch,gapopen,gaps,sstrand,qcovs,qcovhsp,qcovus" > MPA_"$mpa"_reference_"$ref"_blast.csv
 
 # Append BLAST's output after the column names
 /home/xingyuan/tools/ncbi-blast-2.16.0+/bin/blastn -query $i -subject $j -outfmt "10 qacc qlen sacc slen qstart qend sstart send evalue bitscore length pident nident mismatch gapopen gaps sstrand qcovs qcovhsp qcovus" >> MPA_"$mpa"_reference_"$ref"_blast.csv
