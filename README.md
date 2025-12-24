@@ -577,7 +577,7 @@ names(descendants) <- MPA_names$MPA_name
 for (i in seq_along(MPA_names$MPA_name)) {
   descendants[[i]] <- subset(MPA_dat, V2 %in% MPA_names$MPA_name[i])[,1] # a vector of descendant names
   
-  descendants[[i]] <- c(MPA_names$MPA_name[i], descendents[[i]]) #add MPA name to the vector
+  descendants[[i]] <- c(MPA_names$MPA_name[i], descendants[[i]]) #add MPA name to the vector
   
   #output as each name on one line
   
