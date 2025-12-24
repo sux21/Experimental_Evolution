@@ -581,7 +581,7 @@ for (i in seq_along(MPA_names$MPA_name)) {
   
   #output as each name on one line
   
-  file = paste0(MPA_names$MPA_name[i], "_descendents.txt")
+  file = paste0(MPA_names$MPA_name[i], "_descendants.txt")
   
   writeLines(c(descendants[[i]]), con = file)
 }
