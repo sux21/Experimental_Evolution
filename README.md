@@ -544,8 +544,8 @@ Work done on info20
 There are 26 MPAs. Create 26 files each containing a MPA and all of its descendants. 
 ```bash
 #!/usr/bin/Rscript
-#Run this script: /usr/bin/Rscript get_MPA_descendents_names.R
-
+#Run this script: /usr/bin/Rscript get_MPA_descendants_names.R
+ 
 #load ANI data output by fastANI
 ANI_dat <- read.table("/home/xingyuan/rhizo_ee/derived+original_genomes/most_prob_ancestors.txt")
 
@@ -568,22 +568,22 @@ write.table(MPA_names, "./MPA_names.csv",
             row.names=F, quote=F, col.names=F)
 
 
-#next, create 26 files containing descendents of each MPA
+#next, create 26 files containing descendants of each MPA
 
-descendents <- vector(mode="list", length(MPA_names$MPA_name))
+descendants <- vector(mode="list", length(MPA_names$MPA_name))
 
-names(descendents) <- MPA_names$MPA_name
+names(descendants) <- MPA_names$MPA_name
 
 for (i in seq_along(MPA_names$MPA_name)) {
-  descendents[[i]] <- subset(MPA_dat, V2 %in% MPA_names$MPA_name[i])[,1] # a vector of descendent names
+  descendants[[i]] <- subset(MPA_dat, V2 %in% MPA_names$MPA_name[i])[,1] # a vector of descendant names
   
-  descendents[[i]] <- c(MPA_names$MPA_name[i], descendents[[i]]) #add MPA name to the vector
+  descendants[[i]] <- c(MPA_names$MPA_name[i], descendents[[i]]) #add MPA name to the vector
   
   #output as each name on one line
   
   file = paste0(MPA_names$MPA_name[i], "_descendents.txt")
   
-  writeLines(c(descendents[[i]]), con = file)
+  writeLines(c(descendants[[i]]), con = file)
 }
 ```
 
@@ -594,7 +594,7 @@ Panaroo will be run for each group of MPA and its descendants. First, we will ma
 # Run this script as /usr/bin/bash make_panaroo_dir.sh
 
 for mpa in `cat MPA_names.csv`; do
-for sample in `cat "$mpa"_descendents.txt`; do
+for sample in `cat "$mpa"_descendants.txt`; do
 
 #make a directory for Panaroo
 if [ ! -d panaroo_"$mpa" ]; then
@@ -625,9 +625,6 @@ for mpa in `cat MPA_names.csv`; do
 done
 ```
 
-#filter potential pseudo genes, genes with unusual lengths, and fragmented genes
-#/home/xingyuan/tools/miniconda3/bin/panaroo-filter-pa -i ./gene_presence_absence.csv -o ./ --type pseudo,length
-
 ### Perform BLAST alignment with genes gained as query and each of the 56 ancestral strains as reference.
 blastn version: 2.16.0+ <br>
 Work done on info20
@@ -652,12 +649,6 @@ done
 done
 ```
 
-Add column names
-```bash
-for i in *blast.csv; do
-printf 'qacc,qlen,sacc,slen,qstart,qend,sstart,send,evalue,bitscore,length,pident,nident,mismatch,gapopen,gaps,sstrand,qcovs,qcovhsp,qcovus\n' | cat - $i > temp && mv -f temp $i
-done
-```
 
 # Step 5: Call SNPS between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
