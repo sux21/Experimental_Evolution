@@ -619,7 +619,7 @@ done
 Run panaroo. 
 ```bash
 #!/bin/bash
-# Run this script: ./panaroo.sh
+# Run this script: nohup ./panaroo.sh &
 for mpa in `cat MPA_names.csv`; do
   /home/xingyuan/tools/miniconda3/bin/panaroo -i panaroo_"$mpa"/*gff3 -o panaroo_"$mpa"/"$mpa"_panaroo_output --clean-mode strict --remove-invalid-genes --refind-mode strict --threads 10
 done
