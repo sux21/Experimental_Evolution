@@ -1,0 +1,94 @@
+---
+title: "PGAP_genome_assembly_QC"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Load PGAP taxonomy check output. Description of the output is at https://github.com/ncbi/pgap/wiki/Taxonomy-Check.
+```{r}
+pgap_ani_status <- read.delim("../output/genome_assembly_QC/pgap_ani_status.txt")
+
+pgap_ani_stats <- read.delim("../output/genome_assembly_QC/pgap_ani_table.txt")
+```
+
+The submitted organism is *Rhizobium leguminosarum*. How many of the 363 isolates are confirmed to be this species?
+```{r}
+table(pgap_ani_status$Status)
+```
+
+Results:
+   CONFIRMED CONTAMINATED INCONCLUSIVE  MISASSIGNED 
+         359            1            2            1           
+
+
+```{r}
+with(pgap_ani_status, table(Status, Confidence))
+```
+
+Result:
+              Confidence
+Status         HIGH LOW
+  CONFIRMED     358   1
+  CONTAMINATED    1   0
+  INCONCLUSIVE    0   2
+  MISASSIGNED     1   0
+  
+```{r}
+with(pgap_ani_status, table(Best.match))
+```
+
+Result:
+Best.match
+                                        Paenibacillus allorhizosphaerae (taxid = 2849866, rank = species, lineage = Bacteria; Bacillati; Bacillota; Bacilli; Bacillales; Paenibacillaceae; Paenibacillus) 
+                                                                                                                                                                                                        1 
+Rhizobium johnstonii (taxid = 3019933, rank = species, lineage = Bacteria; Pseudomonadati; Pseudomonadota; Alphaproteobacteria; Hyphomicrobiales; Rhizobiaceae; Rhizobium/Agrobacterium group; Rhizobium) 
+                                                                                                                                                                                                        1 
+ Rhizobium leguminosarum (taxid = 384, rank = species, lineage = Bacteria; Pseudomonadati; Pseudomonadota; Alphaproteobacteria; Hyphomicrobiales; Rhizobiaceae; Rhizobium/Agrobacterium group; Rhizobium) 
+                                                                                                                                                                                                      360 
+     Rhizobium viscosum (taxid = 1673, rank = species, lineage = Bacteria; Pseudomonadati; Pseudomonadota; Alphaproteobacteria; Hyphomicrobiales; Rhizobiaceae; Rhizobium/Agrobacterium group; Rhizobium) 
+                                                                                                                                                                                                        1 
+Check the 5 problematic isolates.
+
+```{r}
+subset(pgap_ani_status, Status == "CONTAMINATED")
+
+subset(pgap_ani_status, ANI.report.for.assembly == "19_1_9-scaffolds.filtered.fasta")
+```
+
+Result: 19_1_9, best match is *Rhizobium leguminosarum*. 
+
+```{r}
+subset(pgap_ani_status, Status == "INCONCLUSIVE")
+
+subset(pgap_ani_status, ANI.report.for.assembly == "4_4_10-scaffolds.filtered.fasta")
+
+subset(pgap_ani_status, ANI.report.for.assembly == "as5_2_4-scaffolds.filtered.fasta")
+```
+
+Result: 4_4_10, best match is *Rhizobium viscosum*; as5_2_4, best match is *Paenibacillus allorhizosphaerae*.
+
+```{r}
+subset(pgap_ani_status, Status == "MISASSIGNED")
+
+subset(pgap_ani_status, ANI.report.for.assembly == "16_1_6-scaffolds.filtered.fasta")
+```
+
+Result: 16_1_6, best match is *Rhizobium johnstonii*.
+
+```{r}
+subset(pgap_ani_status, Status == "CONFIRMED" & Confidence == "LOW")
+
+subset(pgap_ani_status, ANI.report.for.assembly == "19_4_7-scaffolds.filtered.fasta")
+```
+
+Result: 19_4_7, best match is *Rhizobium leguminosarum*. 
+
+
+```{r}
+sessionInfo()
+```
+

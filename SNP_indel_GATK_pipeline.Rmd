@@ -1,0 +1,217 @@
+---
+title: "SNP_indel_GATK_pipeline"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This script will analyze SNPs and Indels data from GATK pipeline. 
+
+
+Read about VCF format at https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format.
+
+
+Load packages.
+```{r}
+library(tidyverse)
+```
+
+Load metadata of ancestral and derived isolates.
+```{r}
+metadata_ancestral_isolates <- read.csv("../data/2008strains.csv")  %>%
+  select(anc_name, community) 
+  
+metadata_derived_isolates <- read.csv("../data/metadata_363EE2008isolates.csv") %>%
+  select(sample_ID_seq, Treatment, soil_slurry_ID) %>% 
+  mutate(sample_ID_seq = gsub("[[:space:]]", "", sample_ID_seq)) #remove white space
+```
+
+Load variant calling results.
+```{r}
+#create a list to store all 26 output files. 
+variant_calling_output <- vector(mode = "list", length = length(list.files(path = "../output/variant_calling_GATK_pipeline")))
+
+names(variant_calling_output) <- list.files(path = "../output/variant_calling_GATK_pipeline")
+
+for (i in names(variant_calling_output)) {
+  variant_calling_output[[i]] <- read.table(paste0("../output/variant_calling_GATK_pipeline/",i), header = TRUE, tryLogical = FALSE)
+} 
+```
+
+Check files with no variants found. 
+```{r}
+no_variants <- character()
+for (i in seq_along(variant_calling_output)) {
+    if (nrow(variant_calling_output[[i]]) == 0) {
+      no_variants <- c(no_variants, names(variant_calling_output)[i])
+    }
+}
+no_variants
+```
+
+Remove these files with no variants detected
+```{r}
+variant_calling_output2 <- variant_calling_output[!names(variant_calling_output) %in% no_variants]
+```
+
+Reformat the vcf tables
+```{r}
+variant_calling_output3 <- vector(mode = "list", length = length(variant_calling_output2))
+
+names(variant_calling_output3) <- names(variant_calling_output2)
+
+ReformatFunction <- function(dat) { #function for formatting one data frame
+  dat2 <- dat %>%
+    tidyr::pivot_longer(
+      cols = 12:ncol(.),
+      names_to = c("derived", ".value"),
+      names_pattern = "(.*).(..)",
+      names_prefix = "derived",
+      names_repair = "unique" #fix duplicated column names
+    ) %>%
+    rename(DP_combined = DP...11,
+           DP_sample = DP...15) %>% #rename the two DP columns
+    mutate(derived = str_extract(derived, "[:digit:]+_[:digit:]+_[:alnum:]+")) #fix derived isolate's name
+}
+
+#apply the function to all data frames using a for loop
+for (i in 1:length(variant_calling_output2)) {
+  variant_calling_output3[[i]] <- ReformatFunction(variant_calling_output2[[i]])
+}
+```
+
+
+Meanings of column names:
+
+CHROM = contig of the reference genome
+
+POS = base position on the reference genome
+
+ID = semicolon-separated list of unique identifie
+
+REF = reference base(s)
+
+ALT = alternate base(s)
+
+QUAL = Phred-scaled quality score for the assertion made in ALT. $$−10 log_{10} \text{prob(call in ALT is wrong)}$$
+
+FILTER = PASS if this position has passed all filters. q10;s5 if the quality is below 10 and the number of samples with data is below 50% of the total number of sample. 
+
+AC = allele count in genotypes, for each ALT allele
+
+AF = allele frequency for each ALT allele (AF = AC/AN)
+
+AN = total number of alleles in called genotypes
+
+DP_combined = combined depth across sample
+
+derived = name of the derived isolate
+
+GT = genotype for this derived isolate
+
+AD = unfiltered allele depth for this derived isolate. The number of reads that support each of the reported alleles. Include reads that did not pass the filter. Exclude uninformative reads that do not have enough statistical evidence supporting one allele over the other. 
+
+DP_sample = filtered depth for this derived isolate. The number of filtered reads that support each of the reported alleles. Only include reads that pass the filter. Also include uninformative reads.
+
+GQ = conditional genotype quality
+
+PL = the phred-scaled genotype likelihoods rounded to the closest integer. PL for the most likely genotype is 0. Calculations of GQ and PL are on https://gatk.broadinstitute.org/hc/en-us/articles/360035890451-Calculation-of-PL-and-GQ-by-HaplotypeCaller-and-GenotypeGVCFs. 
+
+
+Remove sites that are not SNPs and indels (remove all rows with REF = GT).
+```{r}
+variant_calling_output4 <- vector(mode = "list", length = length(variant_calling_output3))
+
+names(variant_calling_output4) <- names(variant_calling_output3)
+
+FilterSNPs <- function(dat) { #function for filter SNPs one data frame
+  dat2 <- dat %>%
+    filter(REF != GT)
+}
+
+#apply the function to all data frames using a for loop
+for (i in 1:length(variant_calling_output3)) {
+  variant_calling_output4[[i]] <- FilterSNPs(variant_calling_output3[[i]])
+}
+```
+
+
+Add a column of MPA name in each data frame, so we can merge all data frames to one data frame. 
+```{r}
+variant_calling_output5 <- vector(mode = "list", length = length(variant_calling_output4))
+
+names(variant_calling_output5) <- names(variant_calling_output4)
+
+
+for (i in 1:length(variant_calling_output4)) {
+  variant_calling_output5[[i]] <- cbind(MPA=str_extract(names(variant_calling_output4)[[i]], "Rht_[:digit:]+_(N|C)"), variant_calling_output4[[i]])
+}
+```
+
+Merge data frames
+```{r}
+variant_calling_output6 <- Reduce(function(df1,df2) bind_rows(df1,df2), variant_calling_output5)
+```
+
+Add treatment and pot conditions to the data frame
+```{r}
+variant_calling_output7 <- left_join(variant_calling_output6, metadata_derived_isolates, by = c("derived" = "sample_ID_seq"))
+```
+
+
+
+
+The data are ready for analysis. 
+
+
+How many SNPs and indels?
+```{r}
+snps_indels <- mutate(variant_calling_output7, 
+                      SNP_indel = paste(MPA, CHROM, POS, sep = "/"), .after = MPA)
+```
+
+```{r}
+length(unique(snps_indels$SNP_indel))
+```
+
+This show there are 345 SNPs and indels in total. 
+
+```{r}
+length(table(snps_indels$SNP_indel)[table(snps_indels$SNP_indel) == 1])
+```
+
+323 SNPs and indels only occur once. 
+
+```{r}
+length(table(snps_indels$SNP_indel)[table(snps_indels$SNP_indel) > 1])
+```
+
+22 SNPs and indels occur more than once. 
+
+
+
+Among all reads aligned to each variant position, how many reads support the alternate allele?
+
+Use allele depth (AD) to answer this question. Allele depth contains two values separating by a comma. The sum of the two values give the total number of informative reads at a site. The first value before the comma is the number of reads supporting the REF allele. The second value after the comma is the number of reads supporting the ALT allele.
+
+Extract the number of reads supporting the ALT allele (second value after the comma). 
+```{r}
+extract_allele_depth = setNames(strsplit(snps_indels$AD, ","), snps_indels$SNP_indel)
+
+extract_allele_depth2 <- do.call(rbind.data.frame, extract_allele_depth)
+
+colnames(extract_allele_depth2)[1] <- "reads_supports_REF"
+colnames(extract_allele_depth2)[2] <- "reads_supports_ALT"
+
+extract_allele_depth2$reads_supports_REF <- as.integer(extract_allele_depth2$reads_supports_REF)
+extract_allele_depth2$reads_supports_ALT <- as.integer(extract_allele_depth2$reads_supports_ALT)
+
+#add a column for the sum of those reads
+extract_allele_depth2 <- extract_allele_depth2 %>%
+  rowwise() %>%
+  mutate(total_reads = sum(reads_supports_REF, reads_supports_ALT))
+```
+
+

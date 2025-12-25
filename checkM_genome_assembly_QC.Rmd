@@ -1,0 +1,68 @@
+---
+title: "checkM_genome_assembly_QC"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages
+```{r}
+library(tidyverse)
+```
+
+Load CheckM reported statistics. Description of statistics is at https://github.com/Ecogenomics/CheckM/wiki/Reported-Statistics. 
+```{r}
+checkm_stats <- read.delim("../output/genome_assembly_QC/bin_stats_ext.tsv", header = F) 
+```
+
+Format the output
+```{r}
+checkm_stats2 <- checkm_stats %>%
+  rename(bin_id = V1) %>%
+  mutate(V2 = str_replace_all(V2, "['{}]", "")) %>% #delete any of these 3 symbols: ' { }
+  separate(col = V2, into = c("tmp1", "marker_lineage", "n_genomes", "n_markers", "n_marker_sets", "zero", "one", "two", "three", "four", "fiveplus", "completeness", "contamination", "gc", "gc_std", "genome_size", "n_ambiguous_bases", "n_scaffolds", "n_contigs", "longest_scaffold", "longest_contig", "n50_scaffolds", "n50_contigs", "mean_scaffold_length", "mean_contig_length", "coding_density", "translation_table", "n_predicted_genes", "gcn0", "gcn1", "gcn2", "gcn3", "gcn4", "gcn5+"), sep = ":") %>%
+  select(-c("gcn0", "gcn1", "gcn2", "gcn3", "gcn4", "gcn5+")) %>% #remove columns
+  separate_wider_delim(col = 3:29, delim = ",", names_sep = "_") %>%
+  select(-c(tmp1, marker_lineage_2, n_genomes_2, n_markers_2, n_marker_sets_2, zero_2, one_2, two_2, three_2, four_2, fiveplus_2, completeness_2, contamination_2, gc_2, gc_std_2, genome_size_2, n_ambiguous_bases_2, n_scaffolds_2, n_contigs_2, longest_scaffold_2, longest_contig_2, n50_scaffolds_2, n50_contigs_2, mean_scaffold_length_2, mean_contig_length_2, coding_density_2, translation_table_2, n_predicted_genes_2)) #remove columns
+
+colnames(checkm_stats2)[2:28] <- str_remove(colnames(checkm_stats2)[2:28], "_1")
+```
+
+check which lineage of the phylogenetic tree each isolate is placed in by CheckM
+```{r}
+table(checkm_stats2$marker_lineage)
+
+subset(checkm_stats2, marker_lineage == " f__Paenibacillaceae")
+#as5_2_4 is placed in the Paenibacillaceae lineage
+
+subset(checkm_stats2, marker_lineage == " root")
+#19_1_9 and 19_4_7 are placed at the root of the phylogenetic tree
+```
+
+check completeness of the genomes
+```{r}
+boxplot(as.numeric(checkm_stats2$completeness))
+#all isolates have around 99% completeness
+```
+
+check contamination
+```{r}
+boxplot(as.numeric(checkm_stats2$contamination))
+
+filter(checkm_stats2[,c("bin_id", "completeness", "contamination")], as.numeric(contamination) > 80)
+#two isolates have very high contamination: 19_1_9 (104.2%), 19_4_7 (100%)
+
+checkm_stats3 <- subset(checkm_stats2, bin_id != "19_1_9-scaffolds" & bin_id != "19_4_7-scaffolds")
+
+boxplot(as.numeric(checkm_stats3$contamination), ylim = c(0,5)) 
+#contamination of rest of isolates is below 5%
+```
+
+
+
+```{r}
+sessionInfo()
+```
+

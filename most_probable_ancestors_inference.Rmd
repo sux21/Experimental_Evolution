@@ -1,0 +1,233 @@
+---
+title: "most_probable_ancestors_inference"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages
+```{r}
+library(tidyverse)
+```
+
+Load metadata
+```{r}
+metadata_ancestral_isolates <- read.csv("../data/2008strains.csv")  %>%
+  select(anc_name, community) 
+  
+metadata_derived_isolates <- read.csv("../data/metadata_363EE2008isolates.csv") %>%
+  select(sample_ID_seq, Treatment) %>% #keep columns of interest
+  mutate(sample_ID_seq = gsub("[[:space:]]", "", sample_ID_seq)) #remove white space
+```
+
+Load FastANI results and metadata
+```{r}
+ani_values <- read.table("../output/most_probable_ancestors/most_prob_ancestors.txt")
+```
+
+Select the two ancestral isolates with the highest ANI (MPA is the top 1 ancestral isolate, alternative MPA is the top 2 ancestral isolate)
+```{r}
+top2_ANI <- ani_values %>%
+  rename(isolate=V1, MPA=V2, ANI=V3, match=V4, total=V5) %>% #rename variable
+  mutate(isolate = str_extract(isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
+         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)"))  %>% #rename isolates
+  group_by(isolate) %>%
+  slice_max(tibble(ANI), n = 2) %>% #select the top 2 ANI values for each derived isolate (select MPA and alternative MPA)
+  mutate(ANI_diff = abs(ANI - first(ANI))) %>% #ANI difference between top 1 (MPA) and top 2 (alternative MPA) values
+  ungroup()
+```
+
+Add metadata to the top2_ANI
+```{r}
+top2_ANI_metadata <- top2_ANI %>%
+  left_join(metadata_ancestral_isolates, by = c("MPA" = "anc_name")) %>% #community is the MPA's population
+  left_join(metadata_derived_isolates, by = c("isolate" = "sample_ID_seq")) %>% #treatment is the derived isolate's population
+  mutate(Treatment = str_extract(Treatment, "[:alpha:]+"), #rename the two populations to be consistent
+         community = case_when(community == "control, mixed" ~ "control and mixed",
+                                community == "N-adapted, mixed" ~ "N and mixed",
+                                community == "control" ~ "control",
+                                community == "N-adapted" ~ "N"))
+```
+
+
+We can investigate the most probable ancestors found.
+
+There are 26 most probable ancestors.
+```{r}
+MPA <- top2_ANI_metadata %>%
+  filter(ANI_diff == 0)
+
+unique(MPA$MPA) 
+length(unique(MPA$MPA))
+#26 most probable ancestors
+```
+
+20_2_6 has two MPAs.
+```{r}
+MPA$isolate[duplicated(MPA$isolate)] 
+#note 20_2_6 appears twice because it has two MPAs. 
+```
+
+4_4_10, Rht_773_N have low ANI (about 84%) with other isolates. Rht_773_N is also the most probable ancestor of 4_4_10.
+```{r}
+boxplot(ani_values$V3)
+
+#4_4_10, Rht_773_N have low ANI (about 84%) with other isolates
+filter(ani_values, V3<90)
+```
+
+
+
+Does treatment of the derived isolates match with the community of the ancestral isolates?
+```{r}
+#find mismatch between MPA (ANI_diff = 0) population and derived isolate population
+population_mismatch <- top2_ANI_metadata %>%
+  filter(ANI_diff == 0) %>% 
+  rowwise() %>%
+  mutate(match = grepl(Treatment, community)) %>%
+  filter(match == FALSE)
+
+population_mismatch
+
+filter(top2_ANI_metadata, isolate == "20_2_6") #Rht_596_N's community matches with 20_2_6's treatment
+```
+
+3 derived isolates had mismatch (15_2_1, 15_3_3, 5_3_2) between MPA and derived isolate populations. Exclude 20_2_6 because one of its two most probable ancestors matched.
+
+
+
+For the 3 mismatches, do the alternative MPAs have consistent population matching?
+```{r}
+#subset for alternative MPA (ANI_diff > 0)
+altMPA <- top2_ANI_metadata %>%
+  filter(ANI_diff > 0) %>%
+  rename(altMPA=MPA)
+
+#exclude 20_2_6 from the mismatch isolates
+population_mismatch2 <- population_mismatch %>%
+  filter(isolate != "20_2_6") #exclude 20_2_6 because one of its two most probable ancestors matched
+
+subset(altMPA, isolate %in% population_mismatch2$isolate)
+```
+
+15_2_1 and 5_3_2 had the two populations matched, only 15_3_3 still did not match.
+
+
+
+
+
+# 19_1_9 and 19_4_7 are mixed genomes indicated from bimodal peaks of GC content. Check whether contamination affects MPA inference or not.
+
+SemiBin2 program is used to group sequences from the same genome together. We will use it to separate true *Rhizonium* sequences from others. The result shows both 19_1_9 and 19_4_7 scaffolds were separated to 4 bins. We next use CheckM and PGAP taxonomy check to identify the species of each bin.
+
+For CheckM,
+
+Load CheckM reported statistics. Description of statistics is at https://github.com/Ecogenomics/CheckM/wiki/Reported-Statistics. 
+```{r}
+checkm_stats_on_bins <- read.delim("../output/most_probable_ancestors/contamination_resolution_CheckM_bin_stats_ext.tsv", header = F) 
+```
+
+Format the output.
+```{r}
+checkm_stats_on_bins2 <- checkm_stats_on_bins %>%
+  rename(bin_id = V1) %>%
+  mutate(V2 = str_replace_all(V2, "['{}]", "")) %>% #delete any of these 3 symbols: ' { }
+  separate(col = V2, into = c("tmp1", "marker_lineage", "n_genomes", "n_markers", "n_marker_sets", "zero", "one", "two", "three", "four", "fiveplus", "completeness", "contamination", "gc", "gc_std", "genome_size", "n_ambiguous_bases", "n_scaffolds", "n_contigs", "longest_scaffold", "longest_contig", "n50_scaffolds", "n50_contigs", "mean_scaffold_length", "mean_contig_length", "coding_density", "translation_table", "n_predicted_genes", "gcn0", "gcn1", "gcn2", "gcn3", "gcn4", "gcn5+"), sep = ":") %>%
+  select(-c("gcn0", "gcn1", "gcn2", "gcn3", "gcn4", "gcn5+")) %>% #remove columns
+  separate_wider_delim(col = 3:29, delim = ",", names_sep = "_") %>%
+  select(-c(tmp1, marker_lineage_2, n_genomes_2, n_markers_2, n_marker_sets_2, zero_2, one_2, two_2, three_2, four_2, fiveplus_2, completeness_2, contamination_2, gc_2, gc_std_2, genome_size_2, n_ambiguous_bases_2, n_scaffolds_2, n_contigs_2, longest_scaffold_2, longest_contig_2, n50_scaffolds_2, n50_contigs_2, mean_scaffold_length_2, mean_contig_length_2, coding_density_2, translation_table_2, n_predicted_genes_2)) #remove columns
+
+colnames(checkm_stats_on_bins2)[2:28] <- str_remove(colnames(checkm_stats_on_bins2)[2:28], "_1")
+```
+
+Check which lineage of the phylogenetic tree each isolate is placed in by CheckM.
+```{r}
+with(checkm_stats_on_bins2, table(bin_id, marker_lineage))
+```
+
+This shows that 19_1_9 contains Rhizobiaceae, Bacillaceae, and Bacteria. 19_4_7 contains Rhizobiaceae and *Bacillus*.
+
+19_1_9_SemiBin_0 and 19_4_7_SemiBin_1 are placed in the Rhizobiaceae lineage.
+
+
+Check genome size, completeness, contamination of the two Rhizobiaceae bins.
+```{r}
+checkm_stats_rhizobiaceae <- subset(checkm_stats_on_bins2, bin_id == "19_1_9_SemiBin_0" | bin_id == "19_4_7_SemiBin_1")
+
+checkm_stats_rhizobiaceae$completeness #both bins have completeness >99.9%
+
+checkm_stats_rhizobiaceae$contamination #both bins have contamination ~0.34%
+
+checkm_stats_rhizobiaceae$genome_size #genome sizes of both bins are ~7 Mb
+```
+
+
+
+
+
+
+For PGAP taxonomy check,
+
+Load PGAP taxonomy check output. Description of the output is at https://github.com/ncbi/pgap/wiki/Taxonomy-Check.
+```{r}
+pgap_ani_status_bins <- read.delim("../output/most_probable_ancestors/contamination_resolution_pgap_ani_status.txt")
+
+pgap_ani_stats_bins <- read.delim("../output/most_probable_ancestors/contamination_resolution_pgap_ani_table.txt")
+```
+
+
+The submitted organism is *Rhizobium leguminosarum*. How many of the bins are confirmed to be this species?
+```{r}
+table(pgap_ani_status_bins$Status)
+```
+
+2 bins are confirmed. Check which bins are these?
+
+```{r}
+subset(pgap_ani_status_bins, Status == "CONFIRMED")
+```
+
+These are 19_1_9_SemiBin_0.fa and 19_4_7_SemiBin_1.fa, consistent with CheckM result. 
+
+
+
+
+Compute pairwise ANI between 19_1_9_SemiBin_0, 19_4_7_SemiBin_1 and the 56 ancestral isolates to check whether they have the same MPA as before.
+
+
+Load ANI values
+```{r}
+ani_values_bins <- read.table("../output/most_probable_ancestors/contamination_resolution_19_X_X_most_prob_ancestors.txt")
+```
+
+What are the new MPAs?
+```{r}
+new_MPA <- ani_values_bins %>%
+  rename(isolate=V1, MPA=V2, ANI=V3, match=V4, total=V5) %>% #rename variable
+  mutate(isolate = str_extract(isolate, "[:digit:]+_[:digit:]+_[:alnum:]+"),
+         MPA = str_extract(MPA, "Rht_[:digit:]+_(N|C)"))  %>% #rename isolates
+  group_by(isolate) %>%
+  slice_max(tibble(ANI), n = 1) #select the highest ANI value 
+new_MPA
+```
+
+19_1_9 has Rht_527_N as its new MPA. 19_4_7 has Rht_016_N as its new MPA.
+
+
+What are the original MPAs?
+```{r}
+MPA %>% filter(isolate == "19_1_9" | isolate == "19_4_7")
+```
+
+19_1_9 has Rht_527_N as its original MPA. 19_4_7 has Rht_016_N as its original MPA.
+
+MPAs do not change due to the contamination. 
+
+```{r}
+sessionInfo()
+```
+
+
+

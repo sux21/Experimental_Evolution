@@ -1,0 +1,63 @@
+---
+title: "quast_genome_assembly_QC"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages
+```{r}
+library(tidyverse)
+```
+
+Read QUAST results
+```{r}
+quast_stats <- read.delim("../output/genome_assembly_QC/quast_assembly_stats.tsv") %>%
+  janitor::clean_names()
+```
+
+Calculate mean, maximum, and minimum of number of scaffolds, total length of scaffolds, N50, GC content
+```{r}
+mean <- quast_stats %>%
+  select(x_contigs, total_length, n50, gc) %>%
+  summarise(number_scaffolds = mean(x_contigs),
+            total_length = mean(total_length),
+            N50 = mean(n50),
+            GC_perc = mean(gc))
+mean
+```
+
+Check outliers: number of scaffolds
+```{r}
+boxplot(quast_stats$x_contigs)
+
+filter(quast_stats, x_contigs > 280)
+```
+
+Result: 5 samples (19_1_9, 19_4_7, 19_6_2, 7_2_1, as5_2_4) have relatively large number of scaffolds.
+
+Check outliers: total length
+```{r}
+boxplot(quast_stats$total_length)
+
+filter(quast_stats, total_length > 8000000)
+```
+
+Result: 2 samples (19_1_9, 19_4_7) have relatively large genome sizes. 
+
+Check outliers: GC content
+```{r}
+boxplot(quast_stats$gc)
+
+filter(quast_stats, gc < 58)
+# 3 samples (19_1_9, 19_4_7, as5_2_4) have relatively low GC content.
+```
+
+Result: 3 samples (19_1_9, 19_4_7, as5_2_4) have relatively low GC content.
+
+```{r}
+sessionInfo()
+```
+
