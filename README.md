@@ -649,8 +649,17 @@ done
 done
 ```
 
+### Align scaffolds of derived isolates to MPA using nucmer
+Version: 4.0.1 <br>
+Work done on info20
 
-# Step 5: Call SNPS between each derived strain and its most probable ancestor
+Align scaffolds to complete genome of the MPA. MPA is the reference, scaffolds are query.
+```bash
+/home/xingyuan/tools/nucmer -p 15_2_7-Rht_861_C -c 100 /home/xingyuan/rhizo_ee/spades_genomes/15_2_7/scaffolds.fasta /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht_861_C.fasta
+```
+
+
+# Step 5: Call SNPs and Indels between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
 
 ## 0. Filter the reads for the two derived isolates (19_4_7, 19_1_9). Recall the two derived isolates, 19_4_7 and 19_1_9, are contaminated. Align the trimmed reads to the split genomes and only use the aligned reads for subsequent steps.  
