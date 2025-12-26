@@ -653,10 +653,25 @@ done
 Version: 4.0.1 <br>
 Work done on info20
 
-Align scaffolds to complete genome of the MPA. MPA is the reference, scaffolds are query.
+Align scaffolds to complete genome of the MPA. Use MPA as the reference and scaffolds as query.
 ```bash
-/home/xingyuan/tools/nucmer -p 15_2_7-Rht_861_C -c 100 /home/xingyuan/rhizo_ee/spades_genomes/15_2_7/scaffolds.fasta /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht_861_C.fasta
+# Usage: nucmer [options] ref:path qry:path+
+# Reference genome first is before query genome
+/home/xingyuan/tools/nucmer --maxmatch --mincluster=100 -p 15_2_7-Rht_861_C /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht_861_C.fasta /home/xingyuan/rhizo_ee/spades_genomes/15_2_7/scaffolds.fasta
 ```
+
+Get information of all alignments.
+```bash
+/home/xingyuan/tools/bin/show-coords -r -c -l 15_2_7-Rht_861_C.delta > 15_2_7-Rht_861_C.coords
+```
+
+Find best locations on MPA's genome of each scaffold. Use ``-c`` to make MPA's genome cirlcular and allow scaffolds to span the start and end of the MPA's genome. Use ``-v`` to set minimum contig coverage to 80% to account for gene gain and loss.
+```bash
+/home/xingyuan/tools/bin/show-tiling -c -v 80.0 15_2_7-Rht_861_C.delta > 15_2_7-Rht_861_C.tiling
+```
+
+Output format: <br>
+start in reference, end in reference, gap between this contig and the next, length of this contig, alignment coverage of this contig, average percent identity of the alignments for this contig, orientation of this contig, contig ID.
 
 
 # Step 5: Call SNPs and Indels between each derived strain and its most probable ancestor
