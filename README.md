@@ -649,6 +649,27 @@ done
 done
 ```
 
+### Use coverage method to identify region of gene loss (low-coverage regions) 
+
+Use samtools depth to compute per-base coverage.
+
+Samtools version: samtools 1.22 (Using htslib 1.22) <br>
+Work done on info20
+
+Use coordinated sorted alignment files as input between derived isolate and MPA from Step 5. 
+
+```bash
+#!/bin/bash
+
+for i in /home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/*.coordinate_sorted.bam; do
+j=${i#/home/xingyuan/rhizo_ee/snp_indel/sortSAM_output/}
+sample=${j%.coordinate_sorted.bam}
+
+/home/xingyuan/tools/miniconda3/bin/samtools depth -a $i > "$sample".depth.txt
+done
+```
+
+
 ### Align scaffolds of derived isolates to MPA using nucmer
 Version: 4.0.1 <br>
 Work done on info20
