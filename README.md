@@ -656,7 +656,7 @@ Work done on info20
 Align scaffolds to complete genome of the MPA. Use MPA as the reference and scaffolds as query.
 ```bash
 # Usage: nucmer [options] ref:path qry:path+
-# Reference genome first is before query genome
+# Reference genome first
 /home/xingyuan/tools/nucmer --maxmatch --mincluster=100 -p 15_2_7-Rht_861_C /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht_861_C.fasta /home/xingyuan/rhizo_ee/spades_genomes/15_2_7/scaffolds.fasta
 ```
 
@@ -670,9 +670,21 @@ Find best locations on MPA's genome of each scaffold. Use ``-c`` to make MPA's g
 /home/xingyuan/tools/bin/show-tiling -c -v 80.0 15_2_7-Rht_861_C.delta > 15_2_7-Rht_861_C.tiling
 ```
 
-Output format: <br>
+.tiling output format: <br>
 start in reference, end in reference, gap between this contig and the next, length of this contig, alignment coverage of this contig, average percent identity of the alignments for this contig, orientation of this contig, contig ID.
 
+Repeat for another pair. 
+```bash
+/home/xingyuan/tools/nucmer --maxmatch --mincluster=100 -p 19_2_1-Rht_108_C /2/scratch/batstonelab/N_adaptation_Rhizobium/2008_original_strains_genomes/Rht_108_C.fasta /home/xingyuan/rhizo_ee/spades_genomes/19_2_1/scaffolds.fasta
+```
+
+```bash
+/home/xingyuan/tools/bin/show-coords -r -c -l 19_2_1-Rht_108_C.delta > 19_2_1-Rht_108_C.coords
+```
+
+```bash
+/home/xingyuan/tools/bin/show-tiling 19_2_1-Rht_108_C.delta > 19_2_1-Rht_108_C.tiling
+```
 
 # Step 5: Call SNPs and Indels between each derived strain and its most probable ancestor
 This step is based on https://github.com/rtdoyle/how-rhizobia-evolve/blob/master/Variant%20discovery/Variant_calling.md
